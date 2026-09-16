@@ -128,4 +128,50 @@ public class TrainingActivityCreationTests
 
         Assert.Null(activity.HeartRate);
     }
+
+    // FR-007: a series attached to an activity round-trips unchanged.
+    [Fact]
+    public void An_activity_recorded_with_heart_rate_data_returns_that_series_unchanged()
+    {
+        var samples = new[]
+        {
+            new HeartRateSample(TimeSpan.FromMinutes(0), 150),
+            new HeartRateSample(TimeSpan.FromMinutes(10), 175),
+            new HeartRateSample(TimeSpan.FromMinutes(20), 160),
+        };
+        var series = new HeartRateSeries(samples);
+
+        var activity = new TrainingActivity(
+            "A-1",
+            new DateTimeOffset(2026, 3, 1, 7, 30, 0, TimeSpan.FromHours(2)),
+            TimeSpan.FromMinutes(45),
+            ActivityType.Running,
+            series);
+
+        Assert.Same(series, activity.HeartRate);
+        Assert.Equal(samples, activity.HeartRate!.Samples);
+    }
+
+    // Spec Assumptions: moving time excludes stops while a monitor keeps recording through them,
+    // so a series routinely spans more time than the moving time it belongs to. Refusing that
+    // would reject ordinary, correct data.
+    [Fact]
+    public void A_series_extending_beyond_the_activitys_moving_time_is_accepted()
+    {
+        var series = new HeartRateSeries(new[]
+        {
+            new HeartRateSample(TimeSpan.FromMinutes(0), 150),
+            new HeartRateSample(TimeSpan.FromMinutes(90), 160),
+        });
+
+        var activity = new TrainingActivity(
+            "A-1",
+            new DateTimeOffset(2026, 3, 1, 7, 30, 0, TimeSpan.FromHours(2)),
+            TimeSpan.FromMinutes(45),
+            ActivityType.Running,
+            series);
+
+        Assert.Equal(TimeSpan.FromMinutes(90), activity.HeartRate!.Samples[^1].TimeFromStart);
+        Assert.True(activity.HeartRate.Samples[^1].TimeFromStart > activity.MovingTime);
+    }
 }
