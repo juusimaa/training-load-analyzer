@@ -192,6 +192,24 @@ the exception type and its `ParamName`.
 
 ---
 
+## Phase 7: Contract C1 defect (added after the T066 completion review)
+
+**Why this exists**: T066 found the implementation misaligned with contract C1, "an instance never
+changes after construction". `HeartRateSeries` stores the caller's list by reference, so a caller
+holding the original array can mutate it afterwards and bypass the invariants the constructor just
+enforced — a series validated as 20-250 bpm and ascending can be made to hold 999 bpm out of order.
+FR-024 and C1 both promise this cannot happen.
+
+This phase is a deliberate plan amendment, recorded here rather than added quietly, per the closing
+note in this file. It introduces no abstraction from the rejected list — a defensive copy is a
+correctness fix, not a layer.
+
+- [ ] T067 RED: assert C1 by both routes a mutation can take. First, a caller that mutates the list it built the series from cannot change `Samples`. Second, writing through the `IReadOnlyList` the series exposes is refused rather than silently succeeding — an array satisfies `IReadOnlyList` but its indexer is writable through `IList`, so exposing one would leak a mutable view. Confirm both fail — file: `tests/TrainingLoadAnalyzer.Domain.Tests/HeartRateSeriesTests.cs`
+- [ ] T068 GREEN: copy the samples in the `HeartRateSeries` constructor **before** validating them, so what is validated is exactly what is stored, and expose the copy as a read-only view. Use `System.Collections.ObjectModel.ReadOnlyCollection<T>` from the base class library — this must not add a `PackageReference`, which would break T003 — file: `src/TrainingLoadAnalyzer.Domain/HeartRateSeries.cs`
+- [ ] T069 VERIFY: run `dotnet test` — all green, including the T014 and T017 round-trip tests, which must still pass on the copy. Re-run the T003 zero-reference check and the T062 constitution checks
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
