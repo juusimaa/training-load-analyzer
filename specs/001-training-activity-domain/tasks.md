@@ -38,10 +38,10 @@ Two projects at repository root, per [plan.md](./plan.md):
 
 **Purpose**: Create the solution and both projects. No production type is created here.
 
-- [ ] T001 Create solution and both projects by running the scaffolding block in [quickstart.md](./quickstart.md), producing `TrainingLoadAnalyzer.sln`, `src/TrainingLoadAnalyzer.Domain/TrainingLoadAnalyzer.Domain.csproj` (net10.0), and `tests/TrainingLoadAnalyzer.Domain.Tests/TrainingLoadAnalyzer.Domain.Tests.csproj` (net10.0, xunit.v3)
-- [ ] T002 Add the project reference from the test project to the domain project, and delete the generated `src/TrainingLoadAnalyzer.Domain/Class1.cs`
-- [ ] T003 Confirm `src/TrainingLoadAnalyzer.Domain/TrainingLoadAnalyzer.Domain.csproj` contains zero `PackageReference` and zero `ProjectReference` elements — this is the mechanical guard for Principle II and FR-025, and it must stay true for the whole feature
-- [ ] T004 Establish the baseline: `dotnet build` succeeds and `dotnet test` reports zero tests. Zero is the correct starting point; the first real test is T005
+- [X] T001 Create solution and both projects by running the scaffolding block in [quickstart.md](./quickstart.md), producing `TrainingLoadAnalyzer.sln`, `src/TrainingLoadAnalyzer.Domain/TrainingLoadAnalyzer.Domain.csproj` (net10.0), and `tests/TrainingLoadAnalyzer.Domain.Tests/TrainingLoadAnalyzer.Domain.Tests.csproj` (net10.0, xunit.v3)
+- [X] T002 Add the project reference from the test project to the domain project, and delete the generated `src/TrainingLoadAnalyzer.Domain/Class1.cs`
+- [X] T003 Confirm `src/TrainingLoadAnalyzer.Domain/TrainingLoadAnalyzer.Domain.csproj` contains zero `PackageReference` and zero `ProjectReference` elements — this is the mechanical guard for Principle II and FR-025, and it must stay true for the whole feature
+- [X] T004 Establish the baseline: `dotnet build` succeeds and `dotnet test` reports zero tests. Zero is the correct starting point; the first real test is T005
 
 **Checkpoint**: Solution builds, test harness runs, no domain code exists yet.
 
