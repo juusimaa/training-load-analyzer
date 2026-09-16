@@ -1,0 +1,51 @@
+# .NET build output
+[Bb]in/
+[Oo]bj/
+*.user
+
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+*.suo
+*.sln.docstates
+.vscode/*
+!.vscode/extensions.json
+
+# Test results
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+
+# SQLite dev database
+*.db
+*.db-shm
+*.db-wal
+
+# Local configuration and secrets (e.g. Strava OAuth credentials)
+appsettings.*.local.json
+appsettings.Development.json
+.env
+.env.*
+*.pfx
+
+# NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+
+# Blazor / frontend build output
+wwwroot/dist/
+
+# Python bytecode cache (Spec Kit tooling scripts)
+__pycache__/
+*.pyc
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
