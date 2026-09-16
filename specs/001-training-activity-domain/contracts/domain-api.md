@@ -88,7 +88,7 @@ public sealed class TrainingActivity
 |---|-----------|-------------|
 | C1 | No public setter, `init` accessor, or `with` expression exists on any type. An instance never changes after construction. | FR-024 |
 | C2 | Every constructor either returns a fully valid instance or throws. No partially-constructed instance is observable. | FR-023 |
-| C3 | Every throw carries a `ParamName` identifying the offending input. No guard throws a bare `Exception` or `InvalidOperationException`. | FR-022 |
+| C3 | Every throw carries a `ParamName` identifying the offending input, and distinguishes the violated rule. Where several rules share a `ParamName` — the three `HeartRateSeries` guards all report `"samples"` — the exception type or the message must tell them apart, so that no test for one rule can pass against another. No guard throws a bare `Exception` or `InvalidOperationException`. | FR-022 |
 | C4 | `CalculateTrainingLoad` is pure: same receiver and same argument yield an equal `TrainingLoad`, with no reads of `DateTime.Now`, environment, or static mutable state. | FR-011, SC-003 |
 | C5 | `TrainingLoad.Points` is never negative, and the provenance cannot be obtained separately from the number. | FR-008, SC-007 |
 | C6 | `ActivityType` is never read by any load calculation, so two activities differing only in type produce equal loads. | FR-012, SC-009 |

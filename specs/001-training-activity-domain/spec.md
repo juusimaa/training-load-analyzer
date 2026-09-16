@@ -278,8 +278,10 @@ that each attempt is refused and that the refusal names the violated rule.
   athlete's maximum heart rate — without reading any code.
 - **SC-007**: 100% of training-load values report whether they were measured or estimated, and no
   consumer can obtain a load value without that marking.
-- **SC-008**: Sessions recorded at any UTC offset, including across a daylight-saving transition,
-  report the same local calendar day the athlete would say the session happened on.
+- **SC-008**: A session recorded at any UTC offset retains a start time from which the athlete's
+  local calendar day is recoverable unchanged — including a session started during a
+  daylight-saving transition, where the same wall-clock time at two different offsets must remain
+  two distinguishable instants on the same local day.
 - **SC-009**: A running session and a cycling session with identical heart-rate series produce
   identical load values, in 100% of such pairs.
 - **SC-010**: A reviewer inspecting the training-session model finds no mention of Strava or any
