@@ -93,4 +93,19 @@ public class HeartRateSeriesTests
         Assert.Equal("samples", refusal.ParamName);
         Assert.Contains("ascending", refusal.Message);
     }
+
+    // User Story 3, scenario 8 (FR-021, FR-006): an empty series is a refusal, not a synonym
+    // for absent heart-rate data. See the ordering test above for why the message is asserted.
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void A_null_or_empty_sample_list_is_refused(bool isNull)
+    {
+        var samples = isNull ? null : Array.Empty<HeartRateSample>();
+
+        var refusal = Assert.Throws<ArgumentException>(() => new HeartRateSeries(samples!));
+
+        Assert.Equal("samples", refusal.ParamName);
+        Assert.Contains("at least one sample", refusal.Message);
+    }
 }
