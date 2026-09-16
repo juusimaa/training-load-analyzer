@@ -34,4 +34,15 @@ public class TrainingActivityValidationTests
 
         Assert.Equal("activityType", refusal.ParamName);
     }
+
+    // User Story 3, scenario 4 (FR-019). Only the default value is refused — a future start
+    // time is accepted, which TrainingActivityCreationTests asserts.
+    [Fact]
+    public void A_missing_start_time_is_refused()
+    {
+        var refusal = Assert.Throws<ArgumentException>(
+            () => new TrainingActivity("A-1", default, TimeSpan.FromMinutes(45), ActivityType.Running));
+
+        Assert.Equal("startedAt", refusal.ParamName);
+    }
 }
