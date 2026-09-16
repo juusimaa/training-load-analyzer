@@ -76,6 +76,14 @@ public sealed class TrainingActivity
             return new TrainingLoad(minutes * 2, LoadProvenance.Estimated);
         }
 
+        if (maximumHeartRate <= 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maximumHeartRate),
+                maximumHeartRate,
+                "A measured training load needs a positive maximum heart rate to classify zones against.");
+        }
+
         return new TrainingLoad(HeartRate.TrimpPoints(maximumHeartRate), LoadProvenance.Measured);
     }
 }
