@@ -24,4 +24,14 @@ public class TrainingActivityValidationTests
 
         Assert.Equal("movingTime", refusal.ParamName);
     }
+
+    // User Story 3, scenario 3 (FR-018, FR-005).
+    [Fact]
+    public void An_activity_type_outside_the_defined_set_is_refused()
+    {
+        var refusal = Assert.Throws<ArgumentOutOfRangeException>(
+            () => new TrainingActivity("A-1", AnyStart, TimeSpan.FromMinutes(45), (ActivityType)99));
+
+        Assert.Equal("activityType", refusal.ParamName);
+    }
 }
