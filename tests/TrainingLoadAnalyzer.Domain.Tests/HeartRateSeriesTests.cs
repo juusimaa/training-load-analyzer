@@ -60,4 +60,18 @@ public class HeartRateSeriesTests
         // 60 minutes at weight 3 = 180; the 10 minutes at 100 bpm (52.6%, weight 1) = 10.
         Assert.Equal(190m, series.TrimpPoints(maximumHeartRate: 190));
     }
+
+    // User Story 3, scenario 6 (FR-021): the session is refused, not the sample dropped.
+    [Fact]
+    public void A_sample_outside_the_plausible_range_is_refused_and_named()
+    {
+        var refusal = Assert.Throws<ArgumentOutOfRangeException>(() => new HeartRateSeries(new[]
+        {
+            new HeartRateSample(TimeSpan.FromMinutes(0), 150),
+            new HeartRateSample(TimeSpan.FromMinutes(10), 300),
+        }));
+
+        Assert.Equal("samples", refusal.ParamName);
+        Assert.Contains("300", refusal.Message);
+    }
 }
