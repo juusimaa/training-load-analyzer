@@ -138,4 +138,22 @@ public class MeasuredTrainingLoadTests
 
         Assert.True(run.CalculateTrainingLoad(190) == ride.CalculateTrainingLoad(190));
     }
+
+    // User Story 3, scenario 9 (FR-016): refused only for an activity that actually reads it.
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void A_measured_load_is_refused_when_the_maximum_heart_rate_is_not_positive(int maximumHeartRate)
+    {
+        var activity = ActivityWith(new HeartRateSeries(new[]
+        {
+            new HeartRateSample(TimeSpan.FromMinutes(0), 150),
+            new HeartRateSample(TimeSpan.FromMinutes(10), 175),
+        }));
+
+        var refusal = Assert.Throws<ArgumentOutOfRangeException>(
+            () => activity.CalculateTrainingLoad(maximumHeartRate));
+
+        Assert.Equal("maximumHeartRate", refusal.ParamName);
+    }
 }
