@@ -7,12 +7,14 @@ public sealed class TrainingActivity
         string externalId,
         DateTimeOffset startedAt,
         TimeSpan movingTime,
-        ActivityType activityType)
+        ActivityType activityType,
+        HeartRateSeries? heartRate = null)
     {
         ExternalId = externalId;
         StartedAt = startedAt;
         MovingTime = movingTime;
         Type = activityType;
+        HeartRate = heartRate;
     }
 
     /// <summary>An opaque, provider-neutral identifier, stored verbatim (FR-002).</summary>
@@ -25,4 +27,7 @@ public sealed class TrainingActivity
     public TimeSpan MovingTime { get; }
 
     public ActivityType Type { get; }
+
+    /// <summary>The heart-rate series, or null when none was recorded (FR-006).</summary>
+    public HeartRateSeries? HeartRate { get; }
 }
