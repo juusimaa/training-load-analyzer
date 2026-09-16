@@ -10,6 +10,18 @@ public sealed class TrainingActivity
         ActivityType activityType,
         HeartRateSeries? heartRate = null)
     {
+        if (string.IsNullOrWhiteSpace(externalId))
+        {
+            throw new ArgumentException(
+                "A session must carry an external identifier.",
+                nameof(externalId));
+        }
+
+        if (startedAt == default)
+        {
+            throw new ArgumentException("A session must have a start time.", nameof(startedAt));
+        }
+
         if (movingTime <= TimeSpan.Zero)
         {
             throw new ArgumentOutOfRangeException(
@@ -26,11 +38,7 @@ public sealed class TrainingActivity
                 "A session must be classified as either running or cycling.");
         }
 
-        if (startedAt == default)
-        {
-            throw new ArgumentException("A session must have a start time.", nameof(startedAt));
-        }
-
+        // Stored verbatim: FR-002 forbids interpreting, parsing, or trimming the identifier.
         ExternalId = externalId;
         StartedAt = startedAt;
         MovingTime = movingTime;
