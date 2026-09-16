@@ -58,4 +58,29 @@ public class TrainingActivityValidationTests
 
         Assert.Equal("externalId", refusal.ParamName);
     }
+
+    // User Story 3, scenario 10 (FR-023, contract C2). Every guard runs before any field is
+    // assigned, so a refusal is the only thing the caller ever gets back — there is no
+    // out-parameter, no static registry, and no partially-populated instance to inspect.
+    [Fact]
+    public void A_refused_construction_leaves_no_instance_behind()
+    {
+        Assert.Throws<ArgumentException>(
+            () => new TrainingActivity("", AnyStart, TimeSpan.FromMinutes(45), ActivityType.Running));
+        Assert.Throws<ArgumentException>(
+            () => new TrainingActivity("A-1", default, TimeSpan.FromMinutes(45), ActivityType.Running));
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => new TrainingActivity("A-1", AnyStart, TimeSpan.Zero, ActivityType.Running));
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => new TrainingActivity("A-1", AnyStart, TimeSpan.FromMinutes(45), (ActivityType)99));
+
+        // The only way to obtain a TrainingActivity is the constructor, and it either returns a
+        // fully valid instance or throws: no factory, no parameterless constructor, no static
+        // state that a refused attempt could have touched.
+        Assert.Empty(typeof(TrainingActivity).GetConstructors().Where(c => c.GetParameters().Length == 0));
+        Assert.Empty(typeof(TrainingActivity).GetFields(
+            System.Reflection.BindingFlags.Static
+            | System.Reflection.BindingFlags.Public
+            | System.Reflection.BindingFlags.NonPublic));
+    }
 }

@@ -72,7 +72,12 @@ public class HeartRateSeriesTests
         }));
 
         Assert.Equal("samples", refusal.ParamName);
-        Assert.Contains("300", refusal.Message);
+        Assert.Equal(300, refusal.ActualValue);
+
+        // Asserted on the guard's own wording, not on "300": ArgumentOutOfRangeException appends
+        // "Actual value was 300." by itself, so a message assertion on the number alone would
+        // pass against any of the three rules that share ParamName "samples".
+        Assert.Contains("plausible range", refusal.Message);
     }
 
     // User Story 3, scenario 7 (FR-021). Equal timestamps are not ascending, which resolves the

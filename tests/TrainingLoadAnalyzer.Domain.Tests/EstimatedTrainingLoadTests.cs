@@ -48,4 +48,21 @@ public class EstimatedTrainingLoadTests
         Assert.NotEqual(measured.Provenance, estimated.Provenance);
         Assert.NotEqual(measured, estimated);
     }
+
+    // The deliberate asymmetry (FR-016, Principle VII): the estimate never reads the maximum
+    // heart rate, so guarding it here would invent a rule the specification does not state.
+    [Fact]
+    public void An_estimate_is_produced_even_when_the_maximum_heart_rate_is_not_positive()
+    {
+        var activity = new TrainingActivity(
+            "A-1",
+            AnyStart,
+            TimeSpan.FromMinutes(40),
+            ActivityType.Running);
+
+        var load = activity.CalculateTrainingLoad(maximumHeartRate: 0);
+
+        Assert.Equal(80m, load.Points);
+        Assert.Equal(LoadProvenance.Estimated, load.Provenance);
+    }
 }
