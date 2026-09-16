@@ -30,4 +30,12 @@ public sealed class TrainingActivity
 
     /// <summary>The heart-rate series, or null when none was recorded (FR-006).</summary>
     public HeartRateSeries? HeartRate { get; }
+
+    /// <summary>
+    ///   This session's training load, measured from the heart-rate series when one is present
+    ///   (FR-009). Pure: the same receiver and argument always yield an equal value, with no
+    ///   reads of the clock or of any ambient state (FR-011).
+    /// </summary>
+    public TrainingLoad CalculateTrainingLoad(int maximumHeartRate) =>
+        new(HeartRate!.TrimpPoints(maximumHeartRate), LoadProvenance.Measured);
 }
