@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace TrainingLoadAnalyzer.Domain;
 
 /// <summary>The measured heart-rate record for one session (FR-007).</summary>
@@ -16,19 +18,23 @@ public sealed class HeartRateSeries
                 nameof(samples));
         }
 
-        for (var i = 1; i < samples.Count; i++)
+        // Copied before validation, so the samples that are checked are exactly the ones stored
+        // and a caller holding the original list cannot change them afterwards (FR-024, C1).
+        var copied = samples.ToArray();
+
+        for (var i = 1; i < copied.Length; i++)
         {
-            if (samples[i].TimeFromStart <= samples[i - 1].TimeFromStart)
+            if (copied[i].TimeFromStart <= copied[i - 1].TimeFromStart)
             {
                 throw new ArgumentException(
                     $"Heart-rate sample times must be in ascending order; the sample at index {i} "
-                        + $"({samples[i].TimeFromStart}) does not follow the one before it "
-                        + $"({samples[i - 1].TimeFromStart}).",
+                        + $"({copied[i].TimeFromStart}) does not follow the one before it "
+                        + $"({copied[i - 1].TimeFromStart}).",
                     nameof(samples));
             }
         }
 
-        foreach (var sample in samples)
+        foreach (var sample in copied)
         {
             if (sample.Bpm is < MinimumPlausibleBpm or > MaximumPlausibleBpm)
             {
@@ -40,10 +46,10 @@ public sealed class HeartRateSeries
             }
         }
 
-        Samples = samples;
+        Samples = new ReadOnlyCollection<HeartRateSample>(copied);
     }
 
-    /// <summary>The samples, in ascending time order.</summary>
+    /// <summary>The samples, in ascending time order. A read-only view (C1).</summary>
     public IReadOnlyList<HeartRateSample> Samples { get; }
 
     /// <summary>Edwards TRIMP points for this series (FR-009, FR-010).</summary>
