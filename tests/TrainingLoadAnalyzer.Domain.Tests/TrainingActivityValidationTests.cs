@@ -45,4 +45,17 @@ public class TrainingActivityValidationTests
 
         Assert.Equal("startedAt", refusal.ParamName);
     }
+
+    // User Story 3, scenario 5 (FR-020).
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void A_missing_or_blank_external_identifier_is_refused(string? externalId)
+    {
+        var refusal = Assert.Throws<ArgumentException>(
+            () => new TrainingActivity(externalId!, AnyStart, TimeSpan.FromMinutes(45), ActivityType.Running));
+
+        Assert.Equal("externalId", refusal.ParamName);
+    }
 }
