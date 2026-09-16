@@ -17,4 +17,20 @@ public class HeartRateSeriesTests
 
         Assert.Equal(samples, series.Samples);
     }
+
+    // User Story 2, scenario 2 — the worked example (FR-009, FR-010). At maximum 190:
+    // 150 bpm is 78.9% (zone 3, weight 3) held 10 minutes = 30; 175 bpm is 92.1%
+    // (zone 5, weight 5) held 10 minutes = 50; the final sample has no successor.
+    [Fact]
+    public void The_worked_example_yields_exactly_eighty_trimp_points()
+    {
+        var series = new HeartRateSeries(new[]
+        {
+            new HeartRateSample(TimeSpan.FromMinutes(0), 150),
+            new HeartRateSample(TimeSpan.FromMinutes(10), 175),
+            new HeartRateSample(TimeSpan.FromMinutes(20), 160),
+        });
+
+        Assert.Equal(80m, series.TrimpPoints(maximumHeartRate: 190));
+    }
 }
