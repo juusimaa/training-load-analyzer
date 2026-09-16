@@ -3,8 +3,23 @@ namespace TrainingLoadAnalyzer.Domain;
 /// <summary>The measured heart-rate record for one session (FR-007).</summary>
 public sealed class HeartRateSeries
 {
+    private const int MinimumPlausibleBpm = 20;
+    private const int MaximumPlausibleBpm = 250;
+
     public HeartRateSeries(IReadOnlyList<HeartRateSample> samples)
     {
+        foreach (var sample in samples)
+        {
+            if (sample.Bpm is < MinimumPlausibleBpm or > MaximumPlausibleBpm)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(samples),
+                    sample.Bpm,
+                    $"A heart-rate sample of {sample.Bpm} bpm is outside the plausible range of "
+                        + $"{MinimumPlausibleBpm}-{MaximumPlausibleBpm} bpm.");
+            }
+        }
+
         Samples = samples;
     }
 
