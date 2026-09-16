@@ -113,4 +113,41 @@ public class HeartRateSeriesTests
         Assert.Equal("samples", refusal.ParamName);
         Assert.Contains("at least one sample", refusal.Message);
     }
+
+    // Contract C1 / FR-024: an instance never changes after construction. A series that kept the
+    // caller's list would let a validated series be made to hold 999 bpm out of order.
+    [Fact]
+    public void Mutating_the_list_a_series_was_built_from_does_not_change_the_series()
+    {
+        var samples = new[]
+        {
+            new HeartRateSample(TimeSpan.FromMinutes(0), 150),
+            new HeartRateSample(TimeSpan.FromMinutes(10), 160),
+        };
+
+        var series = new HeartRateSeries(samples);
+
+        samples[1] = new HeartRateSample(TimeSpan.FromMinutes(5), 999);
+
+        Assert.Equal(160, series.Samples[1].Bpm);
+        Assert.Equal(TimeSpan.FromMinutes(10), series.Samples[1].TimeFromStart);
+    }
+
+    // Contract C1, the second route: an array satisfies IReadOnlyList but its indexer stays
+    // writable through IList, so exposing one would hand out a mutable view of validated state.
+    [Fact]
+    public void Writing_through_the_list_a_series_exposes_is_refused()
+    {
+        var series = new HeartRateSeries(new[]
+        {
+            new HeartRateSample(TimeSpan.FromMinutes(0), 150),
+            new HeartRateSample(TimeSpan.FromMinutes(10), 160),
+        });
+
+        var exposed = Assert.IsAssignableFrom<IList<HeartRateSample>>(series.Samples);
+
+        Assert.Throws<NotSupportedException>(
+            () => exposed[1] = new HeartRateSample(TimeSpan.FromMinutes(5), 999));
+        Assert.Equal(160, series.Samples[1].Bpm);
+    }
 }
