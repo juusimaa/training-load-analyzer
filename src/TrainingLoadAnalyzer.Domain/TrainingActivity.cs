@@ -18,6 +18,14 @@ public sealed class TrainingActivity
                 "A session's moving time must be a positive span of time.");
         }
 
+        if (!Enum.IsDefined(activityType))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(activityType),
+                activityType,
+                "A session must be classified as either running or cycling.");
+        }
+
         ExternalId = externalId;
         StartedAt = startedAt;
         MovingTime = movingTime;
