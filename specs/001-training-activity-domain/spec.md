@@ -309,6 +309,16 @@ that each attempt is refused and that the refusal names the violated rule.
   a gap threshold, which would introduce another unexplained constant.
 - A session's heart-rate series may account for less time than its moving time. The measured load
   reflects only the time the samples cover; it is not scaled up to the full moving time.
+- Heart-rate sample times are **not** validated against the session's moving time, and samples
+  extending beyond it are accepted. Moving time excludes stops while a heart-rate monitor keeps
+  recording through them, so a series routinely spans more time than the moving time it belongs to.
+  Refusing such a session would reject ordinary, correct data.
+- No upper bound is placed on moving time. Any threshold would be arbitrary — ultra-endurance
+  events genuinely run for a day or more — and an implausibly long session is a data-quality
+  question for whatever imports it, not a rule the domain can decide.
+- A session has a start time but no end time, so a session running past local midnight is not
+  observable in this feature and needs no rule here. It becomes relevant when sessions are assigned
+  to calendar days for daily aggregation, which is out of scope.
 - Heart-rate samples between 20 and 250 beats per minute are treated as plausible; anything outside
   that range is treated as corrupt data and the session is refused rather than the sample being
   silently dropped, per Constitution Principle VI. This range is a deliberate default and may be
@@ -318,7 +328,8 @@ that each attempt is refused and that the refusal names the violated rule.
 - Running and cycling are the only activity types the MVP supports; supporting more types later is
   expected to extend this feature rather than reshape it.
 - A start time in the future is accepted; guarding against upstream clock skew is not this
-  feature's responsibility.
+  feature's responsibility. This is asserted by a test so that no future change quietly adds a
+  guard the specification does not call for.
 - The terms used in this specification (session, activity type, training load) are the product's
   own vocabulary and are deliberately independent of any provider's terminology.
 
