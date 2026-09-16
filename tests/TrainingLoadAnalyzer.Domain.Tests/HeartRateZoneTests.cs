@@ -28,4 +28,11 @@ public class HeartRateZoneTests
     {
         Assert.Equal(expectedWeight, HeartRateZone.WeightFor(bpm, maximumHeartRate: 200));
     }
+
+    // User Story 2, scenario 6 (FR-009): the top band is unbounded above.
+    [Fact]
+    public void A_heart_rate_above_the_stated_maximum_counts_in_zone_five()
+    {
+        Assert.Equal(5, HeartRateZone.WeightFor(bpm: 200, maximumHeartRate: 190));
+    }
 }
