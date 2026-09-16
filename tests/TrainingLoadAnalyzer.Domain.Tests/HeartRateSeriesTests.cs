@@ -74,4 +74,23 @@ public class HeartRateSeriesTests
         Assert.Equal("samples", refusal.ParamName);
         Assert.Contains("300", refusal.Message);
     }
+
+    // User Story 3, scenario 7 (FR-021). Equal timestamps are not ascending, which resolves the
+    // "duplicated at the same instant" edge case. The message assertion matters: all three
+    // HeartRateSeries rules report ParamName "samples", so without it this test could pass
+    // against the wrong guard.
+    [Theory]
+    [InlineData(10, 5)]     // decreasing
+    [InlineData(10, 10)]    // equal, and therefore not ascending
+    public void Samples_that_are_not_in_ascending_time_order_are_refused(int firstMinute, int secondMinute)
+    {
+        var refusal = Assert.Throws<ArgumentException>(() => new HeartRateSeries(new[]
+        {
+            new HeartRateSample(TimeSpan.FromMinutes(firstMinute), 150),
+            new HeartRateSample(TimeSpan.FromMinutes(secondMinute), 160),
+        }));
+
+        Assert.Equal("samples", refusal.ParamName);
+        Assert.Contains("ascending", refusal.Message);
+    }
 }
