@@ -115,4 +115,17 @@ public class TrainingActivityCreationTests
 
         Assert.Empty(settable);
     }
+
+    // User Story 1, scenario 4 (FR-006): absence is explicit, not a zero or an empty series.
+    [Fact]
+    public void An_activity_recorded_without_heart_rate_data_has_no_series_at_all()
+    {
+        var activity = new TrainingActivity(
+            "A-1",
+            new DateTimeOffset(2026, 3, 1, 7, 30, 0, TimeSpan.FromHours(2)),
+            TimeSpan.FromMinutes(45),
+            ActivityType.Running);
+
+        Assert.Null(activity.HeartRate);
+    }
 }
