@@ -10,6 +10,14 @@ public sealed class TrainingActivity
         ActivityType activityType,
         HeartRateSeries? heartRate = null)
     {
+        if (movingTime <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(movingTime),
+                movingTime,
+                "A session's moving time must be a positive span of time.");
+        }
+
         ExternalId = externalId;
         StartedAt = startedAt;
         MovingTime = movingTime;

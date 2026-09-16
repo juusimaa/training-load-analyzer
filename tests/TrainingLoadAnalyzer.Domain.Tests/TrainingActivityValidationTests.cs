@@ -14,4 +14,14 @@ public class TrainingActivityValidationTests
 
         Assert.Equal("movingTime", refusal.ParamName);
     }
+
+    // User Story 3, scenario 2 (FR-017).
+    [Fact]
+    public void A_negative_moving_time_is_refused()
+    {
+        var refusal = Assert.Throws<ArgumentOutOfRangeException>(
+            () => new TrainingActivity("A-1", AnyStart, TimeSpan.FromMinutes(-1), ActivityType.Running));
+
+        Assert.Equal("movingTime", refusal.ParamName);
+    }
 }
