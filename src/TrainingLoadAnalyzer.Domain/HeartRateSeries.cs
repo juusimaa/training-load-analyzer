@@ -8,6 +8,14 @@ public sealed class HeartRateSeries
 
     public HeartRateSeries(IReadOnlyList<HeartRateSample> samples)
     {
+        if (samples is null || samples.Count == 0)
+        {
+            throw new ArgumentException(
+                "A heart-rate series must contain at least one sample; a session either has "
+                    + "heart-rate data or has none.",
+                nameof(samples));
+        }
+
         for (var i = 1; i < samples.Count; i++)
         {
             if (samples[i].TimeFromStart <= samples[i - 1].TimeFromStart)
