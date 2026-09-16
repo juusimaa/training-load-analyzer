@@ -33,4 +33,31 @@ public class HeartRateSeriesTests
 
         Assert.Equal(80m, series.TrimpPoints(maximumHeartRate: 190));
     }
+
+    // FR-010: the final sample contributes no time, so one sample scores nothing.
+    [Fact]
+    public void A_single_sample_series_yields_zero_points()
+    {
+        var series = new HeartRateSeries(new[]
+        {
+            new HeartRateSample(TimeSpan.FromMinutes(0), 175),
+        });
+
+        Assert.Equal(0m, series.TrimpPoints(maximumHeartRate: 190));
+    }
+
+    // Spec Assumptions: the hold-until-next rule charges a gap to the sample before it.
+    [Fact]
+    public void A_long_gap_is_charged_to_the_sample_preceding_it()
+    {
+        var series = new HeartRateSeries(new[]
+        {
+            new HeartRateSample(TimeSpan.FromMinutes(0), 150),    // zone 3 at maximum 190
+            new HeartRateSample(TimeSpan.FromMinutes(60), 100),   // 60-minute gap held at 150
+            new HeartRateSample(TimeSpan.FromMinutes(70), 100),   // below 50% — weight 0
+        });
+
+        // 60 minutes at weight 3 = 180; the 10 minutes at 100 bpm (52.6%, weight 1) = 10.
+        Assert.Equal(190m, series.TrimpPoints(maximumHeartRate: 190));
+    }
 }
