@@ -26,6 +26,11 @@ public sealed class TrainingActivity
                 "A session must be classified as either running or cycling.");
         }
 
+        if (startedAt == default)
+        {
+            throw new ArgumentException("A session must have a start time.", nameof(startedAt));
+        }
+
         ExternalId = externalId;
         StartedAt = startedAt;
         MovingTime = movingTime;
