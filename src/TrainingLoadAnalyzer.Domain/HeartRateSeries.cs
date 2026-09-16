@@ -8,6 +8,18 @@ public sealed class HeartRateSeries
 
     public HeartRateSeries(IReadOnlyList<HeartRateSample> samples)
     {
+        for (var i = 1; i < samples.Count; i++)
+        {
+            if (samples[i].TimeFromStart <= samples[i - 1].TimeFromStart)
+            {
+                throw new ArgumentException(
+                    $"Heart-rate sample times must be in ascending order; the sample at index {i} "
+                        + $"({samples[i].TimeFromStart}) does not follow the one before it "
+                        + $"({samples[i - 1].TimeFromStart}).",
+                    nameof(samples));
+            }
+        }
+
         foreach (var sample in samples)
         {
             if (sample.Bpm is < MinimumPlausibleBpm or > MaximumPlausibleBpm)
