@@ -176,4 +176,47 @@ public class LoadBasisTests
         Assert.Equal(12, daily.Count);
         Assert.All(daily, d => Assert.Equal(d.ActivityCount == 0, d.Basis == LoadBasis.None));
     }
+
+    // FR-014, FR-016 for the weekly view: a week carries the same two markings on the same rules.
+    [Fact]
+    public void A_week_reports_its_basis_and_its_session_count()
+    {
+        TrainingActivity[] activities =
+        [
+            MeasuredActivity("A-1", new DateOnly(2026, 3, 3)),
+            MeasuredActivity("A-2", new DateOnly(2026, 3, 5)),
+        ];
+        var range = new DateRange(new DateOnly(2026, 3, 2), new DateOnly(2026, 3, 15));
+
+        var weekly = TrainingLoadAggregator.AggregateWeekly(activities, range, MaximumHeartRate);
+
+        Assert.Equal(160m, weekly[0].Points);
+        Assert.Equal(2, weekly[0].ActivityCount);
+        Assert.Equal(LoadBasis.Measured, weekly[0].Basis);
+
+        Assert.Equal(0m, weekly[1].Points);
+        Assert.Equal(0, weekly[1].ActivityCount);
+        Assert.Equal(LoadBasis.None, weekly[1].Basis);
+    }
+
+    // User Story 3, scenario 5 (FR-015): one estimate anywhere in the week qualifies the whole
+    // week. Folding seven day-bases where five are None must not swallow it.
+    [Fact]
+    public void A_week_with_one_estimated_activity_among_measured_ones_is_mixed()
+    {
+        TrainingActivity[] activities =
+        [
+            MeasuredActivity("A-1", new DateOnly(2026, 3, 2)),
+            MeasuredActivity("A-2", new DateOnly(2026, 3, 4)),
+            MeasuredActivity("A-3", new DateOnly(2026, 3, 6)),
+            EstimatedActivity("A-4", new DateOnly(2026, 3, 8), movingMinutes: 15),
+        ];
+        var range = new DateRange(new DateOnly(2026, 3, 2), new DateOnly(2026, 3, 8));
+
+        var week = Assert.Single(
+            TrainingLoadAggregator.AggregateWeekly(activities, range, MaximumHeartRate));
+
+        Assert.Equal(4, week.ActivityCount);
+        Assert.Equal(LoadBasis.Mixed, week.Basis);
+    }
 }
