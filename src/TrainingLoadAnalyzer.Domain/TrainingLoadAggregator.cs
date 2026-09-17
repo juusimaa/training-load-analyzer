@@ -30,6 +30,33 @@ public static class TrainingLoadAggregator
     }
 
     /// <summary>
+    ///   The total load of every activity in <paramref name="range"/>, per ISO-8601 week (FR-002).
+    /// </summary>
+    public static IReadOnlyList<WeeklyTrainingLoad> AggregateWeekly(
+        IReadOnlyCollection<TrainingActivity> activities,
+        DateRange range,
+        int maximumHeartRate)
+    {
+        ArgumentNullException.ThrowIfNull(activities);
+        ArgumentNullException.ThrowIfNull(range);
+
+        var pointsByWeek = new Dictionary<IsoWeek, decimal>();
+
+        foreach (var activity in activities)
+        {
+            var week = IsoWeek.For(DayOf(activity));
+            pointsByWeek[week] =
+                pointsByWeek.GetValueOrDefault(week)
+                + activity.CalculateTrainingLoad(maximumHeartRate).Points;
+        }
+
+        return pointsByWeek
+            .OrderBy(entry => entry.Key.Monday)
+            .Select(entry => new WeeklyTrainingLoad(entry.Key, entry.Value))
+            .ToList();
+    }
+
+    /// <summary>
     ///   The calendar day an activity is attributed to: the athlete's local day at the activity's
     ///   own recorded offset (FR-003, FR-004).
     /// </summary>
