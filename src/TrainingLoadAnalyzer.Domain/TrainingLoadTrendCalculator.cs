@@ -73,14 +73,12 @@ public static class TrainingLoadTrendCalculator
         // against (FR-023).
         for (var i = 1; i < history.Count; i++)
         {
-            var monday = history[i].Week.Monday;
+            var week = history[i].Week;
 
-            if (monday < firstMonday || monday > lastMonday)
+            if (week.Monday < firstMonday || week.Monday > lastMonday)
             {
                 continue;
             }
-
-            var week = history[i].Week;
 
             trends.Add(new WeeklyLoadTrend(
                 week,

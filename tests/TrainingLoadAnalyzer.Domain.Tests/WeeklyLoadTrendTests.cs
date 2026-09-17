@@ -129,8 +129,9 @@ public class WeeklyLoadTrendTests
         Assert.Equal(600m, only.PreviousPoints);
     }
 
-    // T015 - User Story 1, scenario 4 (FR-028, C31): one entry per week, ascending, each
-    // comparing itself to the week immediately before it.
+    // T015 - User Story 1, scenario 4 (FR-001, FR-028, C31): one entry per week, ascending,
+    // each comparing itself to the week immediately before it - never to an average, a rolling
+    // window, or any other week.
     [Fact]
     public void Every_week_in_the_range_reports_once_in_ascending_order()
     {
@@ -145,6 +146,24 @@ public class WeeklyLoadTrendTests
         Assert.Equal([400m, 500m, 600m, 700m], trends.Select(t => t.PreviousPoints));
     }
 
+    // T067 - FR-030: an entry carries enough to be read on its own, without fetching the weekly
+    // totals alongside it. All seven readable things are present on one entry.
+    [Fact]
+    public void An_entry_can_be_read_without_consulting_the_weekly_totals()
+    {
+        var trend = Assert.Single(
+            TrainingLoadTrendCalculator.Calculate(History(500m, 600m), WholeWeek(1)));
+
+        Assert.Equal(Week(1), trend.Week);
+        Assert.Equal(600m, trend.Points);
+        Assert.Equal(500m, trend.PreviousPoints);
+        Assert.Equal(100m, trend.AbsoluteChange);
+        Assert.Equal(0.2m, trend.RelativeChange);
+        Assert.Equal(TrendClassification.SignificantIncrease, trend.Classification);
+        Assert.True(trend.IsComplete);
+        Assert.Equal(LoadBasis.Measured, trend.Basis);
+    }
+
     // T016 - C31: a range narrower than a week still touches a week, and reports it once.
     [Fact]
     public void A_range_lying_inside_one_week_reports_that_week_once()
@@ -155,5 +174,44 @@ public class WeeklyLoadTrendTests
         var trends = TrainingLoadTrendCalculator.Calculate(history, midweek);
 
         Assert.Equal(Week(1), Assert.Single(trends).Week);
+    }
+
+    // T061 - FR-005, FR-031, C43, SC-009: the calculation is pure. Whole-value equality is the
+    // right assertion style in this feature, unlike feature 003, because every member is a
+    // decimal, a bool or an enum and all of them compare exactly (research R2).
+    [Fact]
+    public void The_same_history_and_range_always_produce_the_same_series()
+    {
+        var history = History(400m, 500m, 600m, 700m, 800m);
+        var range = new DateRange(Week(1).Monday, Week(4).Sunday);
+
+        var first = TrainingLoadTrendCalculator.Calculate(history, range);
+        var second = TrainingLoadTrendCalculator.Calculate(history, range);
+
+        Assert.Equal(first, second);
+    }
+
+    // T062 - C31, research R9. 2026 is a 53-week ISO year and 2026-W53 runs into January 2027,
+    // so the week-numbering year is not the calendar year at the boundary. Comparing weeks by
+    // (Year, Week) rather than by their Monday goes wrong exactly here.
+    [Fact]
+    public void Weeks_are_ordered_across_an_iso_year_boundary()
+    {
+        var w51 = IsoWeek.For(new DateOnly(2026, 12, 14));
+        var history = new[]
+        {
+            new WeeklyTrainingLoad(w51, 400m, 4, LoadBasis.Measured),
+            new WeeklyTrainingLoad(IsoWeek.For(w51.Monday.AddDays(7)), 500m, 4, LoadBasis.Measured),
+            new WeeklyTrainingLoad(IsoWeek.For(w51.Monday.AddDays(14)), 600m, 4, LoadBasis.Measured),
+            new WeeklyTrainingLoad(IsoWeek.For(w51.Monday.AddDays(21)), 700m, 4, LoadBasis.Measured),
+        };
+        var acrossNewYear = new DateRange(w51.Monday.AddDays(7), w51.Monday.AddDays(27));
+
+        var trends = TrainingLoadTrendCalculator.Calculate(history, acrossNewYear);
+
+        Assert.Equal(3, trends.Count);
+        Assert.Equal([52, 53, 1], trends.Select(t => t.Week.Week));
+        Assert.Equal([2026, 2026, 2027], trends.Select(t => t.Week.Year));
+        Assert.Equal([400m, 500m, 600m], trends.Select(t => t.PreviousPoints));
     }
 }

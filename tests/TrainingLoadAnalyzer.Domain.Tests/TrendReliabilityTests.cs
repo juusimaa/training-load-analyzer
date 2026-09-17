@@ -75,7 +75,8 @@ public class TrendReliabilityTests
         Assert.Equal(-0.6m, cut.RelativeChange);
     }
 
-    // T050 - FR-019, C39. Neither week is scaled to make the comparison even. Extrapolating
+    // T050 - FR-006, FR-019, C39. Both totals are used exactly as the aggregation produced
+    // them, and neither week is scaled to make the comparison even. Extrapolating
     // three days of training into a notional week would invent load the athlete did not do and
     // turn a light Monday into a fictional ramp-up.
     [Fact]

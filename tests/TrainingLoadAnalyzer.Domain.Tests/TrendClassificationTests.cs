@@ -133,7 +133,8 @@ public class TrendClassificationTests
             .GetProperty(nameof(WeeklyLoadTrend.Classification))!.SetMethod);
     }
 
-    // T042 - FR-012: the thresholds are applied to the unrounded changes, so nothing can be
+    // T042 - FR-012, FR-032: nothing is rounded, so the thresholds are applied to the unrounded
+    // changes, so nothing can be
     // rounded across a threshold on its way in.
     [Fact]
     public void The_thresholds_are_applied_without_rounding_first()

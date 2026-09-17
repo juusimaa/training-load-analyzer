@@ -48,7 +48,10 @@ public class TrendInputTests
         Assert.Contains("2026-03-30", refusal.Message);
     }
 
-    // T021 - FR-024. A gap is refused rather than repaired: filling it with a zero week would
+    // T021 - FR-024, and the enforcement of FR-025. An untrained week belongs in the history as
+    // a zero-point week, never absent from it; an absent week is a gap, and this is the refusal
+    // that makes "no training that week" and "no data for that week" impossible to confuse.
+    // A gap is refused rather than repaired: filling it with a zero week would
     // compare a week against the wrong predecessor and manufacture a significant decrease out
     // of missing data.
     [Fact]
