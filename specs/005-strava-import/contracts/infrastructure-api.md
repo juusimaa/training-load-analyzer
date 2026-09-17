@@ -17,7 +17,11 @@ Signatures are shown without bodies; semantics are in [data-model.md](../data-mo
 numbered requirements in [spec.md](../spec.md). Research decisions R2, R14 and R21 were answered on
 2026-09-17 and are reflected here.
 
-Namespace: `TrainingLoadAnalyzer.Infrastructure`
+Namespaces: `TrainingLoadAnalyzer.Infrastructure.Strava`, `.Persistence`, and `.Sync`, matching the
+three-folder split in [plan.md](../plan.md). `Strava/` knows about a third party and nothing about
+storage; `Persistence/` knows about storage and nothing about Strava; only `Sync/` knows both. That
+is what makes the one-way dependency checkable by `grep` rather than only by intent — and T143 caught
+a violation of it, which is recorded under "Changes made during implementation" below.
 
 ---
 
@@ -194,3 +198,22 @@ first consumer outside this assembly.
   `HeartRateSeries` is constructed, and the count is reported per activity on `SyncResult`. A series is
   unusable only when fewer than two samples survive (FR-017f, FR-017g). No sample the domain would
   refuse is ever passed to it, and no domain invariant is relaxed.
+
+---
+
+## Changes made during implementation
+
+Recorded so a reviewer sees them as decisions rather than discovering them.
+
+- **`StravaAuthorization` takes an `ImportDbContext`** and lives in `Sync/`, not `Strava/`. FR-003
+  requires the connection to be stored durably and nothing else in user story 1 could do it. The
+  compliance check at T143 then found that this put a `Persistence` reference inside `Strava/`,
+  breaking the folder boundary the plan states as a checkable property. The fix was to split it:
+  **`StravaOAuthClient`** (new, in `Strava/`) holds the OAuth endpoints and knows nothing about
+  storage, and `StravaAuthorization` moved to `Sync/` as the orchestrator that knows both.
+- **C52a** was added for the distinct-exception-types guarantee FR-002a implies.
+- **C71** covers the sample filtering FR-017f introduced.
+- **`SyncResult.RetryAfter`** was added for FR-035, and **`RemovedActivity`** / **`DiscardedSamples`**
+  for FR-031d and FR-017g.
+- **`DesignTimeImportDbContextFactory`** exists because `dotnet ef` cannot construct a context with an
+  options-only constructor. It runs only at migration time and names a database that is never created.

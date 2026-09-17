@@ -1,6 +1,7 @@
 using System.Net;
 using TrainingLoadAnalyzer.Infrastructure.Persistence;
 using TrainingLoadAnalyzer.Infrastructure.Strava;
+using TrainingLoadAnalyzer.Infrastructure.Sync;
 using TrainingLoadAnalyzer.Infrastructure.Tests.Fakes;
 
 namespace TrainingLoadAnalyzer.Infrastructure.Tests;

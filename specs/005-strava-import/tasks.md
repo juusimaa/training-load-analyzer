@@ -371,19 +371,19 @@ actually did.
 **Purpose**: the checks that only make sense once everything is green. These are the commands in
 [quickstart.md](./quickstart.md) under "Checking the constitution held", run as tasks.
 
-- [ ] T134 [P] Principle II / FR-018 / C69 — `grep -E 'PackageReference|ProjectReference' src/TrainingLoadAnalyzer.Domain/*.csproj` produces no output, and the domain's tree hash matches the one recorded in T002
-- [ ] T135 [P] Principle II / C69 — `grep -ril -E 'strava|oauth|sport_type|access_token' src/TrainingLoadAnalyzer.Domain/` produces no output
-- [ ] T136 [P] FR-041 — `git diff --stat main -- src/TrainingLoadAnalyzer.Domain tests/TrainingLoadAnalyzer.Domain.Tests` is empty, and the domain suite still reports **204 passing**
-- [ ] T137 [P] Principle III / research R8, R9, R17 — `grep -rn -E 'InMemory|Moq|NSubstitute|FakeItEasy|Polly|WireMock' src/TrainingLoadAnalyzer.Infrastructure tests/TrainingLoadAnalyzer.Infrastructure.Tests` produces no output. The risk is not a package added deliberately but one added in passing, to solve a problem research already solved without it
-- [ ] T138 [P] FR-005 / C51 / C66 — review every log, message and `ToString` reachable from Infrastructure for a credential
-- [ ] T139 [P] FR-042 / SC-011 — confirm the whole suite runs with no network and no database file: `grep -rn 'DataSource=[^:]' tests/TrainingLoadAnalyzer.Infrastructure.Tests/` produces no output, and the suite passes with networking unavailable
-- [ ] T140 [P] FR-043 — confirm no fixture contains real personal data: identifiers are invented, and nothing was pasted from a real account
-- [ ] T141 FR-017f / C71 — `git diff main -- src/TrainingLoadAnalyzer.Domain/HeartRateSeries.cs` is empty. Sample filtering happens in the mapper; the domain's invariants must not have been relaxed to accommodate a provider
-- [ ] T142 [P] C59 — assert by reflection that `StravaActivitySync` exposes exactly two public methods, `SyncAsync` and `FullResyncAsync`: no per-activity import method, no streams-only method, and no reconciliation entry point of its own. Every test in Phases 4–6 passes just as well against a class that has grown a convenience method; only this one pins the surface — file: `tests/TrainingLoadAnalyzer.Infrastructure.Tests/ReconciliationTests.cs`
-- [ ] T143 REFACTOR: review the three folders for the boundary they exist to make visible — `Strava/` referencing nothing from `Persistence/`, `Persistence/` referencing nothing from `Strava/`, and `Sync/` the only place that knows both
-- [ ] T144 Principle VI — review every refusal and failure path for a message that names its rule. Nothing silently swallowed, nothing reduced to a generic failure
-- [ ] T145 Constitution compliance review against all seven principles, recording the result in the feature's completion notes. Principles I, II and III are named in the constitution as most at risk of erosion; **Principle I is this feature's residual risk**, per the Constitution Check in [plan.md](./plan.md), so record honestly whether every production member arrived via a failing test
-- [ ] T146 VERIFY: `dotnet build -warnaserror` clean and `dotnet test` fully green — features 001–005 together
+- [X] T134 [P] Principle II / FR-018 / C69 — `grep -E 'PackageReference|ProjectReference' src/TrainingLoadAnalyzer.Domain/*.csproj` produces no output, and the domain's tree hash matches the one recorded in T002
+- [X] T135 [P] Principle II / C69 — `grep -ril -E 'strava|oauth|sport_type|access_token' src/TrainingLoadAnalyzer.Domain/` produces no output
+- [X] T136 [P] FR-041 — `git diff --stat main -- src/TrainingLoadAnalyzer.Domain tests/TrainingLoadAnalyzer.Domain.Tests` is empty, and the domain suite still reports **204 passing**
+- [X] T137 [P] Principle III / research R8, R9, R17 — `grep -rn -E 'InMemory|Moq|NSubstitute|FakeItEasy|Polly|WireMock' src/TrainingLoadAnalyzer.Infrastructure tests/TrainingLoadAnalyzer.Infrastructure.Tests` produces no output. The risk is not a package added deliberately but one added in passing, to solve a problem research already solved without it
+- [X] T138 [P] FR-005 / C51 / C66 — review every log, message and `ToString` reachable from Infrastructure for a credential
+- [X] T139 [P] FR-042 / SC-011 — confirm the whole suite runs with no network and no database file: `grep -rn 'DataSource=[^:]' tests/TrainingLoadAnalyzer.Infrastructure.Tests/` produces no output, and the suite passes with networking unavailable
+- [X] T140 [P] FR-043 — confirm no fixture contains real personal data: identifiers are invented, and nothing was pasted from a real account
+- [X] T141 FR-017f / C71 — `git diff main -- src/TrainingLoadAnalyzer.Domain/HeartRateSeries.cs` is empty. Sample filtering happens in the mapper; the domain's invariants must not have been relaxed to accommodate a provider
+- [X] T142 [P] C59 — assert by reflection that `StravaActivitySync` exposes exactly two public methods, `SyncAsync` and `FullResyncAsync`: no per-activity import method, no streams-only method, and no reconciliation entry point of its own. Every test in Phases 4–6 passes just as well against a class that has grown a convenience method; only this one pins the surface — file: `tests/TrainingLoadAnalyzer.Infrastructure.Tests/ReconciliationTests.cs`
+- [X] T143 REFACTOR: review the three folders for the boundary they exist to make visible — `Strava/` referencing nothing from `Persistence/`, `Persistence/` referencing nothing from `Strava/`, and `Sync/` the only place that knows both
+- [X] T144 Principle VI — review every refusal and failure path for a message that names its rule. Nothing silently swallowed, nothing reduced to a generic failure
+- [X] T145 Constitution compliance review against all seven principles, recording the result in the feature's completion notes. Principles I, II and III are named in the constitution as most at risk of erosion; **Principle I is this feature's residual risk**, per the Constitution Check in [plan.md](./plan.md), so record honestly whether every production member arrived via a failing test
+- [X] T146 VERIFY: `dotnet build -warnaserror` clean and `dotnet test` fully green — features 001–005 together
 
 ---
 

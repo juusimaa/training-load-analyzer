@@ -9,7 +9,7 @@ namespace TrainingLoadAnalyzer.Infrastructure.Strava;
 ///   Unrecognised members are ignored, so a field Strava adds later cannot fail an exchange
 ///   (FR-020). This type never leaves the integration.
 /// </remarks>
-internal sealed record StravaTokens
+public sealed record StravaTokens
 {
     [JsonPropertyName("access_token")]
     public string AccessToken { get; init; } = string.Empty;
@@ -32,7 +32,7 @@ internal sealed record StravaTokens
     [JsonPropertyName("athlete")]
     public StravaAthlete? Athlete { get; init; }
 
-    internal sealed record StravaAthlete
+    public sealed record StravaAthlete
     {
         [JsonPropertyName("id")]
         public long Id { get; init; }

@@ -175,4 +175,31 @@ public sealed class ReconciliationTests
 
         Assert.Equal(1L, harness.Scalar("SELECT COUNT(*) FROM Activities WHERE HeartRateJson IS NOT NULL"));
     }
+
+    // T142: C59 — the surface itself. Every test in phases 4-6 passes just as well against a class
+    // that has grown a convenience method; only this one pins that it has not. No per-activity
+    // import, no streams-only method, and no reconciliation entry point of its own.
+    [Fact]
+    public void TheSyncExposesExactlyTwoEntryPoints()
+    {
+        var methods = typeof(StravaActivitySync)
+            .GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance
+                | System.Reflection.BindingFlags.DeclaredOnly)
+            .Select(m => m.Name)
+            .ToArray();
+
+        Assert.Equal(2, methods.Length);
+        Assert.Contains("SyncAsync", methods);
+        Assert.Contains("FullResyncAsync", methods);
+    }
+
+    // T142 continued: reconciliation is reachable only from inside a walk, never on its own.
+    [Fact]
+    public void ReconciliationIsNotPubliclyReachable()
+    {
+        Assert.DoesNotContain(
+            typeof(StravaActivitySync).GetMethods(
+                System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance),
+            m => m.Name.Contains("Reconcile", StringComparison.Ordinal));
+    }
 }
