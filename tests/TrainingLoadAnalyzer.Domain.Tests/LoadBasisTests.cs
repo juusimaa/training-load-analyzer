@@ -147,13 +147,8 @@ public class LoadBasisTests
         var trainedDay = Assert.Single(TrainingLoadAggregator.AggregateDaily(
             [ZeroScoringMeasuredActivity("A-1", day)], OneDay(day), MaximumHeartRate));
 
-        Assert.Equal(0m, restDay.Points);
-        Assert.Equal(0, restDay.ActivityCount);
-        Assert.Equal(LoadBasis.None, restDay.Basis);
-
-        Assert.Equal(0m, trainedDay.Points);
-        Assert.Equal(1, trainedDay.ActivityCount);
-        Assert.Equal(LoadBasis.Measured, trainedDay.Basis);
+        Assert.Equal(new DailyTrainingLoad(day, 0m, 0, LoadBasis.None), restDay);
+        Assert.Equal(new DailyTrainingLoad(day, 0m, 1, LoadBasis.Measured), trainedDay);
     }
 
     // Contract C12, both directions: no counted day may report None, and no empty day may report
@@ -190,13 +185,12 @@ public class LoadBasisTests
 
         var weekly = TrainingLoadAggregator.AggregateWeekly(activities, range, MaximumHeartRate);
 
-        Assert.Equal(160m, weekly[0].Points);
-        Assert.Equal(2, weekly[0].ActivityCount);
-        Assert.Equal(LoadBasis.Measured, weekly[0].Basis);
-
-        Assert.Equal(0m, weekly[1].Points);
-        Assert.Equal(0, weekly[1].ActivityCount);
-        Assert.Equal(LoadBasis.None, weekly[1].Basis);
+        Assert.Equal(
+            new WeeklyTrainingLoad(IsoWeek.For(new DateOnly(2026, 3, 2)), 160m, 2, LoadBasis.Measured),
+            weekly[0]);
+        Assert.Equal(
+            new WeeklyTrainingLoad(IsoWeek.For(new DateOnly(2026, 3, 9)), 0m, 0, LoadBasis.None),
+            weekly[1]);
     }
 
     // User Story 3, scenario 5 (FR-015): one estimate anywhere in the week qualifies the whole
