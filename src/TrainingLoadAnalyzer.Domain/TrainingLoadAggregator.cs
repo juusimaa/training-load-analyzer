@@ -5,6 +5,8 @@ namespace TrainingLoadAnalyzer.Domain;
 /// </summary>
 public static class TrainingLoadAggregator
 {
+    private const int DaysPerWeek = 7;
+
     /// <summary>
     ///   The total load of every activity in <paramref name="range"/>, per calendar day (FR-001).
     /// </summary>
@@ -40,27 +42,29 @@ public static class TrainingLoadAggregator
         ArgumentNullException.ThrowIfNull(activities);
         ArgumentNullException.ThrowIfNull(range);
 
-        var pointsByWeek = new Dictionary<IsoWeek, decimal>();
+        // FR-013: a weekly total covers its whole ISO week, so the series is built over a
+        // range extended out to the Monday opening the first week and the Sunday closing the
+        // last - which is why it can include load from days outside the requested range.
+        var extended = new DateRange(
+            IsoWeek.For(range.Start).Monday,
+            IsoWeek.For(range.End).Sunday);
 
-        foreach (var activity in activities)
-        {
-            var week = IsoWeek.For(DayOf(activity));
-            pointsByWeek[week] =
-                pointsByWeek.GetValueOrDefault(week)
-                + activity.CalculateTrainingLoad(maximumHeartRate).Points;
-        }
-
+        // Chunking a contiguous daily series into sevens is what makes FR-017 and SC-012
+        // structural rather than properties to be maintained: a week IS the sum of its seven
+        // days, and every week covers seven days, by construction (research R8).
+        var days = AggregateDaily(activities, extended, maximumHeartRate);
         var series = new List<WeeklyTrainingLoad>();
-        var lastMonday = IsoWeek.For(range.End).Monday;
 
-        // Walking Mondays rather than incrementing a week number: adding seven days cannot get
-        // the 52-versus-53-week rule wrong, and 2026 is a 53-week ISO year (research R6).
-        for (var monday = IsoWeek.For(range.Start).Monday;
-             monday <= lastMonday;
-             monday = monday.AddDays(7))
+        for (var first = 0; first < days.Count; first += DaysPerWeek)
         {
-            var week = IsoWeek.For(monday);
-            series.Add(new WeeklyTrainingLoad(week, pointsByWeek.GetValueOrDefault(week)));
+            var points = 0m;
+
+            for (var offset = 0; offset < DaysPerWeek; offset++)
+            {
+                points += days[first + offset].Points;
+            }
+
+            series.Add(new WeeklyTrainingLoad(IsoWeek.For(days[first].Day), points));
         }
 
         return series;

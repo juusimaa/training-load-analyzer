@@ -101,4 +101,30 @@ public class WeeklyAggregationTests
         Assert.Equal(0m, weekly[2].Points);
         Assert.Equal(50m, weekly[3].Points);
     }
+
+    // User Story 2, scenario 5 (FR-013, C9, C10) - the decisive behaviour of this feature.
+    // The weekly series covers whole ISO weeks and therefore reaches OUTSIDE the requested
+    // range; the daily series never does. Both halves are asserted together because the
+    // asymmetry is the point.
+    [Fact]
+    public void A_weekly_total_covers_its_whole_week_including_days_outside_the_range()
+    {
+        var mondayActivity = EstimatedActivity("A-1", new DateOnly(2026, 3, 2), movingMinutes: 30);
+        var range = new DateRange(new DateOnly(2026, 3, 4), new DateOnly(2026, 3, 5));
+
+        var weekly = TrainingLoadAggregator.AggregateWeekly(
+            [mondayActivity], range, MaximumHeartRate);
+        var daily = TrainingLoadAggregator.AggregateDaily(
+            [mondayActivity], range, MaximumHeartRate);
+
+        var week = Assert.Single(weekly);
+        Assert.Equal(new DateOnly(2026, 3, 2), week.Week.Monday);
+        Assert.Equal(new DateOnly(2026, 3, 8), week.Week.Sunday);
+        Assert.Equal(60m, week.Points);
+
+        Assert.Equal(
+            [new DateOnly(2026, 3, 4), new DateOnly(2026, 3, 5)],
+            daily.Select(d => d.Day));
+        Assert.All(daily, d => Assert.Equal(0m, d.Points));
+    }
 }
