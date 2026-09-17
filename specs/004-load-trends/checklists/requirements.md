@@ -53,3 +53,23 @@ Reviewed against the spec on 2026-09-17. Points examined and resolved during the
   measured against, what a refusal must say — has an explicit requirement. FR-029 additionally
   forecloses the most likely piece of speculative generalization, a second "detect significant weeks"
   entry point, in line with Principle III.
+
+### Re-validation after planning — 2026-09-17
+
+Re-run after `/speckit-plan` amended the spec with **FR-022b** (a history that stops before the
+range's last week is refused, naming the shortfall), User Story 1 scenario 6, a new edge case, and a
+widened SC-008. All 16 items still pass.
+
+- **No [NEEDS CLARIFICATION] markers remain.** The gap FR-022b closes was found during design, not
+  specification, and was resolved by the developer before planning finished — it was never carried
+  as a marker.
+- **Requirements are testable and unambiguous** — re-checked by calculation, not by reading. All 35
+  requirements are traced in [data-model.md](../data-model.md); the classification rule was evaluated
+  against all 11 acceptance scenarios plus 4 threshold-boundary cases, and all 16 agree with the
+  specification (see [quickstart.md](../quickstart.md)).
+- **One imprecision found and handled.** FR-011's illustration — "a change of exactly 0.15 with
+  exactly 50 points" — describes a pair that is not exactly representable, since it requires a
+  preceding week of 50 ÷ 0.15 = 333.333…. The requirement itself is sound: each threshold test treats
+  equality as clearing. No amendment was needed; quickstart pins the two thresholds separately
+  instead (400 → 460 and 200 → 250).
+- **Scope still bounded.** Planning added no requirement beyond FR-022b and removed none.

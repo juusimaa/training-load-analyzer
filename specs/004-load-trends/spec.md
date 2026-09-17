@@ -41,6 +41,9 @@ hand-computed arithmetic with no thresholds, no classification, and no reliabili
    week immediately before it.
 5. **Given** a requested range whose first week has no preceding week in the supplied history, **When**
    trends are calculated, **Then** the request is refused and the refusal identifies the missing week.
+6. **Given** a requested range spanning four weeks and a history that stops after the second, **When**
+   trends are calculated, **Then** the request is refused and the refusal identifies the shortfall
+   rather than returning two entries.
 
 ---
 
@@ -120,6 +123,9 @@ classification, and the basis on each resulting entry.
   silently compare a week to the wrong predecessor (FR-024).
 - **The first week of the requested range.** It has a predecessor like any other week, and that
   predecessor must be supplied even though it lies outside the range (FR-022).
+- **A history that stops before the range's last week.** Refused, naming the shortfall. Zero-filling
+  the missing weeks would manufacture rest weeks the athlete never took, each of which would then be
+  reported as a significant decrease (FR-022b).
 - **A single-week range.** Produces exactly one entry, comparing that week to the supplied week
   before it.
 - **A range starting mid-week.** Its first week is partial on the same terms as a truncated final
@@ -228,6 +234,12 @@ classification, and the basis on each resulting entry.
   week immediately preceding the first week of the requested range, and the refusal MUST identify the
   missing week. The alternative — producing a first entry with no comparison in it — would put an
   entry in the series that means something different from every other entry.
+- **FR-022b**: The system MUST refuse a request whose supplied weekly history ends before the last
+  ISO week touching the requested range, and the refusal MUST identify the shortfall. Treating the
+  missing trailing weeks as rest would invent training history the athlete never supplied — a
+  fabricated zero week is indistinguishable from a real one and would be classified as a significant
+  decrease — and returning fewer entries than the range asked for would break FR-028. This mirrors
+  FR-022 at the other end of the history.
 - **FR-023**: The system MUST accept a history extending beyond the requested range at either end,
   using the week before the range to compare against while producing entries only for weeks touching
   the range.
@@ -310,9 +322,9 @@ classification, and the basis on each resulting entry.
   athlete is told their training collapsed in a week that has not finished.
 - **SC-007**: Every trend entry states its basis, so a comparison resting on estimated load can be
   told apart from one resting on measured load without inspecting the weeks behind it.
-- **SC-008**: A request whose history is missing the preceding week, contains a gap, repeats a week,
-  or runs out of order is refused with a message naming the rule broken, and no partial series is
-  returned alongside it.
+- **SC-008**: A request whose history is missing the preceding week, stops before the range's last
+  week, contains a gap, repeats a week, or runs out of order is refused with a message naming the
+  rule broken, and no partial series is returned alongside it.
 - **SC-009**: The same history over the same range produces byte-identical results on every run and
   on any date, so a trend can be cited in a review and re-derived later.
 - **SC-010**: The trend model can be exercised in full without a Strava account, a network
