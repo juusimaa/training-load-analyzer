@@ -60,13 +60,27 @@ public static class TrainingLoadAggregator
         for (var first = 0; first < days.Count; first += DaysPerWeek)
         {
             var points = 0m;
+            var activityCount = 0;
+            var anyMeasured = false;
+            var anyEstimated = false;
 
+            // Folded from the week's own seven days, so the daily and weekly views cannot
+            // disagree about what went into them (FR-017).
             for (var offset = 0; offset < DaysPerWeek; offset++)
             {
-                points += days[first + offset].Points;
+                var day = days[first + offset];
+
+                points += day.Points;
+                activityCount += day.ActivityCount;
+                anyMeasured |= day.Basis is LoadBasis.Measured or LoadBasis.Mixed;
+                anyEstimated |= day.Basis is LoadBasis.Estimated or LoadBasis.Mixed;
             }
 
-            series.Add(new WeeklyTrainingLoad(IsoWeek.For(days[first].Day), points));
+            series.Add(new WeeklyTrainingLoad(
+                IsoWeek.For(days[first].Day),
+                points,
+                activityCount,
+                BasisOf(anyMeasured, anyEstimated)));
         }
 
         return series;
@@ -108,16 +122,19 @@ public static class TrainingLoadAggregator
         bool AnyMeasured,
         bool AnyEstimated)
     {
-        /// <summary>
-        ///   FR-015: one estimate among many measurements makes the whole total mixed. The
-        ///   proportion is deliberately not recorded.
-        /// </summary>
-        public LoadBasis Basis => (AnyMeasured, AnyEstimated) switch
+        public LoadBasis Basis => BasisOf(AnyMeasured, AnyEstimated);
+    }
+
+    /// <summary>
+    ///   FR-014 and FR-015: one estimate among many measurements makes the whole total mixed.
+    ///   The proportion is deliberately not recorded.
+    /// </summary>
+    private static LoadBasis BasisOf(bool anyMeasured, bool anyEstimated) =>
+        (anyMeasured, anyEstimated) switch
         {
             (true, true) => LoadBasis.Mixed,
             (true, false) => LoadBasis.Measured,
             (false, true) => LoadBasis.Estimated,
             (false, false) => LoadBasis.None,
         };
-    }
 }
