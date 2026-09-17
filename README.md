@@ -38,6 +38,17 @@ Out of scope for now: social features, multi-user SaaS, payments, non-Strava int
 AI-generated training plans, medical/health recommendations, a mobile app, and complex cloud
 infrastructure.
 
+## Architectural notes
+
+**UI render mode**: The dashboard (Feature 6) uses Blazor **Interactive Server** to keep the MVP
+scope minimal and maintain focus on TDD discipline. This means Blazor components run on the server
+and communicate via SignalR, with no separate HTTP API needed.
+
+**Future refactoring path**: If scalability or separation of concerns requires it, the UI can be
+refactored to **Interactive WebAssembly** (with an HTTP API and shared contracts project) using the
+same Spec Kit TDD process. This is a deferred decision: validate the dashboard works first, then
+introduce architectural complexity only if needed (YAGNI principle).
+
 ## Project structure
 
 ```
