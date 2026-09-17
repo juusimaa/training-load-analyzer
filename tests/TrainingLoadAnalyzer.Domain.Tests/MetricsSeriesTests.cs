@@ -83,6 +83,9 @@ public class MetricsSeriesTests
             new DateRange(firstDay, firstDay.AddDays(29)));
 
         Assert.Equal(30, flat.Count);
+
+        // Exact, not to a tolerance: 0 + (0 - 0) x alpha is exactly 0, so an athlete who never
+        // trained has figures of exactly zero rather than nearly zero.
         Assert.All(flat, day => Assert.Equal(0.0, day.Fitness));
         Assert.All(flat, day => Assert.Equal(0.0, day.Fatigue));
 
@@ -103,8 +106,8 @@ public class MetricsSeriesTests
         }
     }
 
-    // User Story 2, scenario 4 (SC-002, C21): every consecutive pair follows FR-005's recurrence,
-    // so any day in the series can be reproduced from the day before it.
+    // User Story 2, scenario 4 (FR-010, SC-002, C21): every day is computed from the one before
+    // it under FR-005's recurrence, so any day can be reproduced from its predecessor.
     [Fact]
     public void Every_day_follows_from_the_day_before_it_under_the_stated_recurrence()
     {

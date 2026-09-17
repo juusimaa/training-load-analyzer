@@ -169,6 +169,9 @@ public class MetricsInputTests
             new DateRange(firstDay, firstDay.AddDays(59)));
 
         Assert.Equal(60, series.Count);
+
+        // Exact for the same reason as in MetricsSeriesTests: a history of pure rest never moves
+        // either accumulator off zero.
         Assert.All(series, day => Assert.Equal(0.0, day.Fitness));
         Assert.All(series, day => Assert.Equal(0.0, day.Fatigue));
     }

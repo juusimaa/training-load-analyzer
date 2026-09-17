@@ -69,6 +69,8 @@ public class MetricsBasisTests
             MeasuredRun(HistoryStart, 200),
             new DateRange(HistoryStart, HistoryStart.AddDays(99)));
 
+        // Exact, not to a tolerance: the same day computed from two histories runs the same
+        // operations in the same order, and FR-027 requires that to be identical, not merely close.
         Assert.Equal(series[10].Fitness, longer[10].Fitness);
         Assert.Equal(series[10].Fatigue, longer[10].Fatigue);
     }
@@ -201,6 +203,8 @@ public class MetricsBasisTests
         Assert.Equal(LoadBasis.None, rested[0].FitnessBasis);
         Assert.Equal(LoadBasis.Measured, recorded[0].FitnessBasis);
 
+        // Exact: both days carry 0 points, so the figures are identical rather than merely
+        // indistinguishable. That is the whole point - only the basis can tell them apart.
         Assert.Equal(rested[0].Fitness, recorded[0].Fitness);
         Assert.Equal(rested[0].Fatigue, recorded[0].Fatigue);
     }

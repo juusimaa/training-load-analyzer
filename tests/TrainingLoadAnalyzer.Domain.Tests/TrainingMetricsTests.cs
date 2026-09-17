@@ -37,7 +37,8 @@ public class TrainingMetricsTests
     ];
 
     // User Story 1: one day of load 100 applied to a seed of zero (FR-012) advances Fitness by
-    // 100 x alpha, where alpha is 1 - e^(-1/42) (FR-005).
+    // 100 x alpha, where alpha is 1 - e^(-1/42) (FR-001, FR-004, FR-005). The day's own load
+    // enters its own figure (FR-006), and the factor is applied at full precision (FR-029a).
     [Fact]
     public void The_first_day_of_a_history_advances_fitness_from_a_seed_of_zero()
     {
@@ -49,7 +50,7 @@ public class TrainingMetricsTests
     }
 
     // User Story 1: the same day advances Fatigue by 100 x alpha, where alpha is 1 - e^(-1/7) -
-    // a shorter time constant, so a single day moves it much further (FR-002, FR-005).
+    // a shorter time constant, so a single day moves it much further (FR-002, FR-004, FR-005).
     [Fact]
     public void The_first_day_of_a_history_advances_fatigue_from_a_seed_of_zero()
     {
@@ -198,8 +199,8 @@ public class TrainingMetricsTests
         Assert.Null(form.SetMethod);
     }
 
-    // User Story 1, scenario 5 (FR-027, C26, SC-010): the same inputs yield the same figures every
-    // time, on any date.
+    // User Story 1, scenario 5 (FR-007, FR-027, C26, SC-010): the same inputs yield the same
+    // figures every time, on any date, with no clock and no storage read.
     [Fact]
     public void Calculating_twice_over_the_same_inputs_produces_identical_figures()
     {
@@ -217,5 +218,46 @@ public class TrainingMetricsTests
             Assert.Equal(first[i].Fitness, second[i].Fitness);
             Assert.Equal(first[i].Fatigue, second[i].Fatigue);
         }
+    }
+
+    // FR-028, SC-012, C27: nothing is rounded between days, so there is no accumulated drift
+    // over a long history. The recurrence is a contraction -
+    // any error in the previous day is multiplied by (1 - alpha) on the next step, so error decays
+    // rather than accumulating. This test exists to catch a future change that introduces
+    // rounding, not to measure floating point: the observed divergence is around 1E-13 against a
+    // tolerance of 1E-4.
+    [Fact]
+    public void Ten_years_of_daily_figures_do_not_drift_from_a_higher_precision_reference()
+    {
+        // The smoothing factors to 28 significant digits, computed independently of .NET.
+        const decimal ReferenceAlphaFitness = 0.02352831334775676990514200828m;
+        const decimal ReferenceAlphaFatigue = 0.13312210024981837249706752342m;
+
+        var history = VariedHistory(FirstDay, 3653);
+
+        var series = TrainingMetricsCalculator.Calculate(history, RangeOf(history));
+
+        decimal referenceFitness = 0;
+        decimal referenceFatigue = 0;
+        var worstDivergence = 0.0;
+
+        for (var i = 0; i < history.Count; i++)
+        {
+            var load = history[i].Points;
+
+            referenceFitness += (load - referenceFitness) * ReferenceAlphaFitness;
+            referenceFatigue += (load - referenceFatigue) * ReferenceAlphaFatigue;
+
+            worstDivergence = Math.Max(
+                worstDivergence,
+                Math.Max(
+                    Math.Abs(series[i].Fitness - (double)referenceFitness),
+                    Math.Abs(series[i].Fatigue - (double)referenceFatigue)));
+        }
+
+        Assert.Equal(3653, series.Count);
+        Assert.True(
+            worstDivergence < 0.0001,
+            $"worst divergence over 10 years was {worstDivergence:E3}, outside FR-029's tolerance");
     }
 }
