@@ -155,4 +155,25 @@ public class LoadBasisTests
         Assert.Equal(1, trainedDay.ActivityCount);
         Assert.Equal(LoadBasis.Measured, trainedDay.Basis);
     }
+
+    // Contract C12, both directions: no counted day may report None, and no empty day may report
+    // anything else. Asserting only one direction would let a counted day marked None through.
+    [Fact]
+    public void A_total_has_no_basis_exactly_when_no_activity_contributed()
+    {
+        TrainingActivity[] activities =
+        [
+            MeasuredActivity("A-1", new DateOnly(2026, 3, 2)),
+            EstimatedActivity("A-2", new DateOnly(2026, 3, 5), movingMinutes: 15),
+            MeasuredActivity("A-3", new DateOnly(2026, 3, 9)),
+            EstimatedActivity("A-4", new DateOnly(2026, 3, 9), movingMinutes: 20),
+            ZeroScoringMeasuredActivity("A-5", new DateOnly(2026, 3, 11)),
+        ];
+        var range = new DateRange(new DateOnly(2026, 3, 1), new DateOnly(2026, 3, 12));
+
+        var daily = TrainingLoadAggregator.AggregateDaily(activities, range, MaximumHeartRate);
+
+        Assert.Equal(12, daily.Count);
+        Assert.All(daily, d => Assert.Equal(d.ActivityCount == 0, d.Basis == LoadBasis.None));
+    }
 }
