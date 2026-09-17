@@ -50,10 +50,20 @@ public static class TrainingLoadAggregator
                 + activity.CalculateTrainingLoad(maximumHeartRate).Points;
         }
 
-        return pointsByWeek
-            .OrderBy(entry => entry.Key.Monday)
-            .Select(entry => new WeeklyTrainingLoad(entry.Key, entry.Value))
-            .ToList();
+        var series = new List<WeeklyTrainingLoad>();
+        var lastMonday = IsoWeek.For(range.End).Monday;
+
+        // Walking Mondays rather than incrementing a week number: adding seven days cannot get
+        // the 52-versus-53-week rule wrong, and 2026 is a 53-week ISO year (research R6).
+        for (var monday = IsoWeek.For(range.Start).Monday;
+             monday <= lastMonday;
+             monday = monday.AddDays(7))
+        {
+            var week = IsoWeek.For(monday);
+            series.Add(new WeeklyTrainingLoad(week, pointsByWeek.GetValueOrDefault(week)));
+        }
+
+        return series;
     }
 
     /// <summary>
