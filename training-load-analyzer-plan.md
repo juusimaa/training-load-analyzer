@@ -140,6 +140,8 @@ tests/
 
 This should not be treated as a mandatory Clean Architecture template. Layers should exist only when they provide useful isolation and testability. Unnecessary abstractions should be avoided.
 
+The five projects above are a sketch, not a commitment. Which of them are actually created, and when, is tracked in section 22.
+
 ## 8. Preliminary Domain Model
 
 Core concepts may include:
@@ -551,3 +553,38 @@ Before the first implementation task:
 6. create a TDD-oriented task breakdown
 
 The recommended first implementation feature is **Training Load Aggregation**, because it is pure domain logic and requires neither Strava, a database, nor a UI. This allows the Spec Kit + TDD workflow to be validated as early as possible.
+
+## 22. Open Decisions
+
+Decisions that are not yet made, are needed by a specific feature, and should be made deliberately rather than inherited from a project template. Each records what depends on it and, where there is one, the default to fall back on.
+
+### 22.1 Blazor render mode
+
+**Status:** open. **Needed before:** Feature 6 (Dashboard), days 11–12.
+
+The Blazor Web App template offers Interactive Server, Interactive WebAssembly, and Interactive Auto. The choice is not a UI detail — it decides how many projects the solution needs.
+
+- **Interactive Server:** components run on the server over a SignalR circuit and inject services directly from DI. The dashboard needs no HTTP API and no shared DTO project. A separate `TrainingLoadAnalyzer.Api` project may not be needed for the MVP at all.
+- **Interactive WebAssembly or Auto:** components run in the browser, so the dashboard needs an HTTP API and a shared contracts project referenced by both ends, so the wire shape is agreed in one place. This is a contracts project, not an application layer; the two should not be conflated.
+
+**Default if nothing forces otherwise:** Interactive Server. It has the fewest moving parts, keeps the MVP in one process, and learning a frontend technology is not a project objective.
+
+### 22.2 Whether `TrainingLoadAnalyzer.Application` is created
+
+**Status:** decided for now — not created. **Revisit at:** Feature 5 (Strava import).
+
+For the MVP the application layer amounts to roughly two use cases: synchronize activities from Strava, and produce the dashboard view. Use cases live in a `Features/` folder inside whichever project hosts them until one of the following makes a separate assembly earn its place:
+
+1. the same use case must run from two hosts, for example an HTTP endpoint and a background sync service;
+2. both Blazor components and API endpoints must call the same orchestration;
+3. the compiler is wanted to prevent orchestration code from reaching for `HttpContext` or other host types.
+
+Testability is deliberately not on that list: a test project can reference the hosting assembly and exercise those classes directly. `WebApplicationFactory` is only needed for HTTP-level tests, which test the endpoint rather than the use case.
+
+Promoting the classes to their own assembly later is a mechanical change to a `.csproj` and some namespaces, and the domain does not move at all. The reasoning is recorded in [specs/002-training-load-aggregation/research.md](specs/002-training-load-aggregation/research.md) R1.
+
+### 22.3 Whether `TrainingLoadAnalyzer.Infrastructure` is created
+
+**Status:** effectively decided — yes, when Feature 5 starts.
+
+This one is not a YAGNI judgement call. Constitution Principle V requires the Strava integration — OAuth, token handling, API access, pagination, rate limits — to be isolated in an infrastructure layer and tested at its own boundary, separately from domain and application logic. Entity Framework Core belongs on the same side of that line. The project is created when Feature 5 needs it, not before.
