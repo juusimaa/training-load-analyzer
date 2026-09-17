@@ -61,8 +61,11 @@ second week.
 
 ## Expected values
 
-Computed in decimal arithmetic and verified against the specification on 2026-09-17; the same table
-is in [quickstart.md](./quickstart.md). All 16 agree.
+Computed in decimal arithmetic and verified against the specification on 2026-09-17. All 16 agree.
+[quickstart.md](./quickstart.md) carries the same cases arranged for validation rather than for
+building: the four threshold boundaries sit in a table of their own there, row 16's exactness case
+has its own section, and it additionally lists the partial-week case US3.3, which belongs to
+completeness rather than to the threshold rule. Changing a row here means changing it there too.
 
 | # | previous | current | absolute | relative | classification | pins |
 |---|---------:|--------:|---------:|---------:|----------------|------|

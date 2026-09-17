@@ -51,9 +51,9 @@ The order is the behaviour, not a detail. Step 1 before anything else is what ma
 unreachable-by-construction; step 2 before step 4 is what makes FR-013 and FR-014 fall out instead of
 needing a branch of their own.
 
-**Verified against all sixteen cases** — every acceptance scenario in the specification plus the four
-threshold boundaries — on 2026-09-17, using decimal arithmetic. The table under "Validating the
-feature" is that run's output, not an expectation typed from memory.
+**Verified against all sixteen cases** — every acceptance scenario in the specification, the relative
+discriminator that none of them covers, and the four threshold boundaries — on 2026-09-17, using
+decimal arithmetic. The tables below are that run's output, not expectations typed from memory.
 
 ## Two numbers that need care
 
@@ -85,6 +85,7 @@ when all of them pass and nothing else was built. Expected classifications, conf
 | US1.3 | 500 | 500 | `0` | `0` | `Steady` |
 | US2.2 | 500 | 520 | `+20` | `+0.04` | `Steady` |
 | US2.3 | 20 | 26 | `+6` | `+0.3` | `Steady` — under the floor |
+| FR-010 | 1000 | 1060 | `+60` | `+0.06` | `Steady` — under the relative threshold |
 | US2.4 | 600 | 400 | `-200` | `-0.333…` | `SignificantDecrease` |
 | US2.5 | 500 | 0 | `-500` | `-1` | `SignificantDecrease` |
 | US3.1 | 0 | 400 | `+400` | *(null)* | `SignificantIncrease` |
@@ -92,8 +93,15 @@ when all of them pass and nothing else was built. Expected classifications, conf
 | US3.3 | 500 | 200 | `-300` | `-0.6` | `Indeterminate` — partial week |
 | FR-014 | 0 | 30 | `+30` | *(null)* | `Steady` — gentle return |
 
-Note US2.3 and US3.1 in particular: they are the two cases a naive implementation gets wrong, and
-between them they justify having two thresholds instead of one.
+Note US2.3 and FR-010 in particular — they are the pair that justifies having two thresholds instead
+of one, and neither alone does it. An implementation applying only the relative threshold passes
+FR-010 and fails US2.3; one applying only the absolute floor does the reverse. FR-010's case is
+deliberately not an acceptance scenario in the specification: no scenario there covers that
+direction, which is why it is listed here under the requirement itself.
+
+US3.1 is the third case a naive implementation gets wrong, for an unrelated reason: it is the
+ordering test. A rule that consults the relative threshold before the floor reports it as `Steady`
+and so never flags a return to training.
 
 ### Building a history for a test
 
