@@ -31,6 +31,22 @@ public class LoadBasisTests
     private static TrainingActivity EstimatedActivity(string externalId, DateOnly day, int movingMinutes) =>
         new(externalId, At(day), TimeSpan.FromMinutes(movingMinutes), ActivityType.Running);
 
+    /// <summary>
+    ///   A real session, measured, that scores exactly zero: 80 bpm is 42% of 190, below every
+    ///   zone. It is what a rest day must stay distinguishable from.
+    /// </summary>
+    private static TrainingActivity ZeroScoringMeasuredActivity(string externalId, DateOnly day) =>
+        new(
+            externalId,
+            At(day),
+            TimeSpan.FromMinutes(30),
+            ActivityType.Running,
+            new HeartRateSeries(
+            [
+                new HeartRateSample(TimeSpan.Zero, 80),
+                new HeartRateSample(TimeSpan.FromMinutes(30), 80),
+            ]));
+
     private static DateRange OneDay(DateOnly day) => new(day, day);
 
     // User Story 3, scenario 1 (FR-014): a day built only from heart-rate-measured sessions
@@ -117,5 +133,26 @@ public class LoadBasisTests
         var daily = TrainingLoadAggregator.AggregateDaily(activities, OneDay(day), MaximumHeartRate);
 
         Assert.Equal(LoadBasis.Mixed, Assert.Single(daily).Basis);
+    }
+
+    // User Story 3, scenario 6 (FR-016, C12): a rest day and a day of real but effortless
+    // training both total zero points. Only the count and the basis tell them apart.
+    [Fact]
+    public void A_rest_day_and_a_day_of_zero_scoring_training_are_distinguishable()
+    {
+        var day = new DateOnly(2026, 3, 2);
+
+        var restDay = Assert.Single(
+            TrainingLoadAggregator.AggregateDaily([], OneDay(day), MaximumHeartRate));
+        var trainedDay = Assert.Single(TrainingLoadAggregator.AggregateDaily(
+            [ZeroScoringMeasuredActivity("A-1", day)], OneDay(day), MaximumHeartRate));
+
+        Assert.Equal(0m, restDay.Points);
+        Assert.Equal(0, restDay.ActivityCount);
+        Assert.Equal(LoadBasis.None, restDay.Basis);
+
+        Assert.Equal(0m, trainedDay.Points);
+        Assert.Equal(1, trainedDay.ActivityCount);
+        Assert.Equal(LoadBasis.Measured, trainedDay.Basis);
     }
 }
