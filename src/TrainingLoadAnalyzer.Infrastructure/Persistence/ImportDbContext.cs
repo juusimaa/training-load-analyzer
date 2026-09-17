@@ -9,6 +9,8 @@ public sealed class ImportDbContext(DbContextOptions<ImportDbContext> options) :
 
     public DbSet<ActivityRow> Activities => Set<ActivityRow>();
 
+    public DbSet<SyncState> SyncStates => Set<SyncState>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<StravaConnection>(connection =>
@@ -33,6 +35,12 @@ public sealed class ImportDbContext(DbContextOptions<ImportDbContext> options) :
             activity.HasIndex(a => a.StartedAtUtcTicks);
 
             activity.Property(a => a.Type).IsRequired();
+        });
+
+        modelBuilder.Entity<SyncState>(state =>
+        {
+            state.HasKey(s => s.AthleteId);
+            state.Property(s => s.LastOutcome).IsRequired();
         });
     }
 }

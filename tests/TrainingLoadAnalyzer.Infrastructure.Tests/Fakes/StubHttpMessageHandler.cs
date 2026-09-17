@@ -32,6 +32,22 @@ internal sealed class StubHttpMessageHandler : HttpMessageHandler
         return this;
     }
 
+    /// <summary>
+    ///   Like <see cref="Respond"/>, but takes precedence over rules already added. Rules are
+    ///   matched in order, so a specific URL must be registered ahead of a general one.
+    /// </summary>
+    public StubHttpMessageHandler RespondFirst(
+        string uriFragment,
+        HttpStatusCode status,
+        string? json = null,
+        IReadOnlyDictionary<string, string>? headers = null,
+        bool once = false)
+    {
+        rules.Insert(0, new Rule(uriFragment, status, json, headers, once));
+
+        return this;
+    }
+
     /// <summary>Fails the matching request as a dropped connection, for FR-037 and C61.</summary>
     public StubHttpMessageHandler Drop(string uriFragment, bool once = false)
     {
