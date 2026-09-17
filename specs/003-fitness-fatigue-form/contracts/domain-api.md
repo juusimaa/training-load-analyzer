@@ -27,8 +27,8 @@ public readonly record struct DailyTrainingMetrics(
     public double Form { get; }
 
     /// <summary>
-    ///   The basis of Form. Equal to FitnessBasis, because the 7-day Fatigue window is always a
-    ///   subset of the 42-day Fitness window (FR-019, research R10).
+    ///   The basis of Form. Always equal to FitnessBasis, because the 7-day Fatigue window is
+    ///   always a subset of the 42-day Fitness window (FR-019a, FR-019b).
     /// </summary>
     public LoadBasis FormBasis { get; }
 }
@@ -43,7 +43,7 @@ public static class TrainingMetricsCalculator
     /// <exception cref="ArgumentNullException">history or range is null.</exception>
     /// <exception cref="ArgumentException">
     ///   history is empty, or starts after range.Start (FR-022);
-    ///   history ends before range.End (proposed FR-022a, research R11);
+    ///   history ends before range.End (FR-022a);
     ///   history has a gap, a repeated day, or is not in ascending date order (FR-023).
     /// </exception>
     public static IReadOnlyList<DailyTrainingMetrics> Calculate(
@@ -62,6 +62,7 @@ public static class TrainingMetricsCalculator
 | C22 | A day carrying no training produces an entry and decays the metrics across it. A rest day and a day whose sessions totalled exactly zero points yield identical `Fitness` and `Fatigue`, differing only in their bases. | FR-009, SC-006 |
 | C23 | For a history beginning on day D, every entry from D to D+41 has `IsReliable` false and every entry from D+42 onward has it true. Figures are produced for both — never withheld, blanked, or refused. | FR-013, FR-014, FR-015, SC-007 |
 | C24 | Every entry carries a basis for each of the three figures. A basis is `None` exactly when no day in that metric's window carried training, and `Mixed` whenever that window holds at least one measured and one estimated day. A figure is not obtainable without its basis and its `IsReliable`. | FR-016 – FR-020, SC-008, SC-009 |
+| C24a | `FormBasis` always equals `FitnessBasis` and cannot be made to differ from it, because it is derived rather than stored. An empty Fatigue window contributes nothing to it rather than making it `Mixed`. | FR-019a, FR-019b |
 | C25 | A day's basis depends only on days inside that metric's own window: a day that was estimated stops affecting the basis once it falls more than 42 days back for Fitness, or 7 days back for Fatigue. | FR-019, SC-009 |
 | C26 | `Calculate` is pure: the same history and range yield equal results on every call, on any date. It reads no clock, no storage, no environment, and no static mutable state. | FR-007, FR-027, SC-010 |
 | C27 | No intermediate figure is rounded; over a 10-year history the divergence from the same recurrence carried at 28-digit precision stays within 0.0001 points. The smoothing factors are applied at no fewer than ten significant figures. | FR-028, FR-029, FR-029a, SC-012 |
@@ -91,6 +92,7 @@ want these figures, and the dashboard (006) will read the last entry of the seri
 Neither is designed for here (Principle III). This contract describes what feature 003 delivers, not a
 frozen public API.
 
-Two elements above depend on specification amendments not yet made — `FormBasis` being derived
-(research R10) and the refusal of a history ending before the range (research R11, proposed FR-022a).
-Both are marked at their point of use.
+Two elements above began as specification gaps found during planning — `FormBasis`'s rule and the
+refusal of a history ending before the range. Both were resolved by the developer on 2026-09-17 and
+written into the spec as FR-019a, FR-019b, and FR-022a before this contract was finalised; nothing
+here is provisional (research R10, R11).

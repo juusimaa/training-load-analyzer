@@ -25,9 +25,10 @@ exactly the way features 001 and 002 require of their point totals. FR-029 state
 three metrics are `double`**, while the loads feeding them stay `decimal`. That departure, and the
 measurements backing it, are in [research.md](./research.md) R2.
 
-**Two specification gaps were found while designing and are not resolved.** Under Principle VII they
-must be amended in the spec rather than settled in code, and `/speckit-tasks` should not run until
-they are — see [Open items](#open-items-before-speckit-tasks) below and R10/R11 in research.
+**Two specification gaps were found while designing.** Under Principle VII they were put to the
+developer rather than settled in code; both were answered on 2026-09-17 and the specification was
+amended with **FR-019a**, **FR-019b**, and **FR-022a** before tasks were generated — see
+[Amendments made during planning](#amendments-made-during-planning) below and R10/R11 in research.
 
 Full rationale, alternatives, and revisit triggers for each decision are in
 [research.md](./research.md).
@@ -61,8 +62,8 @@ significant figures (FR-029a) — `Math.Exp` gives ~17, verified. The domain ass
 reference no external activity provider (FR-030, Principle II). Basis windows must be bounded at 42
 and 7 days, or one early estimated session would mark every later day `Mixed` forever (FR-019).
 
-**Scale/Scope**: 2 new domain types, 1 static calculator with 1 method, 32 functional requirements
-(31 plus one proposed), 13 success criteria, 3 user stories. Roughly 100–150 lines of production code
+**Scale/Scope**: 2 new domain types, 1 static calculator with 1 method, 34 functional requirements,
+13 success criteria, 3 user stories. Roughly 100–150 lines of production code
 expected, on top of features 001 and 002.
 
 ## Constitution Check
@@ -79,10 +80,10 @@ Evaluated against [constitution.md](../../.specify/memory/constitution.md) v1.0.
 | **IV. Testability** | Nothing under test has a collaborator. Every test builds a list of `DailyTrainingLoad` values directly, calls one static method, and asserts on a returned value or a thrown exception. Zero test doubles required. The one testing subtlety is asserting `double` with a tolerance rather than by whole-value equality, recorded in research R7 and demonstrated in quickstart. | ✅ PASS |
 | **V. Isolation of External Integrations** | No external integration exists in this feature. Satisfied vacuously, and protected by Out of Scope: loading or persisting anything belongs to the import feature. | ✅ PASS (N/A) |
 | **VI. Observability & Deliberate Error Handling** | Six refusals, each naming its rule and the offending day, five of them sharing a `ParamName` so their messages must tell them apart (research R13, guarantee C28). Nothing is defaulted, repaired, or dropped: a history with a gap is refused rather than filled with zeroes, precisely because this feature cannot tell an absent day from an aggregation defect. No logging or metrics infrastructure is introduced — proportionate to a domain library. | ✅ PASS |
-| **VII. Specification Adherence** | Every type and rule traces to a numbered requirement; the trace table is in [data-model.md](./data-model.md). **This is the gate that is not clean.** Two places where the specification is ambiguous (R10) or silent (R11) were found while designing. Neither was settled in code: both are written up with options, a recommendation, and the consequence of the alternative, and both are listed below as blocking `/speckit-tasks`. That is what this principle asks for, so the gate passes — but it passes with outstanding work, not with nothing to do. | ⚠️ PASS, with two amendments outstanding |
+| **VII. Specification Adherence** | Every type and rule traces to a numbered requirement; the trace table is in [data-model.md](./data-model.md). **This is the gate that did the most work.** Two places where the specification was ambiguous (R10) or silent (R11) were found while designing. Neither was settled in code: both were written up with options and a recommendation, put to the developer, and answered, and the specification now carries FR-019a, FR-019b, and FR-022a as a result. That is exactly what this principle asks for. | ✅ PASS |
 
-**Result**: all gates pass. No entries in Complexity Tracking. Principle VII carries two open items that
-must be closed before tasks are generated.
+**Result**: all gates pass. No entries in Complexity Tracking. Nothing is outstanding; the two items
+Principle VII raised were closed by amending the spec before tasks were generated.
 
 **Post-Phase 1 re-check**: re-evaluated after [research.md](./research.md),
 [data-model.md](./data-model.md), [contracts/domain-api.md](./contracts/domain-api.md), and
@@ -90,18 +91,26 @@ must be closed before tasks are generated.
 indirection beyond the two types the requirements force — one fewer than feature 002 needed, in a
 feature with more requirements. Principle III came under less pressure than expected: working the
 design through actually *removed* a type that feature 002 had anticipated. The pressure moved to
-Principle VII instead, which is where the two open items sit, and to Principle I, because the verified
-figures in quickstart make it tempting to write the loop first and paste the numbers in afterwards.
-Still ✅ PASS on all seven, with the same two amendments outstanding.
+Principle VII instead, which found two gaps in the specification, and to Principle I, because the
+verified figures in quickstart make it tempting to write the loop first and paste the numbers in
+afterwards. Still ✅ PASS on all seven; the Principle VII items were resolved by amendment rather than
+left open.
 
-## Open items before `/speckit-tasks`
+## Amendments made during planning
 
-Both are specification amendments, not design questions. Full analysis in [research.md](./research.md).
+Two gaps in the specification were found while working the design through. Neither was settled in
+code: both were put to the developer, answered on 2026-09-17, and written into
+[spec.md](./spec.md) before `/speckit-tasks` ran. Full analysis in [research.md](./research.md) R10
+and R11.
 
-| # | Question | Recommendation | What changes if the alternative is chosen |
-|---|----------|----------------|-------------------------------------------|
-| **R10** | FR-019 says Form's basis is `Mixed` when Fitness's and Fatigue's "disagree". Taken literally, a day whose Fitness basis is `Measured` and whose Fatigue basis is `None` — trained three weeks ago, rested since — reports Form as `Mixed`, though nothing was mixed. | Treat `None` as contributing nothing, as FR-018 already does for rest days. This makes `FormBasis` **always equal** `FitnessBasis`, because the 7-day window is always a subset of the 42-day one — a consequence the spec should state rather than leave to be discovered in code. | `FormBasis` becomes a stored field with its own rule, plus one test per disagreement pairing. Nothing else moves. |
-| **R11** | The spec's Edge Cases list a history that stops before the range's last day, but no requirement resolves it. | Refuse, naming the shortfall, mirroring FR-022 at the other end. The spec's own Assumptions already settle the analogous case: a gap is refused rather than filled with zeroes. Proposed wording for **FR-022a** is in research R11. | Truncating the result instead would return fewer entries than the range asked for, which FR-008 and SC-001 exist to prevent. |
+| # | Gap | Resolution | New requirement |
+|---|-----|------------|-----------------|
+| **R10** | FR-019 said Form's basis is `Mixed` when Fitness's and Fatigue's "disagree". Taken literally, a day whose Fitness basis is `Measured` and whose Fatigue basis is `None` — trained three weeks ago, rested since — reported Form as `Mixed`, though nothing was mixed. | A basis of `None` contributes nothing, as FR-018 already says for rest days. Because Fatigue's 7-day window always sits inside Fitness's 42-day window, this makes `FormBasis` *necessarily* equal to `FitnessBasis` — so it is a derived property, and the requirement cannot be violated. | **FR-019a**, **FR-019b**, plus User Story 3 scenario 6 |
+| **R11** | The spec's Edge Cases listed a history that stops before the range's last day, but no requirement resolved it. | Refuse, naming the shortfall, mirroring FR-022 at the other end — the same reasoning the spec's Assumptions already apply to a gap. Truncating instead would return fewer entries than the range asked for, which FR-008 and SC-001 exist to prevent. | **FR-022a** |
+
+Both are the kind of gap that is invisible while writing a specification and obvious while designing
+against it, which is the argument for planning as a separate phase rather than going straight to
+tasks.
 
 ## Project Structure
 

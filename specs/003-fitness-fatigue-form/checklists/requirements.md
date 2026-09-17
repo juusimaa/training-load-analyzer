@@ -59,3 +59,25 @@ All three were answered by the project owner and folded into the spec:
 
 All checklist items now pass. The spec is ready for `/speckit-plan`; a separate `/speckit-clarify`
 pass is not needed, as the questions that pass would have raised were resolved here.
+
+### Validation iteration 3 — 2026-09-17 (post-plan amendments)
+
+`/speckit-plan` found two gaps that this checklist's items did not catch, because both were
+*consistency* problems visible only when designing against the spec rather than reading it:
+
+1. **FR-019's last sentence was wrong about Form's basis.** Read literally it reported `Mixed` for a
+   day whose every contributing session was measured, purely because the athlete had rested for a
+   week and the 7-day window was empty. Resolved as **FR-019a** (a basis of none contributes nothing)
+   and **FR-019b** (which records the consequence: Form's basis is then necessarily identical to
+   Fitness's, because the 7-day window always sits inside the 42-day one). A sixth acceptance scenario
+   was added to User Story 3.
+2. **No requirement resolved a history ending before the range's last day**, though the Edge Cases
+   listed it. Resolved as **FR-022a**: refuse, naming the shortfall. SC-011 was extended to include
+   it.
+
+All 16 checklist items still pass. The spec now carries 34 functional requirements.
+
+**Worth noting for the process retrospective**: "Requirements are testable and unambiguous" passed in
+iterations 1 and 2 and was wrong about FR-019. Reading a requirement is not the same as designing
+against it, which is the argument for `/speckit-plan` being a separate phase rather than a formality
+on the way to tasks.

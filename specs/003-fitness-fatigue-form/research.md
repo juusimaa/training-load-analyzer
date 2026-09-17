@@ -5,8 +5,9 @@
 The spec carries no `[NEEDS CLARIFICATION]` markers — the three load-model questions were answered by
 the developer during `/speckit-specify` and written into FR-005, FR-012, and FR-014. What remains are
 mechanical decisions this plan must settle before tasks can be written, plus **two places where the
-specification turns out to be ambiguous or silent** (R10, R11), which under Principle VII must be
-amended rather than decided quietly in code.
+specification turned out to be ambiguous or silent** (R10, R11). Under Principle VII those were put to
+the developer rather than decided quietly in code; both were answered and the specification amended —
+see each entry for the outcome.
 
 Decisions carried over unchanged from
 [feature 001's research](../001-training-activity-domain/research.md) and
@@ -256,10 +257,10 @@ specification states no performance requirement.
 
 ---
 
-## R10: ⚠️ OPEN — Form's basis when Fatigue's window is empty
+## R10: ✅ RESOLVED — Form's basis when Fatigue's window is empty
 
-**Status**: requires a specification amendment before `/speckit-tasks`. Recommendation below; the
-plan's design assumes it.
+**Status**: resolved 2026-09-17. The developer chose reading A; the specification was amended,
+adding **FR-019a** and **FR-019b** and an acceptance scenario (User Story 3, scenario 6).
 
 **The problem**: FR-019's last sentence reads "Form's basis MUST combine the two, being measured only
 when both are measured and mixed when they disagree or when either is mixed." Taken literally, a day
@@ -271,11 +272,11 @@ The literal reading also contradicts FR-018's principle, which is that a day con
 contributes nothing to a basis, and sits awkwardly against FR-020, which reserves `None` for the case
 where nothing in the window carried training.
 
-**Recommended reading (A)**: treat `None` as contributing nothing, exactly as FR-018 treats a rest
-day. Form's basis is then the combination of the bases of every day that fed **either** metric.
+**Chosen reading (A)**, now FR-019a: treat `None` as contributing nothing, exactly as FR-018 treats a
+rest day. Form's basis is the combination of the bases of every day that fed **either** metric.
 
-**Why it is worth stating in the spec rather than just implementing**: reading A has a consequence the
-spec does not anticipate. Fatigue's 7-day window is a strict subset of Fitness's 42-day window — both
+**Why it was worth stating in the spec rather than just implementing**: reading A has a consequence the
+spec did not anticipate, now written into FR-019b. Fatigue's 7-day window is a strict subset of Fitness's 42-day window — both
 end on the same day and both truncate at the history's start — so the union is always exactly
 Fitness's window. **Under reading A, Form's basis always equals Fitness's basis**, on every day,
 necessarily. That makes it a derived property rather than a third computed value, which is how
@@ -287,29 +288,29 @@ disagreement. It makes Form's basis an independent value, and reports `Mixed` fo
 above. It is defensible only if "mixed" is read as "these two figures rest on different evidence",
 which is not what `LoadBasis` means anywhere else in the codebase.
 
-**If B is chosen**: `FormBasis` becomes a stored field with its own combination rule, one extra test
-case per disagreement pairing, and SC-008 stays as written. Nothing else in the design moves.
+**Had B been chosen**: `FormBasis` would have become a stored field with its own combination rule and
+one extra test case per disagreement pairing. It was not.
 
 ---
 
-## R11: ⚠️ OPEN — a history that stops before the range's last day
+## R11: ✅ RESOLVED — a history that stops before the range's last day
 
-**Status**: the specification is silent; this plan recommends writing the answer into it as a new
-requirement before `/speckit-tasks`.
+**Status**: resolved 2026-09-17. The developer chose to refuse; the specification was amended, adding
+**FR-022a**.
 
 **The problem**: the spec's Edge Cases list "a history that stops before the requested range's last
 day, leaving days at the end with no load to consume", but no requirement resolves it. FR-022 refuses
 a history that starts too late; there is no mirror for one that ends too early. FR-008 requires an
 entry for every day in the range, which such a history cannot supply.
 
-**Recommendation**: **refuse**, naming the shortfall, as FR-022 does at the other end. The spec's own
+**Decision**: **refuse**, naming the shortfall, as FR-022 does at the other end. The spec's own
 Assumptions already settle the principle for the analogous case — "A gap in the supplied history is
 refused rather than filled with zeroes… this feature cannot tell a genuinely absent day from an
 aggregation defect" — and a missing tail is a gap at the end. Silently treating the missing days as
 rest would invent training history and produce a decaying curve that looks real.
 
-Proposed wording, to be added as **FR-022a**: *The system MUST refuse a request whose supplied history
-ends before the last day of the requested range, and the refusal MUST identify the shortfall.*
+Added as **FR-022a**: *The system MUST refuse a request whose supplied history ends before the last day
+of the requested range, and the refusal MUST identify the shortfall.*
 
 **Alternative**: truncate the result to the days the history covers. Rejected — it would silently
 return fewer entries than the caller's range asked for, which is the one thing FR-008 and SC-001 are
@@ -343,7 +344,7 @@ custom exception type.
 | `range` is null | `ArgumentNullException(paramName: "range")` | FR-026 |
 | `history` is empty | `ArgumentException(paramName: "history")` | FR-022 |
 | `history` starts after `range.Start` | `ArgumentException(paramName: "history")` | FR-022 |
-| `history` ends before `range.End` | `ArgumentException(paramName: "history")` | FR-022a (R11) |
+| `history` ends before `range.End` | `ArgumentException(paramName: "history")` | FR-022a |
 | `history` has a gap, duplicate, or is out of order | `ArgumentException(paramName: "history")` | FR-023 |
 
 Five refusals share the `ParamName` `"history"`, which makes feature 001's contract guarantee C3 —
@@ -387,11 +388,10 @@ a decade is 3,653. Both the recurrence and the basis scan are linear in that wit
 FR-005, FR-012, and FR-014 were resolved by the developer during `/speckit-specify`. No
 `NEEDS CLARIFICATION` markers remain in the Technical Context.
 
-Two specification gaps were found while designing and are **not** resolved: **R10** (Form's basis when
-the Fatigue window is empty) and **R11** (a history ending before the range does). Both need the spec
-amended before `/speckit-tasks`; Principle VII forbids settling them silently in code. The design in
-[data-model.md](./data-model.md) and [contracts/domain-api.md](./contracts/domain-api.md) assumes the
-recommended reading of each and marks where it does.
+Two specification gaps were found while designing — **R10** (Form's basis when the Fatigue window is
+empty) and **R11** (a history ending before the range does). Neither was settled in code: both were
+put to the developer, both were answered on 2026-09-17, and the specification was amended with
+FR-019a, FR-019b, and FR-022a before tasks were generated. Nothing in this plan is now pending.
 
 ---
 

@@ -116,6 +116,10 @@ marked as not yet reliable.
 5. **Given** a day on which no load has yet contributed anything, **When** its metrics are
    calculated, **Then** their basis is reported as none, distinguishable from a day whose metrics
    rest on real zero-load days.
+6. **Given** a day whose 42-day Fitness window contains only measured days and whose 7-day Fatigue
+   window contains no training at all — the athlete trained with a heart-rate monitor three weeks
+   ago and has rested since — **When** its metrics are calculated, **Then** Form is reported as
+   measured, not as mixed: an empty window contributes nothing rather than disagreeing.
 
 ---
 
@@ -220,9 +224,18 @@ marked as not yet reliable.
 - **FR-019**: The system MUST determine the basis over a bounded window of preceding days rather
   than over the whole history, so that one estimated day early in a long history does not mark every
   later day as mixed forever. The window MUST be the metric's own time constant: the last 42 days
-  for Fitness and the last 7 days for Fatigue, each including the day itself. Form's basis MUST
-  combine the two, being measured only when both are measured and mixed when they disagree or when
-  either is mixed.
+  for Fitness and the last 7 days for Fatigue, each including the day itself.
+- **FR-019a**: Form's basis MUST be the combination of the bases of every day that contributed load
+  to either metric. A basis of **none** MUST contribute nothing to that combination, exactly as a
+  day carrying no training contributes nothing under FR-018. A day whose Fitness basis is measured
+  and whose Fatigue basis is none — an athlete who trained with heart-rate data three weeks ago and
+  has rested since — MUST therefore report Form as measured, not as mixed: nothing about that figure
+  was estimated.
+- **FR-019b**: Because Fatigue's 7-day window is always contained within Fitness's 42-day window —
+  both end on the same day and both truncate at the start of the supplied history — FR-019a makes
+  Form's basis identical to Fitness's basis on every day. The two MUST NOT be able to differ, and
+  Form's basis MUST be derived rather than accumulated separately, on the same terms as Form itself
+  under FR-003.
 - **FR-020**: The system MUST report a day's basis as none when no day within the relevant window
   carried any training, distinguishable from a basis derived from real zero-point sessions.
 
@@ -233,6 +246,11 @@ marked as not yet reliable.
 - **FR-022**: The system MUST refuse a request whose supplied history does not reach back to the
   first day of the requested range, and the refusal MUST identify the shortfall — silently seeding
   mid-range would produce figures that look genuine and are not.
+- **FR-022a**: The system MUST refuse a request whose supplied history ends before the last day of
+  the requested range, and the refusal MUST identify the shortfall. Treating the missing trailing
+  days as rest would invent training history the athlete never supplied and produce a decaying curve
+  indistinguishable from a real one; returning fewer entries than the range asked for would break
+  FR-008.
 - **FR-023**: The system MUST refuse a supplied history that is not continuous and gap-free in
   ascending date order — a missing day, a repeated day, or days out of order MUST be refused rather
   than repaired, because a silently skipped day changes every figure after it.
@@ -277,7 +295,7 @@ marked as not yet reliable.
   Quick to rise and quick to fall.
 - **Form**: The balance between the two — Fitness minus Fatigue. Positive means fresher than the
   recent training would suggest, negative means carrying accumulated work. Never stored separately
-  from the two figures it comes from.
+  from the two figures it comes from, and neither is its basis (FR-019b).
 - **Reliability**: Whether a day lies far enough past the start of the supplied history for the
   seeding assumption to have decayed out of the figures. Not a judgement about the training, only
   about how much history stands behind the number.
@@ -308,8 +326,9 @@ marked as not yet reliable.
 - **SC-010**: Repeated calculation over the same history and range produces identical figures every
   time, with zero variation across repetitions or across the date on which the calculation is run.
 - **SC-011**: 100% of requests violating a stated rule — an invalid range, a history that starts too
-  late, a history with a gap, a repeated day, or days out of order — are refused, and every refusal
-  names the violated rule; no partial or approximate result is returned in place of a refusal.
+  late, a history that ends too early, a history with a gap, a repeated day, or days out of order —
+  are refused, and every refusal names the violated rule; no partial or approximate result is
+  returned in place of a refusal.
 - **SC-012**: Over a 10-year history of daily values, the difference between the calculated figures
   and figures computed at higher precision stays within the tolerance stated in FR-029, showing no
   accumulated drift.
@@ -364,6 +383,15 @@ marked as not yet reliable.
   easy and would silently change every later figure, and this feature cannot tell a genuinely absent
   day from an aggregation defect. The aggregation feature already produces gap-free series, so a gap
   here indicates a caller error worth surfacing.
+- Form's basis is the combination over every day feeding either metric, with a basis of none
+  contributing nothing (FR-019a). The alternative reading — that Fitness and Fatigue bases
+  "disagreeing" makes Form mixed — was rejected because it would report mixed for an athlete whose
+  every contributing session was measured, simply because they had rested for a week. The
+  consequence, that Form's basis is then always identical to Fitness's (FR-019b), is stated in the
+  requirements rather than left to be discovered in an implementation.
+- A history that ends before the requested range does is refused (FR-022a) on the same reasoning as a
+  gap: this feature cannot tell an athlete who genuinely rested from a history that was cut short,
+  and inventing the difference would produce a decaying curve that looks real.
 - The basis is computed over a bounded window (FR-019) rather than over the whole contributing
   history. Mathematically every past day contributes something to an exponentially weighted average
   forever, so an unbounded rule would mark every day after the athlete's first estimated session as

@@ -96,7 +96,7 @@ implementation goes wrong quietly. All figures below were computed on the instal
     `ActivityCount 1`, `Basis Measured` — does contribute, so a window containing only that day reads
     `Measured`, not `None`. Both produce identical Fitness and Fatigue.
 
-11. **Refusals are told apart** (FR-022, FR-023, FR-026, C28). Five refusals share the `ParamName`
+11. **Refusals are told apart** (FR-022, FR-022a, FR-023, FR-026, C28). Five refusals share the `ParamName`
     `"history"`. Write each test against the message, not just the exception type, or a test for "the
     history has a gap" will pass against "the history starts too late".
 
@@ -146,12 +146,16 @@ grep -rn "DateTime.Now\|DateTime.Today\|DateTimeOffset.Now\|DateOnly.FromDateTim
 grep -rn "double" src/TrainingLoadAnalyzer.Domain/ --include='*.cs' | grep -v "Metrics"   # expect no output
 ```
 
-## Open before implementation
+## Two rules that came from amendments
 
-Two specification amendments are outstanding and `/speckit-tasks` should not run until they are
-settled — see [research.md](./research.md) R10 and R11:
+Both were specification gaps found during planning and answered by the developer before implementation
+(research R10, R11). They are easy to get wrong precisely because the original spec did not state
+them:
 
-- **R10**: what `FormBasis` is when the 7-day Fatigue window is empty but the 42-day Fitness window is
-  not. The design assumes it equals `FitnessBasis`; validation item 9 above and C24 depend on that.
-- **R11**: what happens when the supplied history ends before the range's last day. The design assumes
-  a refusal; validation item 11 counts it as one of the five.
+- **An empty Fatigue window does not make Form mixed** (FR-019a). Fitness window `Measured`, Fatigue
+  window `None` — trained three weeks ago, rested since — gives `FormBasis` `Measured`. Since
+  Fatigue's 7 days always sit inside Fitness's 42, `FormBasis` equals `FitnessBasis` on every day
+  (FR-019b), which is why it is a derived property and not a stored field. A test that finds them
+  differing has found a bug in the derivation, not an interesting edge case.
+- **A history ending before the range is refused** (FR-022a), not truncated and not padded with rest
+  days. It is one of the six refusals in item 11 above.

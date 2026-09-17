@@ -9,9 +9,6 @@ Nothing existing changes — this feature is additive, and `DailyTrainingLoad`, 
 Semantics below trace to the numbered requirements in [spec.md](./spec.md); the decisions behind the
 shapes are in [research.md](./research.md).
 
-> Two details below depend on specification amendments that have not been made yet, and are marked
-> **⚠️ pending R10** and **⚠️ pending R11**. Everything else is settled.
-
 ---
 
 ## DailyTrainingMetrics (readonly record struct)
@@ -27,16 +24,15 @@ One calendar day's position: where the athlete stands, and how far the three fig
 | `FitnessBasis` | `LoadBasis` | stored | How much of the last 42 days' load was measured |
 | `FatigueBasis` | `LoadBasis` | stored | The same over the last 7 days |
 | `Form` | `double` | **derived** | `Fitness - Fatigue`, computed on every read |
-| `FormBasis` | `LoadBasis` | **derived** | `FitnessBasis` — see below ⚠️ pending R10 |
+| `FormBasis` | `LoadBasis` | **derived** | `FitnessBasis` — see below (FR-019b) |
 
 - FR-001, FR-002, FR-003, FR-013, FR-016, FR-019.
 - `Form` is a property rather than a constructor parameter, so no instance can exist whose Form
   disagrees with its two components. SC-003 holds by construction, not by test (FR-003, research R7).
-- `FormBasis` is likewise derived. Under R10's recommended reading, Form's basis is the combination
-  over every day feeding either metric — and because Fatigue's 7-day window is always a strict subset
-  of Fitness's 42-day window, that combination is *always* exactly `FitnessBasis`. If the alternative
-  reading is chosen instead, this becomes a seventh stored field with its own rule and nothing else
-  in this model moves.
+- `FormBasis` is likewise derived. Per FR-019a, Form's basis is the combination over every day feeding
+  either metric — and because Fatigue's 7-day window is always a strict subset of Fitness's 42-day
+  window, FR-019b records that this combination is *always* exactly `FitnessBasis`. Deriving it is
+  what makes that requirement impossible to violate (research R10).
 - `double`, not `decimal`, for the three figures — the smoothing factor is irrational and FR-029
   states a tolerance rather than exactness (research R2). The daily loads feeding the calculation
   remain `decimal` and are converted at one place inside the calculator.
@@ -97,7 +93,7 @@ figures are always produced and always qualified — never withheld or blanked (
 |--------|--------------------------------------|-------------|
 | `FitnessBasis` | the last 42 days | FR-019 |
 | `FatigueBasis` | the last 7 days | FR-019 |
-| `FormBasis` | derived — see `DailyTrainingMetrics` ⚠️ pending R10 | FR-019 |
+| `FormBasis` | derived — always equal to `FitnessBasis` | FR-019a, FR-019b |
 
 Within a window, each day contributes its own `LoadBasis` exactly when that basis is not `None` —
 which by feature 002's guarantee C12 is exactly when the day had at least one session (FR-018). A
@@ -125,7 +121,7 @@ the basis those sessions carried.
 | `range` is null | `ArgumentNullException(paramName: "range")` | FR-026 |
 | `history` is empty | `ArgumentException(paramName: "history")` | FR-022 |
 | `history[0].Day` is later than `range.Start` | `ArgumentException(paramName: "history")` | FR-022 |
-| `history[^1].Day` is earlier than `range.End` | `ArgumentException(paramName: "history")` | ⚠️ pending R11 (proposed FR-022a) |
+| `history[^1].Day` is earlier than `range.End` | `ArgumentException(paramName: "history")` | FR-022a |
 | `history` has a gap, a repeated day, or is out of order | `ArgumentException(paramName: "history")` | FR-023 |
 | `range` is unbounded or inverted | `DateRange`'s own `ArgumentException` | FR-021 |
 
@@ -180,11 +176,13 @@ any date.
 | FR-016 | `FitnessBasis`, `FatigueBasis`, `FormBasis` on every entry |
 | FR-017 | Feature 002's combination rule, reused |
 | FR-018 | A day contributes iff its `Basis` is not `None` |
-| FR-019 | 42-day and 7-day backward windows; Form derived (⚠️ pending R10) |
+| FR-019 | 42-day and 7-day backward windows |
+| FR-019a | `None` contributes nothing to the Form combination |
+| FR-019b | `FormBasis` is a property returning `FitnessBasis` |
 | FR-020 | Empty window yields `None` |
 | FR-021 | `DateRange`'s existing constructor guards |
 | FR-022 | Guard on `history[0].Day` against `range.Start` |
-| FR-022a ⚠️ | Guard on `history[^1].Day` against `range.End` (proposed, research R11) |
+| FR-022a | Guard on `history[^1].Day` against `range.End` |
 | FR-023 | Contiguity scan over `history` before any calculation |
 | FR-024 | Iteration spans the history; output filtered to `range` |
 | FR-025 | An all-zero history takes the ordinary path |
