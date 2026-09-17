@@ -233,7 +233,7 @@ afterwards.
 - [X] T067 Complete the Principle II semantic review by reading every new type, member, and parameter name in `src/` for provider vocabulary. No tool catches this; it is the half of Principle II only a human reviewer can check (SC-010)
 - [X] T068 Confirm no rule was invented for the year-9999 boundary — a range ending in the final ISO week of year 9999 must still surface the framework's own `ArgumentOutOfRangeException` from `DateOnly.AddDays`, not a domain refusal. The specification states no rule here and research R13 records why none was added; this check exists so one is not introduced quietly (Principle VII)
 - [X] T069 Confirm none of the rejected abstractions appeared: no `ITrainingLoadAggregator`, no `TrainingLoadSeries`, no `WeekRange`, no `partial` flag on `WeeklyTrainingLoad`, no athlete-profile type, no custom exception, no caching. Each was rejected with a recorded revisit trigger in [research.md](./research.md) and [data-model.md](./data-model.md)
-- [ ] T070 Run the feature completion review from the constitution's Development Workflow: acceptance criteria satisfied, TDD followed, tests green, no unnecessary domain dependency, no unnecessary abstractions remaining, agreed error scenarios handled, AI-generated code human-reviewed, spec and implementation aligned
+- [X] T070 Run the feature completion review from the constitution's Development Workflow: acceptance criteria satisfied, TDD followed, tests green, no unnecessary domain dependency, no unnecessary abstractions remaining, agreed error scenarios handled, AI-generated code human-reviewed, spec and implementation aligned
 
 ---
 
