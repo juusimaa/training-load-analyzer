@@ -193,13 +193,15 @@ tests/
 └── TrainingLoadAnalyzer.Infrastructure.Tests/   # NEW - Principle V's own boundary
     ├── Fakes/
     │   ├── StubHttpMessageHandler.cs            # NEW - research R9, no mocking library
-    │   └── InMemoryDatabase.cs                  # NEW - research R8, real SQLite kept open
+    │   ├── SqliteFixture.cs                     # NEW - research R8, real SQLite kept open
+    │   └── FixedClock.cs                        # NEW - research R10, a TimeProvider tests control
     ├── ConnectionTests.cs                       # NEW - User Story 1
     ├── ActivityMappingTests.cs                  # NEW - User Story 2, FR-009 - FR-020
     ├── PersistenceRoundTripTests.cs             # NEW - FR-024, asserted both ways (research R8)
     ├── IncrementalSyncTests.cs                  # NEW - User Story 3, FR-027 - FR-030
     ├── ReconciliationTests.cs                   # NEW - User Story 3, FR-031 - FR-032
-    └── RateLimitTests.cs                        # NEW - User Story 4, FR-034 - FR-040
+    ├── RateLimitTests.cs                        # NEW - User Story 4, FR-034 - FR-040
+    └── ImportedHistoryTests.cs                  # NEW - SC-003: the imported history reaching the calculators
 ```
 
 **Structure Decision**: two new projects, and no more. `TrainingLoadAnalyzer.Infrastructure` exists
