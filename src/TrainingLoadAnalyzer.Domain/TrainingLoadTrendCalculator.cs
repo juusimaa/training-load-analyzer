@@ -80,12 +80,53 @@ public static class TrainingLoadTrendCalculator
                 continue;
             }
 
+            var week = history[i].Week;
+
             trends.Add(new WeeklyLoadTrend(
-                history[i].Week,
+                week,
                 history[i].Points,
-                history[i - 1].Points));
+                history[i - 1].Points,
+                // Determined from the range alone, never from the totals and never from the
+                // clock, so the same week and range answer the same on any date (FR-016).
+                week.Monday >= range.Start && week.Sunday <= range.End,
+                CombinedBasis(history[i - 1].Basis, history[i].Basis)));
         }
 
         return trends;
+    }
+
+    /// <summary>
+    ///   How far a comparison of the two weeks can be trusted (FR-021).
+    /// </summary>
+    /// <remarks>
+    ///   Feature 002's rule, reused unchanged: one estimate alongside a measurement makes the
+    ///   whole thing mixed, and the proportion is deliberately not recorded. A basis of
+    ///   <see cref="LoadBasis.None"/> contributes to neither tally, so a measured week following
+    ///   an untrained one is measured - nothing about that comparison was estimated.
+    ///   <para>
+    ///     This is the third place in the solution expressing this rule. Extracting it was
+    ///     considered and declined on 2026-09-17 (research R12): the three sites share only this
+    ///     final switch and each accumulates differently. The trigger for revisiting is a fourth
+    ///     occurrence.
+    ///   </para>
+    /// </remarks>
+    private static LoadBasis CombinedBasis(LoadBasis previous, LoadBasis current)
+    {
+        var anyMeasured = Measured(previous) || Measured(current);
+        var anyEstimated = Estimated(previous) || Estimated(current);
+
+        return (anyMeasured, anyEstimated) switch
+        {
+            (true, true) => LoadBasis.Mixed,
+            (true, false) => LoadBasis.Measured,
+            (false, true) => LoadBasis.Estimated,
+            (false, false) => LoadBasis.None,
+        };
+
+        static bool Measured(LoadBasis basis) =>
+            basis is LoadBasis.Measured or LoadBasis.Mixed;
+
+        static bool Estimated(LoadBasis basis) =>
+            basis is LoadBasis.Estimated or LoadBasis.Mixed;
     }
 }

@@ -6,7 +6,9 @@ namespace TrainingLoadAnalyzer.Domain;
 public readonly record struct WeeklyLoadTrend(
     IsoWeek Week,
     decimal Points,
-    decimal PreviousPoints)
+    decimal PreviousPoints,
+    bool IsComplete,
+    LoadBasis Basis)
 {
     /// <summary>
     ///   How many points a week must move by before the change is worth reporting (FR-010).
@@ -49,6 +51,14 @@ public readonly record struct WeeklyLoadTrend(
     {
         get
         {
+            // Completeness is read before any threshold, which is what makes FR-017
+            // unreachable by construction rather than a rule to be maintained: a week the
+            // range cuts short can never acquire a significance label at all.
+            if (!IsComplete)
+            {
+                return TrendClassification.Indeterminate;
+            }
+
             // The floor is tested first, and that ordering is load-bearing rather than
             // incidental: when there is no proportion to test, the floor has already applied
             // the only test that exists, so a week following an idle one falls through to the

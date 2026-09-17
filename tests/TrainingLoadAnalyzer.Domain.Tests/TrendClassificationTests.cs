@@ -17,7 +17,7 @@ public class TrendClassificationTests
     ///   so members added to the record later change one line here rather than thirty.
     /// </summary>
     private static WeeklyLoadTrend Trend(decimal previous, decimal current) =>
-        new(Week, current, previous);
+        new(Week, current, previous, IsComplete: true, LoadBasis.Measured);
 
     // T027 - User Story 2, scenario 1 (FR-008): a real step up is called out.
     [Fact]
