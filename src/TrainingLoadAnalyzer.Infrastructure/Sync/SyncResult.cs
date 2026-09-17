@@ -42,4 +42,11 @@ public sealed record SyncResult
     public IReadOnlyList<DiscardedSamples> Discarded { get; init; } = [];
 
     public SyncOutcome Outcome { get; init; } = SyncOutcome.Completed;
+
+    /// <summary>
+    ///   When the sync can usefully be retried. Set when and only when <see cref="Outcome"/> is
+    ///   <see cref="SyncOutcome.RateLimited"/>, and it names Strava's next window boundary rather
+    ///   than a fixed delay (FR-035, C62).
+    /// </summary>
+    public DateTimeOffset? RetryAfter { get; init; }
 }

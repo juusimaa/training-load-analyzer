@@ -3,6 +3,7 @@ using TrainingLoadAnalyzer.Domain;
 using TrainingLoadAnalyzer.Infrastructure.Persistence;
 using TrainingLoadAnalyzer.Infrastructure.Strava;
 
+
 namespace TrainingLoadAnalyzer.Infrastructure.Sync;
 
 /// <summary>
@@ -33,6 +34,14 @@ public sealed class StravaActivitySync(
     /// </summary>
     private static readonly TimeSpan LookBackWindow = TimeSpan.FromDays(7);
 
+    /// <summary>
+    ///   Refuses a second sync rather than queueing behind the first (FR-040, C63). In-process is
+    ///   sufficient: the specification's Assumptions establish a single-process store, so a
+    ///   database-held flag would guard a case that cannot occur and would need a crash-recovery
+    ///   story of its own (research R22).
+    /// </summary>
+    private readonly SemaphoreSlim running = new(1, 1);
+
     /// <summary>Reads from the stored resume point onward (FR-027).</summary>
     public async Task<SyncResult> SyncAsync(CancellationToken cancellationToken)
     {
@@ -45,7 +54,7 @@ public sealed class StravaActivitySync(
             ? DateTimeOffset.UnixEpoch
             : new DateTimeOffset(state.ResumePointUtcTicks, TimeSpan.Zero);
 
-        return await WalkAsync(connection, resumePoint, cancellationToken);
+        return await GuardedAsync(connection, resumePoint, cancellationToken);
     }
 
     /// <summary>
@@ -58,7 +67,31 @@ public sealed class StravaActivitySync(
             ?? throw new InvalidOperationException(
                 "No Strava account is connected. Authorize one before synchronising.");
 
-        return await WalkAsync(connection, DateTimeOffset.UnixEpoch, cancellationToken);
+        return await GuardedAsync(connection, DateTimeOffset.UnixEpoch, cancellationToken);
+    }
+
+    /// <summary>
+    ///   Runs one walk, or refuses because another is already in flight (FR-040). A refusal does
+    ///   nothing at all: it stores nothing, removes nothing, and leaves the sync state untouched.
+    /// </summary>
+    private async Task<SyncResult> GuardedAsync(
+        StravaConnection connection,
+        DateTimeOffset from,
+        CancellationToken cancellationToken)
+    {
+        if (!await running.WaitAsync(TimeSpan.Zero, cancellationToken))
+        {
+            return new SyncResult { Outcome = SyncOutcome.Refused };
+        }
+
+        try
+        {
+            return await WalkAsync(connection, from, cancellationToken);
+        }
+        finally
+        {
+            running.Release();
+        }
     }
 
     private async Task<SyncResult> WalkAsync(
@@ -73,12 +106,30 @@ public sealed class StravaActivitySync(
         var discarded = new List<DiscardedSamples>();
         var measuredFrom = clock.GetUtcNow() - MeasuredWindow;
 
-        var summaries = await ReadAllPagesAsync(connection.AccessToken, from, cancellationToken);
-
-        // The span was read to completion: every page arrived. Set in exactly one place, because a
-        // second assignment is how the guarantee in FR-031c erodes.
-        var spanReadToCompletion = true;
+        // Set in exactly one place — after the last page — because a second assignment is how the
+        // guarantee in FR-031c erodes.
+        var spanReadToCompletion = false;
         var seen = new HashSet<string>(StringComparer.Ordinal);
+        var summaries = new List<StravaActivitySummary>();
+        var stopped = SyncOutcome.Completed;
+        DateTimeOffset? retryAfter = null;
+
+        try
+        {
+            await ReadAllPagesAsync(connection.AccessToken, from, summaries, cancellationToken);
+            spanReadToCompletion = true;
+        }
+        catch (StravaRateLimitedException limited)
+        {
+            stopped = SyncOutcome.RateLimited;
+            retryAfter = limited.Status?.RetryAfter(clock.GetUtcNow());
+        }
+        catch (StravaRequestFailedException failed)
+        {
+            stopped = failed.Status == System.Net.HttpStatusCode.Unauthorized
+                ? SyncOutcome.ReconnectionRequired
+                : SyncOutcome.Interrupted;
+        }
 
         // The order Strava returns is undocumented, so it is not depended on; the walk sorts and
         // deduplicates by id instead (research R15).
@@ -131,7 +182,7 @@ public sealed class StravaActivitySync(
 
         var removed = await ReconcileAsync(spanReadToCompletion, from, seen, cancellationToken);
 
-        await RecordStateAsync(connection.AthleteId, SyncOutcome.Completed, cancellationToken);
+        await RecordStateAsync(connection.AthleteId, stopped, cancellationToken);
 
         return new SyncResult
         {
@@ -141,16 +192,23 @@ public sealed class StravaActivitySync(
             Skipped = skipped,
             SeriesOutstanding = outstanding,
             Discarded = discarded,
-            Outcome = SyncOutcome.Completed,
+            Outcome = stopped,
+            RetryAfter = retryAfter,
         };
     }
 
-    private async Task<List<StravaActivitySummary>> ReadAllPagesAsync(
+    /// <summary>
+    ///   Reads pages into <paramref name="summaries"/> until one comes back empty. It accumulates
+    ///   into the caller's list rather than returning its own, so that a failure partway leaves the
+    ///   pages already read in the caller's hands — FR-035 and C64 require a sync that stops early
+    ///   to keep what it has.
+    /// </summary>
+    private async Task ReadAllPagesAsync(
         string accessToken,
         DateTimeOffset from,
+        List<StravaActivitySummary> summaries,
         CancellationToken cancellationToken)
     {
-        var summaries = new List<StravaActivitySummary>();
         var page = 1;
 
         while (true)
@@ -159,14 +217,12 @@ public sealed class StravaActivitySync(
 
             if (batch.Count == 0)
             {
-                break;
+                return;
             }
 
             summaries.AddRange(batch);
             page++;
         }
-
-        return summaries;
     }
 
     /// <summary>
@@ -197,7 +253,18 @@ public sealed class StravaActivitySync(
             return (null, false, 0);
         }
 
-        var streams = await client.GetStreamsAsync(accessToken, summary.Id, cancellationToken);
+        StravaStreamSet? streams;
+
+        try
+        {
+            streams = await client.GetStreamsAsync(accessToken, summary.Id, cancellationToken);
+        }
+        catch (StravaRequestFailedException)
+        {
+            // FR-017d: a series that could not be fetched leaves the session with estimated load
+            // and the series recorded as owed. It never costs the athlete the session itself.
+            return (null, true, 0);
+        }
 
         if (streams is null)
         {

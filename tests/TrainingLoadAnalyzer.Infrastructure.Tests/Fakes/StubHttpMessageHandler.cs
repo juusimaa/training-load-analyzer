@@ -56,11 +56,22 @@ internal sealed class StubHttpMessageHandler : HttpMessageHandler
         return this;
     }
 
-    protected override Task<HttpResponseMessage> SendAsync(
+    /// <summary>
+    ///   Held open, every request waits on it. Lets a test keep one sync in flight while starting a
+    ///   second, which is the only way to exercise FR-040 deterministically.
+    /// </summary>
+    public TaskCompletionSource? Gate { get; set; }
+
+    protected override async Task<HttpResponseMessage> SendAsync(
         HttpRequestMessage request,
         CancellationToken cancellationToken)
     {
         Requests.Add(request);
+
+        if (Gate is not null)
+        {
+            await Gate.Task;
+        }
 
         var uri = request.RequestUri?.ToString() ?? string.Empty;
         var rule = rules.FirstOrDefault(r => !r.Spent && uri.Contains(r.UriFragment, StringComparison.Ordinal));
@@ -92,7 +103,7 @@ internal sealed class StubHttpMessageHandler : HttpMessageHandler
             response.Headers.TryAddWithoutValidation(name, value);
         }
 
-        return Task.FromResult(response);
+        return response;
     }
 
     private sealed record Rule(

@@ -9,4 +9,16 @@ public enum SyncOutcome
     ///   partial, and deleting against a partial set removes training the athlete actually did.
     /// </summary>
     Completed,
+
+    /// <summary>A read limit was reached; <c>RetryAfter</c> names when to try again (FR-035).</summary>
+    RateLimited,
+
+    /// <summary>A connection or server failure survived the bounded retry (FR-037).</summary>
+    Interrupted,
+
+    /// <summary>Strava rejected the credential; the athlete must reconnect (FR-006).</summary>
+    ReconnectionRequired,
+
+    /// <summary>A sync was already running for this connection (FR-040).</summary>
+    Refused,
 }

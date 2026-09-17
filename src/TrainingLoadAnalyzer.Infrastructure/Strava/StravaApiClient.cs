@@ -7,6 +7,14 @@ namespace TrainingLoadAnalyzer.Infrastructure.Strava;
 public sealed class StravaApiClient(HttpClient http)
 {
     /// <summary>
+    ///   How many times a plausibly transient failure is retried before the sync stops cleanly
+    ///   (FR-037). Hand-written rather than delegated to a resilience package: the requirement is
+    ///   three attempts with backoff, and a policy engine to express one policy is the kind of
+    ///   dependency Principle III exists to decline (research R17).
+    /// </summary>
+    private const int Attempts = 3;
+
+    /// <summary>
     ///   Strava documents only the default of 30 and no maximum. 200 comes from Strava staff on
     ///   Strava's own forum and is reliable but undocumented; exceeding it returns HTTP 400. It is
     ///   what makes the request budget work — 1,200 activities is six requests, not forty
@@ -33,10 +41,7 @@ public sealed class StravaApiClient(HttpClient http)
     {
         var url = $"{ActivitiesUrl}?after={after.ToUnixTimeSeconds()}&page={page}&per_page={PageSize}";
 
-        using var request = Authorised(HttpMethod.Get, url, accessToken);
-        using var response = await http.SendAsync(request, cancellationToken);
-
-        response.EnsureSuccessStatusCode();
+        using var response = await SendAsync(url, accessToken, cancellationToken);
 
         return await response.Content.ReadFromJsonAsync<List<StravaActivitySummary>>(cancellationToken) ?? [];
     }
@@ -65,17 +70,90 @@ public sealed class StravaApiClient(HttpClient http)
         var url = $"https://www.strava.com/api/v3/activities/{activityId}/streams"
             + "?keys=time,heartrate&key_by_type=true";
 
-        using var request = Authorised(HttpMethod.Get, url, accessToken);
-        using var response = await http.SendAsync(request, cancellationToken);
+        using var response = await SendAsync(url, accessToken, cancellationToken, notFoundIsEmpty: true);
 
-        if (response.StatusCode == HttpStatusCode.NotFound)
+        return response.StatusCode == HttpStatusCode.NotFound
+            ? null
+            : await response.Content.ReadFromJsonAsync<StravaStreamSet>(cancellationToken);
+    }
+
+    /// <summary>
+    ///   Sends one request, retrying only what is plausibly transient (FR-037).
+    /// </summary>
+    /// <remarks>
+    ///   Retried: a dropped connection and a 5xx. Never retried: a 429, which is a limit rather
+    ///   than a failure (C68); a 401, which is a rejected credential (FR-006); and any other 4xx,
+    ///   which will be malformed again on the next attempt.
+    /// </remarks>
+    private async Task<HttpResponseMessage> SendAsync(
+        string url,
+        string accessToken,
+        CancellationToken cancellationToken,
+        bool notFoundIsEmpty = false)
+    {
+        HttpResponseMessage? response = null;
+        Exception? lastFailure = null;
+
+        for (var attempt = 1; attempt <= Attempts; attempt++)
         {
-            return null;
+            response?.Dispose();
+            response = null;
+
+            try
+            {
+                using var request = Authorised(HttpMethod.Get, url, accessToken);
+                response = await http.SendAsync(request, cancellationToken);
+            }
+            catch (HttpRequestException failure)
+            {
+                lastFailure = failure;
+            }
+
+            if (response is not null)
+            {
+                if (response.StatusCode == HttpStatusCode.TooManyRequests)
+                {
+                    var status = RateLimitStatus.From(response.Headers);
+                    response.Dispose();
+
+                    throw new StravaRateLimitedException(status);
+                }
+
+                if (response.IsSuccessStatusCode
+                    || (notFoundIsEmpty && response.StatusCode == HttpStatusCode.NotFound))
+                {
+                    var budget = RateLimitStatus.From(response.Headers);
+
+                    // FR-034: stop before the limit is exceeded, not after.
+                    if (budget?.IsExhausted == true)
+                    {
+                        response.Dispose();
+
+                        throw new StravaRateLimitedException(budget);
+                    }
+
+                    return response;
+                }
+
+                if ((int)response.StatusCode < 500)
+                {
+                    var status = response.StatusCode;
+                    response.Dispose();
+
+                    throw new StravaRequestFailedException(status);
+                }
+            }
+
+            if (attempt < Attempts)
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(10 * Math.Pow(2, attempt - 1)), cancellationToken);
+            }
         }
 
-        response.EnsureSuccessStatusCode();
+        var finalStatus = response?.StatusCode;
+        response?.Dispose();
 
-        return await response.Content.ReadFromJsonAsync<StravaStreamSet>(cancellationToken);
+        throw new StravaRequestFailedException(finalStatus, lastFailure);
     }
 
     private static HttpRequestMessage Authorised(HttpMethod method, string url, string accessToken)

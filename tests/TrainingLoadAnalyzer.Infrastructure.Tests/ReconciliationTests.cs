@@ -63,8 +63,12 @@ public sealed class ReconciliationTests
                 once: true)
             .Drop("athlete/activities");
 
-        await Assert.ThrowsAnyAsync<Exception>(() => harness.SyncAsync(truncated, token));
+        var (result, _) = await harness.SyncAsync(truncated, token);
 
+        // Phase 6 turned failures into outcomes rather than exceptions, so the guarantee is now
+        // carried by the completeness flag rather than by the throw aborting the walk.
+        Assert.Equal(SyncOutcome.Interrupted, result.Outcome);
+        Assert.Empty(result.Removed);
         Assert.Equal(2L, harness.Scalar("SELECT COUNT(*) FROM Activities"));
     }
 
