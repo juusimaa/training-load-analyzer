@@ -19,6 +19,21 @@ public static class TrainingMetricsCalculator
     private static readonly double AlphaFatigue = 1.0 - Math.Exp(-1.0 / 7.0);
 
     /// <summary>
+    ///   How many days of history must stand behind a figure before the zero seed has decayed far
+    ///   enough out of it for the figure to be presented without qualification (FR-014).
+    /// </summary>
+    private const int WarmUpDays = 42;
+
+    /// <summary>
+    ///   How many days back the basis of fitness is read from: its own time constant, so the
+    ///   qualifier covers the period the figure actually reflects (FR-019).
+    /// </summary>
+    private const int FitnessWindowDays = 42;
+
+    /// <summary>The same for fatigue, over its own shorter time constant (FR-019).</summary>
+    private const int FatigueWindowDays = 7;
+
+    /// <summary>
     ///   The fitness, fatigue, and form of every day in <paramref name="range"/> (FR-008).
     /// </summary>
     public static IReadOnlyList<DailyTrainingMetrics> Calculate(
@@ -73,10 +88,12 @@ public static class TrainingMetricsCalculator
         // Both metrics start at zero on the notional day before the history begins (FR-012).
         var fitness = 0.0;
         var fatigue = 0.0;
+        var reliableFrom = history[0].Day.AddDays(WarmUpDays);
         var series = new List<DailyTrainingMetrics>();
 
-        foreach (var day in history)
+        for (var i = 0; i < history.Count; i++)
         {
+            var day = history[i];
             var load = (double)day.Points;
 
             fitness += (load - fitness) * AlphaFitness;
@@ -87,10 +104,50 @@ public static class TrainingMetricsCalculator
             // accumulated effect (FR-011, FR-024).
             if (day.Day >= range.Start && day.Day <= range.End)
             {
-                series.Add(new DailyTrainingMetrics(day.Day, fitness, fatigue));
+                series.Add(new DailyTrainingMetrics(
+                    day.Day,
+                    fitness,
+                    fatigue,
+                    day.Day >= reliableFrom,
+                    BasisOver(history, i, FitnessWindowDays),
+                    BasisOver(history, i, FatigueWindowDays)));
             }
         }
 
         return series;
+    }
+
+    /// <summary>
+    ///   The combined basis of the <paramref name="windowDays"/> days ending at
+    ///   <paramref name="last"/>, that day included (FR-019).
+    /// </summary>
+    /// <remarks>
+    ///   A day contributes exactly when its own basis is not <see cref="LoadBasis.None"/> — which
+    ///   by feature 002's guarantee C12 is exactly when it had at least one session. A day that
+    ///   carried no training contributed no load, so it has nothing that could have been measured
+    ///   or estimated (FR-018). Where the window reaches back past the start of the history it is
+    ///   truncated to the days present, for the same reason.
+    /// </remarks>
+    private static LoadBasis BasisOver(IReadOnlyList<DailyTrainingLoad> history, int last, int windowDays)
+    {
+        var first = Math.Max(0, last - windowDays + 1);
+        var anyMeasured = false;
+        var anyEstimated = false;
+
+        for (var i = first; i <= last; i++)
+        {
+            anyMeasured |= history[i].Basis is LoadBasis.Measured or LoadBasis.Mixed;
+            anyEstimated |= history[i].Basis is LoadBasis.Estimated or LoadBasis.Mixed;
+        }
+
+        // Feature 002's rule, reused unchanged: one estimate among many measurements makes the
+        // whole window mixed, and the proportion is deliberately not recorded (FR-017).
+        return (anyMeasured, anyEstimated) switch
+        {
+            (true, true) => LoadBasis.Mixed,
+            (true, false) => LoadBasis.Measured,
+            (false, true) => LoadBasis.Estimated,
+            (false, false) => LoadBasis.None,
+        };
     }
 }
