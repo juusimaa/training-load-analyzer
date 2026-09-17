@@ -8,7 +8,7 @@ domain library's surface and are unchanged here; guarantees **C1–C45** continu
 [002](../../002-training-load-aggregation/contracts/domain-api.md),
 [003](../../003-fitness-fatigue-form/contracts/domain-api.md),
 [004](../../004-load-trends/contracts/domain-api.md)). This feature adds **C46–C71** and changes no
-existing guarantee.
+existing guarantee. One guarantee, **C52a**, was added during implementation and is marked as such.
 
 There is still no HTTP endpoint, CLI, or wire format the analyzer itself exposes. Strava's API is
 consumed, never served.
@@ -28,7 +28,11 @@ public sealed record StravaCredentials(string ClientId, string ClientSecret);
 
 public sealed class StravaAuthorization
 {
-    public StravaAuthorization(HttpClient http, StravaCredentials credentials, TimeProvider clock);
+    public StravaAuthorization(
+        HttpClient http,
+        StravaCredentials credentials,
+        TimeProvider clock,
+        ImportDbContext db);
 
     /// <summary>
     ///   The URL to send the athlete to. Requests activity:read_all so private activities are
@@ -69,6 +73,11 @@ public sealed class StravaAuthorization
 - **C52**: `ExchangeAsync` refuses, naming the withheld access, when Strava's grant does not cover
   private activities, and stores no partial connection. The granted scope is recorded on every
   connection that is accepted (FR-002a).
+- **C52a** *(added during implementation)*: the withheld-scope refusal and the rejected-credential
+  refusal are **unrelated exception types** — `InsufficientScopeException` and
+  `ReconnectionRequiredException`, neither assignable to the other. FR-002a requires them to be
+  distinguishable, and a shared base class would let a caller catch one while meaning the other. One
+  says "reconnect"; the other says "reconnect *and approve this*".
 
 ---
 
