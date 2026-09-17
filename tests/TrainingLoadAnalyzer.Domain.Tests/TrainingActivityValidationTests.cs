@@ -77,7 +77,9 @@ public class TrainingActivityValidationTests
         // The only way to obtain a TrainingActivity is the constructor, and it either returns a
         // fully valid instance or throws: no factory, no parameterless constructor, no static
         // state that a refused attempt could have touched.
-        Assert.Empty(typeof(TrainingActivity).GetConstructors().Where(c => c.GetParameters().Length == 0));
+        Assert.DoesNotContain(
+            typeof(TrainingActivity).GetConstructors(),
+            constructor => constructor.GetParameters().Length == 0);
         Assert.Empty(typeof(TrainingActivity).GetFields(
             System.Reflection.BindingFlags.Static
             | System.Reflection.BindingFlags.Public
