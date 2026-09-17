@@ -26,7 +26,8 @@ public static class TrainingLoadAggregator
         foreach (var day in range.Days)
         {
             var total = totalsByDay.GetValueOrDefault(day);
-            series.Add(new DailyTrainingLoad(day, total.Points, total.Basis));
+            series.Add(
+                new DailyTrainingLoad(day, total.Points, total.ActivityCount, total.Basis));
         }
 
         return series;
@@ -92,6 +93,7 @@ public static class TrainingLoadAggregator
 
             totalsByDay[day] = new DayTotal(
                 running.Points + load.Points,
+                running.ActivityCount + 1,
                 running.AnyMeasured || load.Provenance == LoadProvenance.Measured,
                 running.AnyEstimated || load.Provenance == LoadProvenance.Estimated);
         }
@@ -100,7 +102,11 @@ public static class TrainingLoadAggregator
     }
 
     /// <summary>One day's running total while it is being accumulated.</summary>
-    private readonly record struct DayTotal(decimal Points, bool AnyMeasured, bool AnyEstimated)
+    private readonly record struct DayTotal(
+        decimal Points,
+        int ActivityCount,
+        bool AnyMeasured,
+        bool AnyEstimated)
     {
         /// <summary>
         ///   FR-015: one estimate among many measurements makes the whole total mixed. The
