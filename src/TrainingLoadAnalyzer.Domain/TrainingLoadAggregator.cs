@@ -92,6 +92,7 @@ public static class TrainingLoadAggregator
 
             totalsByDay[day] = new DayTotal(
                 running.Points + load.Points,
+                running.AnyMeasured || load.Provenance == LoadProvenance.Measured,
                 running.AnyEstimated || load.Provenance == LoadProvenance.Estimated);
         }
 
@@ -99,8 +100,18 @@ public static class TrainingLoadAggregator
     }
 
     /// <summary>One day's running total while it is being accumulated.</summary>
-    private readonly record struct DayTotal(decimal Points, bool AnyEstimated)
+    private readonly record struct DayTotal(decimal Points, bool AnyMeasured, bool AnyEstimated)
     {
-        public LoadBasis Basis => AnyEstimated ? LoadBasis.Estimated : LoadBasis.Measured;
+        /// <summary>
+        ///   FR-015: one estimate among many measurements makes the whole total mixed. The
+        ///   proportion is deliberately not recorded.
+        /// </summary>
+        public LoadBasis Basis => (AnyMeasured, AnyEstimated) switch
+        {
+            (true, true) => LoadBasis.Mixed,
+            (true, false) => LoadBasis.Measured,
+            (false, true) => LoadBasis.Estimated,
+            (false, false) => LoadBasis.None,
+        };
     }
 }
