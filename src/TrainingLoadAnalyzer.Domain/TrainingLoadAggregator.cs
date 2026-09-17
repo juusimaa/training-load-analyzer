@@ -18,14 +18,15 @@ public static class TrainingLoadAggregator
         ArgumentNullException.ThrowIfNull(activities);
         ArgumentNullException.ThrowIfNull(range);
 
-        var pointsByDay = PointsByDay(activities, maximumHeartRate);
+        var totalsByDay = TotalsByDay(activities, maximumHeartRate);
         var series = new List<DailyTrainingLoad>();
 
         // Walking the range rather than grouping the activities is what makes the series
         // gap-free: a day nobody trained on has no entry to group (FR-005, FR-010).
         foreach (var day in range.Days)
         {
-            series.Add(new DailyTrainingLoad(day, pointsByDay.GetValueOrDefault(day)));
+            var total = totalsByDay.GetValueOrDefault(day);
+            series.Add(new DailyTrainingLoad(day, total.Points, total.Basis));
         }
 
         return series;
@@ -77,20 +78,29 @@ public static class TrainingLoadAggregator
     private static DateOnly DayOf(TrainingActivity activity) =>
         DateOnly.FromDateTime(activity.StartedAt.DateTime);
 
-    private static Dictionary<DateOnly, decimal> PointsByDay(
+    private static Dictionary<DateOnly, DayTotal> TotalsByDay(
         IReadOnlyCollection<TrainingActivity> activities,
         int maximumHeartRate)
     {
-        var pointsByDay = new Dictionary<DateOnly, decimal>();
+        var totalsByDay = new Dictionary<DateOnly, DayTotal>();
 
         foreach (var activity in activities)
         {
             var day = DayOf(activity);
-            pointsByDay[day] =
-                pointsByDay.GetValueOrDefault(day)
-                + activity.CalculateTrainingLoad(maximumHeartRate).Points;
+            var load = activity.CalculateTrainingLoad(maximumHeartRate);
+            var running = totalsByDay.GetValueOrDefault(day);
+
+            totalsByDay[day] = new DayTotal(
+                running.Points + load.Points,
+                running.AnyEstimated || load.Provenance == LoadProvenance.Estimated);
         }
 
-        return pointsByDay;
+        return totalsByDay;
+    }
+
+    /// <summary>One day's running total while it is being accumulated.</summary>
+    private readonly record struct DayTotal(decimal Points, bool AnyEstimated)
+    {
+        public LoadBasis Basis => AnyEstimated ? LoadBasis.Estimated : LoadBasis.Measured;
     }
 }
