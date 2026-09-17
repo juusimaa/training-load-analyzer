@@ -84,4 +84,38 @@ public class LoadBasisTests
         Assert.Equal(110m, total.Points);
         Assert.Equal(LoadBasis.Mixed, total.Basis);
     }
+
+    // User Story 3, scenario 4 (FR-014): a rest day has no basis at all. An empty set is
+    // vacuously "all measured", so a derivation written as "any estimated ? Mixed : Measured"
+    // passes every test above and fails here.
+    [Fact]
+    public void A_day_with_no_activities_reports_no_basis_rather_than_measured()
+    {
+        var daily = TrainingLoadAggregator.AggregateDaily(
+            [], OneDay(new DateOnly(2026, 3, 2)), MaximumHeartRate);
+
+        var total = Assert.Single(daily);
+        Assert.Equal(0m, total.Points);
+        Assert.Equal(LoadBasis.None, total.Basis);
+    }
+
+    // FR-015: the proportion is not recorded. One estimate among four measurements is enough to
+    // qualify the whole total.
+    [Fact]
+    public void One_estimated_activity_among_four_measured_ones_makes_the_day_mixed()
+    {
+        var day = new DateOnly(2026, 3, 2);
+        TrainingActivity[] activities =
+        [
+            MeasuredActivity("A-1", day),
+            MeasuredActivity("A-2", day),
+            MeasuredActivity("A-3", day),
+            MeasuredActivity("A-4", day),
+            EstimatedActivity("A-5", day, movingMinutes: 5),
+        ];
+
+        var daily = TrainingLoadAggregator.AggregateDaily(activities, OneDay(day), MaximumHeartRate);
+
+        Assert.Equal(LoadBasis.Mixed, Assert.Single(daily).Basis);
+    }
 }
