@@ -47,4 +47,41 @@ public class LoadBasisTests
         Assert.Equal(160m, total.Points);
         Assert.Equal(LoadBasis.Measured, total.Basis);
     }
+
+    // User Story 3, scenario 2 (FR-014).
+    [Fact]
+    public void A_day_whose_activities_are_all_estimated_reports_an_estimated_total()
+    {
+        var day = new DateOnly(2026, 3, 2);
+        TrainingActivity[] activities =
+        [
+            EstimatedActivity("A-1", day, movingMinutes: 15),
+            EstimatedActivity("A-2", day, movingMinutes: 20),
+        ];
+
+        var daily = TrainingLoadAggregator.AggregateDaily(activities, OneDay(day), MaximumHeartRate);
+
+        var total = Assert.Single(daily);
+        Assert.Equal(70m, total.Points);
+        Assert.Equal(LoadBasis.Estimated, total.Basis);
+    }
+
+    // User Story 3, scenario 3 (FR-014, FR-015): a day mixing the two is neither Measured nor
+    // Estimated - a total built partly from guesses is weaker than either.
+    [Fact]
+    public void A_day_mixing_measured_and_estimated_activities_reports_a_mixed_total()
+    {
+        var day = new DateOnly(2026, 3, 2);
+        TrainingActivity[] activities =
+        [
+            MeasuredActivity("A-1", day),
+            EstimatedActivity("A-2", day, movingMinutes: 15),
+        ];
+
+        var daily = TrainingLoadAggregator.AggregateDaily(activities, OneDay(day), MaximumHeartRate);
+
+        var total = Assert.Single(daily);
+        Assert.Equal(110m, total.Points);
+        Assert.Equal(LoadBasis.Mixed, total.Basis);
+    }
 }
