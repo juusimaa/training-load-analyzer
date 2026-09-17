@@ -35,4 +35,47 @@ public class WeeklyAggregationTests
         Assert.Equal(IsoWeek.For(new DateOnly(2026, 3, 2)), week.Week);
         Assert.Equal(120m, week.Points);
     }
+
+    // User Story 2, scenario 2 (SC-008): the week boundary is Monday, and Sunday belongs to the
+    // week that precedes it.
+    [Fact]
+    public void A_sunday_and_the_monday_after_it_fall_in_different_weeks()
+    {
+        var activities = new[]
+        {
+            EstimatedActivity("A-1", new DateOnly(2026, 3, 1), movingMinutes: 15),
+            EstimatedActivity("A-2", new DateOnly(2026, 3, 2), movingMinutes: 20),
+        };
+        var range = new DateRange(new DateOnly(2026, 3, 1), new DateOnly(2026, 3, 8));
+
+        var weekly = TrainingLoadAggregator.AggregateWeekly(activities, range, MaximumHeartRate);
+
+        Assert.Equal(2, weekly.Count);
+        Assert.Equal((2026, 9), (weekly[0].Week.Year, weekly[0].Week.Week));
+        Assert.Equal(30m, weekly[0].Points);
+        Assert.Equal((2026, 10), (weekly[1].Week.Year, weekly[1].Week.Week));
+        Assert.Equal(40m, weekly[1].Points);
+    }
+
+    // SC-008 at the exact instants: the first minute of Monday opens the new week, and the last
+    // minute of the Sunday before still belongs to the old one.
+    [Fact]
+    public void The_first_minute_of_monday_and_the_last_of_sunday_fall_in_different_weeks()
+    {
+        var lastMinuteOfSunday = new DateTimeOffset(2026, 3, 1, 23, 59, 0, TimeSpan.FromHours(2));
+        var firstMinuteOfMonday = new DateTimeOffset(2026, 3, 2, 0, 0, 0, TimeSpan.FromHours(2));
+
+        var activities = new[]
+        {
+            new TrainingActivity("A-1", lastMinuteOfSunday, TimeSpan.FromMinutes(15), ActivityType.Running),
+            new TrainingActivity("A-2", firstMinuteOfMonday, TimeSpan.FromMinutes(20), ActivityType.Running),
+        };
+        var range = new DateRange(new DateOnly(2026, 3, 1), new DateOnly(2026, 3, 8));
+
+        var weekly = TrainingLoadAggregator.AggregateWeekly(activities, range, MaximumHeartRate);
+
+        Assert.Equal(2, weekly.Count);
+        Assert.Equal(30m, weekly[0].Points);
+        Assert.Equal(40m, weekly[1].Points);
+    }
 }
