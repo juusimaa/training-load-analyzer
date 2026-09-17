@@ -21,6 +21,15 @@ public static class StravaActivityMapper
     ///   unassisted one. Treadmill runs need no entry — Strava has no treadmill sport type, and they
     ///   arrive as <c>Run</c> with <c>trainer: true</c> (FR-010b).
     /// </remarks>
+    /// <summary>
+    ///   The plausible range the session model accepts. Mirrored here rather than read from the
+    ///   domain, because the domain deliberately exposes it only as a refusal — this is
+    ///   Infrastructure declining to offer what it knows would be refused (FR-017f).
+    /// </summary>
+    private const int MinimumPlausibleBpm = 20;
+
+    private const int MaximumPlausibleBpm = 250;
+
     private static readonly Dictionary<string, ActivityType> InScope = new(StringComparer.Ordinal)
     {
         ["Run"] = ActivityType.Running,
@@ -64,5 +73,71 @@ public static class StravaActivityMapper
             // unusable activity must never abort a walk (C65).
             return new SkippedActivity(summary.Id, SkipReason.UnusableByDomain);
         }
+    }
+
+    /// <summary>
+    ///   Turns Strava's two streams into a heart-rate series, discarding samples the session model
+    ///   would refuse and reporting how many (FR-017f, FR-017g, C71).
+    /// </summary>
+    /// <remarks>
+    ///   <para>
+    ///     The discarding happens <strong>here</strong>, on the raw arrays, before
+    ///     <see cref="HeartRateSeries"/> is constructed. No domain invariant moves: Infrastructure
+    ///     simply never hands the domain a sample it would refuse. Recorded heart-rate data
+    ///     routinely contains dropouts — most often in the opening seconds, before a chest strap
+    ///     reads reliably — and treating a whole session's evidence as worthless because of them
+    ///     would send nearly every real session to estimated load (research R21).
+    ///   </para>
+    ///   <para>
+    ///     Returns null when fewer than two samples survive. Two is the fewest from which any load
+    ///     can be computed, so no threshold beyond it is invented; the activity then falls to
+    ///     FR-017d and carries estimated load.
+    ///   </para>
+    /// </remarks>
+    public static HeartRateSeries? ToSeries(StravaStreamSet streams, out int discardedSamples)
+    {
+        ArgumentNullException.ThrowIfNull(streams);
+
+        discardedSamples = 0;
+
+        // A missing stream is an absent key, not a null entry (research R20).
+        if (streams.Heartrate is null || streams.Time is null)
+        {
+            return null;
+        }
+
+        var times = streams.Time.Data;
+        var beats = streams.Heartrate.Data;
+        var usable = Math.Min(times.Count, beats.Count);
+        var samples = new List<HeartRateSample>(usable);
+        var lastTime = TimeSpan.MinValue;
+
+        for (var i = 0; i < usable; i++)
+        {
+            if (beats[i] is < MinimumPlausibleBpm or > MaximumPlausibleBpm)
+            {
+                discardedSamples++;
+
+                continue;
+            }
+
+            var at = TimeSpan.FromSeconds(times[i]);
+
+            // The series requires strictly ascending times. A repeated instant is a recording
+            // artefact on the same terms as an implausible reading.
+            if (at <= lastTime)
+            {
+                discardedSamples++;
+
+                continue;
+            }
+
+            samples.Add(new HeartRateSample(at, beats[i]));
+            lastTime = at;
+        }
+
+        discardedSamples += beats.Count - usable;
+
+        return samples.Count < 2 ? null : new HeartRateSeries(samples);
     }
 }

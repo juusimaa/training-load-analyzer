@@ -148,4 +148,77 @@ public sealed class ActivityMappingTests
         Assert.Equal(first.Activity.MovingTime, second.Activity.MovingTime);
         Assert.Equal(first.Activity.Type, second.Activity.Type);
     }
+
+    // T074: scenario US2.12, FR-017f, FR-017g — THE test that keeps the measured window worth
+    // having. Stream S1 opens with two implausible samples, as a real chest strap does before it
+    // reads. Without the discarding rule HeartRateSeries refuses the whole series, the session
+    // falls to estimated load, and the 180-day window spends a request per activity to achieve
+    // nothing (research R21).
+    [Fact]
+    public void ImplausibleSamplesAreDiscardedAndTheRestOfTheSeriesIsKept()
+    {
+        var streams = new StravaStreamSet
+        {
+            Time = new StravaStream { Data = [0, 60, 120, 180] },
+            Heartrate = new StravaStream { Data = [0, 0, 142, 150] },
+        };
+
+        var mapped = Assert.IsType<MappedActivity>(
+            StravaActivityMapper.Map(Summary(), StravaActivityMapper.ToSeries(streams, out var discarded)));
+
+        Assert.Equal(2, discarded);
+        Assert.Equal(2, mapped.Activity.HeartRate!.Samples.Count);
+        Assert.Equal(142, mapped.Activity.HeartRate.Samples[0].Bpm);
+        Assert.Equal(TimeSpan.FromSeconds(120), mapped.Activity.HeartRate.Samples[0].TimeFromStart);
+
+        // The point of all of it: this session carries measured load, not estimated.
+        Assert.Equal(LoadProvenance.Measured, mapped.Activity.CalculateTrainingLoad(190).Provenance);
+    }
+
+    // T076: scenario US2.13, FR-017f's floor. Two is the fewest samples from which any load can be
+    // computed, so no threshold beyond it is invented.
+    [Fact]
+    public void ASeriesWithFewerThanTwoSurvivingSamplesIsUnusable()
+    {
+        var streams = new StravaStreamSet
+        {
+            Time = new StravaStream { Data = [0, 60, 120] },
+            Heartrate = new StravaStream { Data = [0, 0, 0] },
+        };
+
+        var series = StravaActivityMapper.ToSeries(streams, out var discarded);
+
+        Assert.Null(series);
+        Assert.Equal(3, discarded);
+
+        var mapped = Assert.IsType<MappedActivity>(StravaActivityMapper.Map(Summary(), series));
+        Assert.Equal(LoadProvenance.Estimated, mapped.Activity.CalculateTrainingLoad(190).Provenance);
+    }
+
+    // T077: stream fixture S4, research R20 — a missing stream is an ABSENT KEY, not a null. This
+    // must be key-checked rather than indexed.
+    [Fact]
+    public void AResponseWithNoHeartrateStreamYieldsNoSeriesAndNoError()
+    {
+        var streams = new StravaStreamSet { Time = new StravaStream { Data = [0, 60] } };
+
+        Assert.Null(StravaActivityMapper.ToSeries(streams, out var discarded));
+        Assert.Equal(0, discarded);
+    }
+
+    // Stream fixture S3 — nothing implausible, nothing discarded.
+    [Fact]
+    public void ACleanSeriesLosesNothing()
+    {
+        var streams = new StravaStreamSet
+        {
+            Time = new StravaStream { Data = [0, 300, 600] },
+            Heartrate = new StravaStream { Data = [95, 142, 171] },
+        };
+
+        var series = StravaActivityMapper.ToSeries(streams, out var discarded);
+
+        Assert.Equal(0, discarded);
+        Assert.Equal(3, series!.Samples.Count);
+    }
 }
