@@ -78,4 +78,27 @@ public class WeeklyAggregationTests
         Assert.Equal(30m, weekly[0].Points);
         Assert.Equal(40m, weekly[1].Points);
     }
+
+    // User Story 2, scenario 3 (FR-006, FR-007): a week nobody trained in is a real zero week,
+    // not a missing entry. 2026-03-02 to 2026-03-29 is exactly four ISO weeks, W10 to W13.
+    [Fact]
+    public void Every_week_the_range_touches_is_reported_including_weeks_with_no_training()
+    {
+        var activities = new[]
+        {
+            EstimatedActivity("A-1", new DateOnly(2026, 3, 3), movingMinutes: 15),   // W10
+            EstimatedActivity("A-2", new DateOnly(2026, 3, 10), movingMinutes: 20),  // W11
+            EstimatedActivity("A-3", new DateOnly(2026, 3, 24), movingMinutes: 25),  // W13
+        };
+        var range = new DateRange(new DateOnly(2026, 3, 2), new DateOnly(2026, 3, 29));
+
+        var weekly = TrainingLoadAggregator.AggregateWeekly(activities, range, MaximumHeartRate);
+
+        Assert.Equal(4, weekly.Count);
+        Assert.Equal([10, 11, 12, 13], weekly.Select(w => w.Week.Week));
+        Assert.Equal(30m, weekly[0].Points);
+        Assert.Equal(40m, weekly[1].Points);
+        Assert.Equal(0m, weekly[2].Points);
+        Assert.Equal(50m, weekly[3].Points);
+    }
 }
