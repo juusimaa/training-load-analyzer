@@ -1,0 +1,151 @@
+using TrainingLoadAnalyzer.Domain;
+using TrainingLoadAnalyzer.Infrastructure.Strava;
+using TrainingLoadAnalyzer.Infrastructure.Sync;
+
+namespace TrainingLoadAnalyzer.Infrastructure.Tests;
+
+/// <summary>User Story 2 — turning Strava's activities into the analyzer's sessions.</summary>
+public sealed class ActivityMappingTests
+{
+    /// <summary>The fixture summaries from tasks.md. Purpose-built and anonymised (FR-043).</summary>
+    private static StravaActivitySummary Summary(
+        string id = "11000000001",
+        string sportType = "Run",
+        string startDate = "2026-09-10T04:30:00Z",
+        int utcOffset = 10800,
+        int movingTime = 3120,
+        int elapsedTime = 4080,
+        bool hasHeartrate = true,
+        bool manual = false,
+        bool isPrivate = false,
+        bool trainer = false) => new()
+        {
+            Id = id,
+            SportType = sportType,
+            StartDate = DateTimeOffset.Parse(startDate, System.Globalization.CultureInfo.InvariantCulture),
+            UtcOffset = utcOffset,
+            MovingTime = movingTime,
+            ElapsedTime = elapsedTime,
+            HasHeartrate = hasHeartrate,
+            Manual = manual,
+            Private = isPrivate,
+            Trainer = trainer,
+        };
+
+    // T055: FR-009, FR-010, scenario US2.11.
+    [Theory]
+    [InlineData("Run", ActivityType.Running)]
+    [InlineData("TrailRun", ActivityType.Running)]
+    [InlineData("VirtualRun", ActivityType.Running)]
+    [InlineData("Ride", ActivityType.Cycling)]
+    [InlineData("GravelRide", ActivityType.Cycling)]
+    [InlineData("MountainBikeRide", ActivityType.Cycling)]
+    [InlineData("VirtualRide", ActivityType.Cycling)]
+    public void EverySportTypeInScopeMapsToItsActivityType(string sportType, ActivityType expected)
+    {
+        var mapped = StravaActivityMapper.Map(Summary(sportType: sportType), heartRate: null);
+
+        Assert.Equal(expected, Assert.IsType<MappedActivity>(mapped).Activity.Type);
+    }
+
+    // T057: scenarios US2.1 and US2.10 — everything else is skipped, not forced into a type.
+    // T059: the discriminating check. EMountainBikeRide is the sport type most easily forgotten,
+    // and a rule that pattern-matched on names containing "MountainBike" would wrongly accept it.
+    [Theory]
+    [InlineData("Swim")]
+    [InlineData("EBikeRide")]
+    [InlineData("EMountainBikeRide")]
+    [InlineData("Hike")]
+    [InlineData("WeightTraining")]
+    [InlineData("Handcycle")]
+    [InlineData("Velomobile")]
+    [InlineData("SomeSportStravaAddsLater")]
+    public void EverySportTypeOutOfScopeIsSkippedWithItsReason(string sportType)
+    {
+        var mapped = StravaActivityMapper.Map(Summary(id: "id-x", sportType: sportType), heartRate: null);
+
+        var skipped = Assert.IsType<SkippedActivity>(mapped);
+        Assert.Equal(SkipReason.SportOutOfScope, skipped.Reason);
+        Assert.Equal("id-x", skipped.ExternalId);
+    }
+
+    // T060: FR-010b — Strava has no treadmill sport type, so indoor training needs no special case.
+    [Fact]
+    public void AnIndoorRunIsARunLikeAnyOther()
+    {
+        var mapped = StravaActivityMapper.Map(Summary(trainer: true), heartRate: null);
+
+        Assert.Equal(ActivityType.Running, Assert.IsType<MappedActivity>(mapped).Activity.Type);
+    }
+
+    // T061: FR-012, FR-013 — visibility is not a statement about whether the training happened,
+    // and a session the athlete typed in is still training.
+    [Theory]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    public void PrivateAndManualActivitiesAreImportedLikeAnyOther(bool isPrivate, bool manual)
+    {
+        var mapped = StravaActivityMapper.Map(Summary(isPrivate: isPrivate, manual: manual), heartRate: null);
+
+        Assert.IsType<MappedActivity>(mapped);
+    }
+
+    // T062: scenario US2.3, FR-015 — the instant and the athlete's offset, so the session falls on
+    // the local day they trained on.
+    [Fact]
+    public void TheStartCarriesTheAthletesOffsetFromUtc()
+    {
+        var mapped = Assert.IsType<MappedActivity>(StravaActivityMapper.Map(Summary(), heartRate: null));
+
+        Assert.True(
+            new DateTimeOffset(2026, 9, 10, 7, 30, 0, TimeSpan.FromHours(3))
+                .EqualsExact(mapped.Activity.StartedAt));
+        Assert.Equal(new DateOnly(2026, 9, 10), DateOnly.FromDateTime(mapped.Activity.StartedAt.Date));
+    }
+
+    // T064: scenario US2.4, FR-016 — moving time, never elapsed time.
+    [Fact]
+    public void MovingTimeIsUsedAndElapsedTimeIsNot()
+    {
+        var mapped = Assert.IsType<MappedActivity>(StravaActivityMapper.Map(Summary(), heartRate: null));
+
+        Assert.Equal(TimeSpan.FromMinutes(52), mapped.Activity.MovingTime);
+        Assert.NotEqual(TimeSpan.FromMinutes(68), mapped.Activity.MovingTime);
+    }
+
+    // T066: FR-014 — the identifier is stored verbatim.
+    [Fact]
+    public void TheExternalIdentifierIsCarriedVerbatim()
+    {
+        var mapped = Assert.IsType<MappedActivity>(StravaActivityMapper.Map(Summary(), heartRate: null));
+
+        Assert.Equal("11000000001", mapped.Activity.ExternalId);
+    }
+
+    // T067: scenario US2.5, FR-011 — A7 has no moving time, so the domain refuses it. That refusal
+    // is a fact about one activity, not about the import.
+    [Fact]
+    public void AnActivityTheDomainRefusesIsSkippedWithItsReason()
+    {
+        var mapped = StravaActivityMapper.Map(
+            Summary(id: "11000000007", movingTime: 0, hasHeartrate: false),
+            heartRate: null);
+
+        var skipped = Assert.IsType<SkippedActivity>(mapped);
+        Assert.Equal(SkipReason.UnusableByDomain, skipped.Reason);
+        Assert.Equal("11000000007", skipped.ExternalId);
+    }
+
+    // T069: FR-019 — mapping is a pure function of its inputs.
+    [Fact]
+    public void MappingTheSameSummaryTwiceProducesTheSameSession()
+    {
+        var first = Assert.IsType<MappedActivity>(StravaActivityMapper.Map(Summary(), heartRate: null));
+        var second = Assert.IsType<MappedActivity>(StravaActivityMapper.Map(Summary(), heartRate: null));
+
+        Assert.Equal(first.Activity.ExternalId, second.Activity.ExternalId);
+        Assert.True(first.Activity.StartedAt.EqualsExact(second.Activity.StartedAt));
+        Assert.Equal(first.Activity.MovingTime, second.Activity.MovingTime);
+        Assert.Equal(first.Activity.Type, second.Activity.Type);
+    }
+}

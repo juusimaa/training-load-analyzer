@@ -63,5 +63,13 @@ internal sealed class SqliteFixture<TContext> : IDisposable
         return command.ExecuteScalar();
     }
 
+    /// <summary>Runs raw SQL, for corrupting a row deliberately (C57).</summary>
+    public void Execute(string sql)
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        command.ExecuteNonQuery();
+    }
+
     public void Dispose() => connection.Dispose();
 }
