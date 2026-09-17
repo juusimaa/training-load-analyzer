@@ -55,3 +55,25 @@
 - Content Quality and Feature Readiness items passed on the first validation iteration. The second
   iteration, after the clarifications were applied, passed every item.
 - **Ready for `/speckit-plan`.** `/speckit-clarify` has nothing left to ask.
+
+## Re-validation after planning (2026-09-17)
+
+Planning amended the specification twice, so the checklist was re-run against the amended text. All 16
+items still pass; the spec grew from 55 to 58 functional requirements.
+
+- **FR-002a** — access granted more narrowly than requested is refused, naming what was withheld.
+  Designing the connection flow surfaced that Strava lets an athlete approve some requested scopes and
+  decline others, which the spec had not covered. Silently accepting would have under-reported the
+  athlete's training undetectably ([research.md](../research.md) R14).
+- **FR-017f, FR-017g** — implausible heart-rate samples are discarded, counted, and reported; a series
+  is unusable only when fewer than two samples survive. The original Assumption forbidding any repair
+  would have sent nearly every real session to estimated load, cancelling the 180-day measured window
+  the developer had deliberately chosen (R21). The Assumption was rewritten to scope "does not repair"
+  to moving time and sport type and to state the heart-rate rule explicitly.
+- Also added during planning: `EMountainBikeRide`, `Handcycle` and `Velomobile` are now named in
+  FR-010's ignored list, so each exclusion reads as a decision rather than an oversight. This changed
+  no behaviour — all four were already excluded by the catch-all.
+- One item to note for the completion review rather than a checklist failure: the specification now
+  names Strava sport types, scope semantics, and a 180-day window. Each is the provider's vocabulary or
+  a value Principle VII requires be pinned in writing, not a leaked implementation choice. The spec
+  still names no endpoint, library, storage engine, or project.

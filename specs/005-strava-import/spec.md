@@ -47,6 +47,9 @@ activities imported at all.
 6. **Given** activities already imported for one Strava athlete, **When** an authorization completes
    for a different Strava athlete, **Then** the connection is refused and the refusal names the
    mismatch, rather than mixing two athletes' training into one history.
+7. **Given** an athlete who approves the consent page but declines access to their private activities,
+   **When** the analyzer exchanges the returned grant, **Then** the connection is refused, the refusal
+   names the access that was withheld, and no partial connection is stored.
 
 ---
 
@@ -100,6 +103,13 @@ ones are accounted for by reason. Testable with no incremental logic and no rate
     analyzer's scope.
 11. **Given** Strava activities recorded as a trail run and as a gravel ride, **When** they are
     imported, **Then** they are stored as a running session and a cycling session respectively.
+12. **Given** a Strava run inside the measured window whose heart-rate series opens with eight
+    implausible samples before the strap reads reliably, **When** it is imported, **Then** those eight
+    samples are discarded, the rest of the series is stored, the session carries measured load, and the
+    sync summary reports that eight samples were discarded.
+13. **Given** a Strava ride whose heart-rate series contains only implausible samples, **When** it is
+    imported, **Then** the session is stored without a series and carries estimated load, because fewer
+    than two samples survived.
 
 ---
 
@@ -201,6 +211,9 @@ resume point. Testable without any real network.
 - **An activity with heart-rate data that falls outside the measured window.** Imported without its
   series, carrying estimated load (FR-017, FR-017a). Nothing about it is skipped or flagged as a
   problem; the basis on every downstream figure already states that the load was estimated.
+- **A heart-rate series containing dropouts.** The implausible samples are discarded, the rest of the
+  series is kept, and the count is reported (FR-017f, FR-017g). Only a series with fewer than two
+  surviving samples is unusable.
 - **A heart-rate series that fails to arrive.** The session is stored anyway with estimated load, the
   outstanding series is recorded with its reason, and the resume point stays behind the activity so the
   next sync retries it (FR-017d, FR-017e).
@@ -227,6 +240,9 @@ resume point. Testable without any real network.
   activity or the sync (FR-020).
 - **The access credential expiring mid-sync.** Renewed and the sync continues; the athlete is not
   asked to do anything (FR-004).
+- **Access granted more narrowly than requested.** Refused, naming what was withheld (FR-002a). The
+  import would otherwise look complete while silently omitting every private activity the athlete has
+  recorded.
 - **Authorization revoked on Strava while a sync is running.** The sync stops with a
   reconnection-required outcome, keeping what it has already stored (FR-006).
 - **A sync interrupted between storing activities and recording the resume point.** The next sync
@@ -244,6 +260,15 @@ resume point. Testable without any real network.
 - **FR-002**: The system MUST request only read access to athlete profile and activity data, including
   activities the athlete has marked private, and MUST NOT request permission to write, modify, or
   upload anything to Strava.
+- **FR-002a**: The system MUST verify that Strava granted the access that was requested, and MUST
+  refuse to complete a connection when access covering the athlete's private activities was withheld,
+  naming the access that was not granted. An athlete may approve some requested scopes and decline
+  others on Strava's consent page, and the response reports what was actually granted rather than what
+  was asked for. Accepting a narrower grant would exclude every private activity from every import,
+  under-reporting the athlete's training in a way no figure downstream could detect — the same failure
+  FR-006 exists to prevent, arriving through a different door. A refusal under this rule MUST be
+  distinguishable from a rejected credential, and MUST tell the athlete what to approve when they
+  reconnect.
 - **FR-003**: The system MUST store the resulting credentials durably, so a connection survives a
   restart of the analyzer and the athlete authorizes once rather than once per session.
 - **FR-004**: The system MUST renew an expired access credential automatically using the stored
@@ -272,8 +297,10 @@ resume point. Testable without any real network.
   fixed table, and MUST NOT extend, infer, or default beyond it:
   - **Running**: `Run`, `TrailRun`, `VirtualRun`.
   - **Cycling**: `Ride`, `GravelRide`, `MountainBikeRide`, `VirtualRide`.
-  - **Ignored**: `EBikeRide`, and every other sport type Strava reports, including sport types Strava
-    introduces after this specification is written.
+  - **Ignored**: `EBikeRide` and `EMountainBikeRide`, both named here so their exclusion is visibly
+    deliberate rather than incidental; `Handcycle` and `Velomobile`, which are cycling in a sense this
+    analyzer's load model does not cover; and every other sport type Strava reports, including sport
+    types Strava introduces after this specification is written.
   A sport type absent from this table MUST be ignored under FR-009 and reported as out of scope under
   FR-038. It MUST NOT be guessed at by name, by pattern, or by similarity to a listed type.
 - **FR-010a**: The system MUST classify from the activity's sport type rather than from any older or
@@ -329,6 +356,16 @@ resume point. Testable without any real network.
   itself (FR-029), so that the next sync re-reads it and retries the retrieval without any separate
   queue of outstanding work being kept. Once the activity has aged out of the measured window it no
   longer qualifies under FR-017, and it MUST NOT hold the resume point back any further.
+- **FR-017f**: The system MUST discard heart-rate samples whose value falls outside the plausible range
+  the session model accepts, MUST retain every other sample with the time it was recorded at, and MUST
+  treat the series as unusable under FR-017d only when fewer than two samples survive. Two is the
+  fewest from which any load can be computed, so no threshold beyond it is invented. Recorded
+  heart-rate data routinely contains dropouts — most often in the opening seconds, before a chest strap
+  reads reliably — and treating a whole session's evidence as worthless because of them would send
+  nearly every real session to estimated load, defeating the measured window of FR-017a.
+- **FR-017g**: The system MUST report, for every activity whose series had samples discarded, how many
+  were discarded (FR-038). Discarding a sample changes the resulting load figure, because the sample
+  before it then covers the gap, so the discarding MUST be visible rather than silent.
 - **FR-018**: The mapping MUST be one-directional and MUST NOT introduce Strava concepts, field names,
   identifier formats, response shapes, or enumerations into the analyzer's domain. Strava's data
   shapes MUST remain confined to the integration.
@@ -458,7 +495,8 @@ resume point. Testable without any real network.
   heart-rate series is worth the request it costs. A property of the sync, not of the session: it
   decides what is retrieved, never what is retained.
 - **Sync Result**: What one sync did — imported, updated, removed, and skipped counts, the reason for
-  each skip and the identifier of each removal, whether it completed or stopped early, why it stopped,
+  each skip, the identifier of each removal, how many heart-rate samples were discarded and from which
+  activities, whether it completed or stopped early, why it stopped,
   and when it may be retried. Reported to the athlete; carries no credentials.
 - **Skipped Activity**: One activity the sync declined to store, with the identifier it was known by and
   the reason — out of scope by sport, or unusable to the session model. Counted and reported rather than
@@ -489,7 +527,8 @@ resume point. Testable without any real network.
 - **SC-008**: A sync that stopped early can always be told apart from one that completed, both in what
   it reports to the athlete and in the state it leaves behind.
 - **SC-009**: Revoked authorization is reported as needing reconnection and is never presented as an
-  athlete who has not trained.
+  athlete who has not trained, and access granted more narrowly than requested is refused outright
+  rather than producing a history quietly missing the athlete's private activities.
 - **SC-010**: No credential appears in any log, console output, sync summary, or committed file.
 - **SC-011**: Every session in the athlete's last 180 days whose activity Strava records heart-rate
   data for carries measured load, and a session that once carried measured load never silently reverts
@@ -526,7 +565,9 @@ resume point. Testable without any real network.
   it already states that basis, so nothing is silently degraded.
 - **Electrically assisted rides are excluded deliberately.** Load for a session without a heart-rate
   series is estimated from moving time, and an assisted hour is not an unassisted hour. Including them
-  would inflate an athlete's fitness with training they did not do. Should a future feature make that
+  would inflate an athlete's fitness with training they did not do. Strava has two such sport types,
+  `EBikeRide` and `EMountainBikeRide`, and both are named in FR-010 so that neither is excluded merely
+  by having been forgotten. Should a future feature make that
   distinction safely — measured load for every session, say — including them is a specification
   amendment, not a mapping tweak.
 - **Edits and deletions are reconciled only over history actually re-read.** Strava's listing is
@@ -550,9 +591,13 @@ resume point. Testable without any real network.
   This specification fixes what the sync does and reports, not how it is presented.
 - **Nothing is ever sent to Strava.** Read access only (FR-002). Editing activities, uploading
   activities, and pushing any analyzer-derived value back are non-goals of the project.
-- **Strava's own data is taken as correct.** The import does not second-guess a moving time, correct a
-  sport type, or repair a heart-rate series. It maps what Strava reports, or it declines the activity
-  and says why (FR-011).
+- **Strava's own data is taken as correct, with one stated exception.** The import does not
+  second-guess a moving time, re-derive a sport type, or reinterpret what Strava reports about an
+  activity: it maps what Strava reports, or it declines the activity and says why (FR-011). The
+  exception is implausible heart-rate samples, which FR-017f discards and FR-017g counts. A dropout is
+  a recording artefact rather than a measurement, discarding one lets the preceding sample cover the
+  gap — which is what the load calculation already does for every interval between samples — and the
+  alternative is to throw away a whole session's measured evidence because of a few seconds of it.
 - **Strava MCP remains a development-time aid only.** It may be used to discover real data shapes and
   edge cases while writing the plan and the tests; it is not the runtime integration, and anything
   learned from real data is reduced to anonymized, purpose-built fixtures (FR-043).
