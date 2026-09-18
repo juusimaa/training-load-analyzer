@@ -1,0 +1,95 @@
+@page "/"
+@rendermode InteractiveServer
+@inject DashboardReader Reader
+@inject SyncCoordinator Sync
+
+<PageTitle>Training Load</PageTitle>
+
+<h1>Training Load</h1>
+
+<SyncPanel Status="syncStatus" OnSync="RunSyncAsync" />
+
+@if (view is null)
+{
+    <p class="loading">Reading your training history…</p>
+}
+else if (view.IsUnavailable)
+{
+    @* The edge case: the stored data could not be read. The athlete is told, rather than shown a
+       stack trace or a page of zeroes (C87). *@
+    <section class="empty">
+        <h2>Data unavailable</h2>
+        <p>Your stored training history could not be read. Nothing has been lost — try again, and
+           if it persists, the application log says why.</p>
+    </section>
+}
+else if (!view.HasActivities)
+{
+    <section class="empty">
+        <h2>No activities recorded</h2>
+
+        @if (view.IsStravaConnected)
+        {
+            <p>Your Strava account is connected, but nothing has been imported yet.
+               Sync to bring your training in.</p>
+        }
+        else
+        {
+            <p>Connect your Strava account to bring your training in.</p>
+            <a class="connect" href="/connect">Connect Strava</a>
+        }
+    </section>
+}
+else
+{
+    <section class="status">
+        <MetricTile Label="Fitness"
+                    Value="view.Current?.Fitness"
+                    Basis="view.Current?.FitnessBasis ?? LoadBasis.None"
+                    IsReliable="view.Current?.IsReliable ?? false" />
+        <MetricTile Label="Fatigue"
+                    Value="view.Current?.Fatigue"
+                    Basis="view.Current?.FatigueBasis ?? LoadBasis.None"
+                    IsReliable="view.Current?.IsReliable ?? false" />
+        <MetricTile Label="Form"
+                    Value="view.Current?.Form"
+                    Basis="view.Current?.FormBasis ?? LoadBasis.None"
+                    IsReliable="view.Current?.IsReliable ?? false" />
+    </section>
+
+    <section class="week">
+        <WeeklyLoadPanel Week="view.CurrentWeek" Trend="view.Trend" />
+    </section>
+
+    <section class="trends">
+        <MetricsChartView Metrics="view.Metrics" HasEnoughHistory="view.HasEnoughHistoryForChart" />
+    </section>
+
+    <section class="activities">
+        <RecentActivityList Activities="view.Recent" />
+    </section>
+}
+
+@code {
+    private DashboardView? view;
+
+    // Read from the singleton rather than held here. A reload is a new circuit, so a sync started
+    // before it is still running afterwards and the page must be able to say so (FR-012, C93).
+    private SyncStatus syncStatus = SyncStatus.Never;
+
+    protected override async Task OnInitializedAsync()
+    {
+        syncStatus = Sync.Status;
+        view = await Reader.ReadAsync(CancellationToken.None);
+    }
+
+    /// <summary>
+    ///   FR-009 and US5 scenario 2. The view is re-read rather than patched: it is derived, and
+    ///   applying a delta to it by hand is how the tiles and the chart start to disagree (C80).
+    /// </summary>
+    private async Task RunSyncAsync()
+    {
+        syncStatus = await Sync.RunAsync(CancellationToken.None);
+        view = await Reader.ReadAsync(CancellationToken.None);
+    }
+}

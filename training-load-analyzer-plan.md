@@ -560,7 +560,7 @@ Decisions that are not yet made, are needed by a specific feature, and should be
 
 ### 22.1 Blazor render mode
 
-**Status:** open. **Needed before:** Feature 6 (Dashboard), days 11–12.
+**Status:** decided 2026-09-18 — **Interactive Server**. See [specs/006-dashboard/research.md](specs/006-dashboard/research.md) R1.
 
 The Blazor Web App template offers Interactive Server, Interactive WebAssembly, and Interactive Auto. The choice is not a UI detail — it decides how many projects the solution needs.
 

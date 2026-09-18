@@ -1,0 +1,31 @@
+@* One headline figure: fitness, fatigue or form (FR-001 - FR-003). *@
+
+<div class="tile">
+    <span class="tile-label">@Label</span>
+    <span class="tile-value">@Display.Metric(Value)</span>
+
+    @if (Value is not null && !IsReliable)
+    {
+        @* 003 FR-014: fewer than 42 days of history behind it, so the zero it started from has
+           not decayed out yet. Said rather than styled, so it survives a screen reader. *@
+        <span class="tile-note">still settling</span>
+    }
+
+    @if (Value is not null && Basis is LoadBasis.Estimated or LoadBasis.Mixed)
+    {
+        <span class="tile-note">@(Basis == LoadBasis.Mixed ? "partly estimated" : "estimated")</span>
+    }
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; } = string.Empty;
+
+    /// <summary>Null when there is no history to compute it from (US1 scenario 2).</summary>
+    [Parameter] public double? Value { get; set; }
+
+    /// <summary>How far the figure can be trusted, from feature 003 (003 FR-019).</summary>
+    [Parameter] public LoadBasis Basis { get; set; } = LoadBasis.None;
+
+    /// <summary>False until 42 days of history stand behind the figure (003 FR-014).</summary>
+    [Parameter] public bool IsReliable { get; set; }
+}

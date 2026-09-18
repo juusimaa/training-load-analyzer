@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+  </PropertyGroup>
+
+  <!--
+    No explicit xunit.runner.json Content item, unlike the Domain and Infrastructure test
+    projects. Microsoft.NET.Sdk.Razor - needed here to compile .razor components - already
+    includes content by default, so the explicit item is a duplicate and fails the build with
+    NETSDK1022 (research R10).
+  -->
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3.mtp-v2" Version="4.0.1" />
+    <PackageReference Include="bunit" Version="2.11.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.2" />
+  </ItemGroup>
+
+  <!--
+    Feature 005's two test doubles, linked rather than copied or referenced. Both are internal,
+    so a project reference would not expose them, and a copy would be two files to keep in step
+    (research R17).
+  -->
+  <ItemGroup>
+    <Compile Include="..\TrainingLoadAnalyzer.Infrastructure.Tests\Fakes\SqliteFixture.cs" Link="Fakes\SqliteFixture.cs" />
+    <Compile Include="..\TrainingLoadAnalyzer.Infrastructure.Tests\Fakes\StubHttpMessageHandler.cs" Link="Fakes\StubHttpMessageHandler.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TrainingLoadAnalyzer.Web\TrainingLoadAnalyzer.Web.csproj" />
+  </ItemGroup>
+
+</Project>
