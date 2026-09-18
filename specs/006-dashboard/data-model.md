@@ -75,7 +75,7 @@ public sealed record DashboardView
 
     // Derived, never stored.
     public DailyTrainingMetrics? Current => Metrics.Count == 0 ? null : Metrics[^1];
-    public bool HasActivities => Recent.Count > 0;
+    public bool HasActivities => Metrics.Count > 0;
     public bool HasEnoughHistoryForChart => Metrics.Count >= MinimumChartDays;
 }
 ```
@@ -97,8 +97,10 @@ last point are therefore the same figures by construction and cannot be made to 
 device `DailyTrainingMetrics.Form` and `WeeklyLoadTrend.AbsoluteChange` already use. SC-002 holds
 structurally rather than by maintenance.
 
-`HasActivities` is derived from `Recent` for the same reason: there is no flag that can say "no
-activities" while seven of them are listed.
+`HasActivities` is derived for the same reason — no independent flag can drift out of step with the
+figures. It comes from `Metrics` rather than from `Recent` because the metrics series *is* the history,
+while the recent list is one display slice of it. If that slice ever came back empty by mistake, this
+way the page shows a dashboard with an empty list rather than hiding the dashboard entirely.
 
 ### `DashboardViewBuilder`
 

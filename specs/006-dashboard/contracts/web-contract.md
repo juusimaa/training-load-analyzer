@@ -122,7 +122,11 @@ public static class DashboardViewBuilder
 ```
 
 **C79** — `Build` is pure. It reads no clock, no storage, no environment and no static mutable state,
-and the order of `activities` does not affect the result (continuing 002 C13).
+and the order of `activities` does not affect the result (continuing 002 C13). "Equal" here means every
+value the view carries, asserted member by member: `DashboardView` is a record, and a record compares
+its collection members by reference, so two separate builds are never `Equals` however identical their
+contents. Giving the record a structural equality nobody needs, in order to satisfy a test, would be
+the wrong way round.
 
 **C80** — `Current` is `Metrics[^1]` and is derived on every read, so the headline tiles and the chart's
 final point can never disagree (**SC-002**).
@@ -150,7 +154,8 @@ ascending — it is `TrainingMetricsCalculator`'s output unmodified (**FR-006**)
 public sealed class DashboardReader(
     IDbContextFactory<ImportDbContext> factory,
     TimeProvider clock,
-    AthleteSettings settings)
+    AthleteSettings settings,
+    ILogger<DashboardReader> logger)
 {
     public Task<DashboardView> ReadAsync(CancellationToken cancellationToken);
 }
@@ -160,7 +165,10 @@ public sealed class DashboardReader(
 so no change-tracking state is shared between dashboard loads or between circuits (**R12**).
 
 **C87** — `ReadAsync` returns a view with `IsUnavailable` set rather than propagating an exception when
-the stored data cannot be read — a corrupt row included (**R19**, edge case).
+the stored data cannot be read — a corrupt row included (**R19**, edge case). It catches named exception
+types, never `Exception`, and **never** `OperationCanceledException`: a cancelled request is not a
+corrupt database. Each occurrence is logged, because the athlete's "Data unavailable" says what happened
+and nothing about why (Principle VI).
 
 **C88** — `ReadAsync` derives `today` from `TimeProvider.GetLocalNow()`, matching how feature 002
 attributes an activity to a calendar day (**R22**).
