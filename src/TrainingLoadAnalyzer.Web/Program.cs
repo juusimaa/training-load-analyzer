@@ -1,11 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using TrainingLoadAnalyzer.Infrastructure.Persistence;
 using TrainingLoadAnalyzer.Infrastructure.Strava;
+using TrainingLoadAnalyzer.Infrastructure.Sync;
 using TrainingLoadAnalyzer.Web;
 using TrainingLoadAnalyzer.Web.Components;
+using TrainingLoadAnalyzer.Web.Endpoints;
 using TrainingLoadAnalyzer.Web.Features.Dashboard;
+using TrainingLoadAnalyzer.Web.Features.Sync;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// The one name the host and its tests have to agree on.
+const string StravaHttpClient = "Strava";
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -29,8 +35,25 @@ builder.Services.AddSingleton(new StravaCredentials(
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddHttpClient<StravaApiClient>();
 
+// A named client rather than a typed one, because StravaAuthorization takes a plain HttpClient and
+// builds its own OAuth client from it. Named so a test can replace its handler (research R18).
+builder.Services.AddHttpClient(StravaHttpClient);
+
+builder.Services.AddScoped(sp => new StravaAuthorization(
+    sp.GetRequiredService<IHttpClientFactory>().CreateClient(StravaHttpClient),
+    sp.GetRequiredService<StravaCredentials>(),
+    sp.GetRequiredService<TimeProvider>(),
+    sp.GetRequiredService<ImportDbContext>()));
+
 // Scoped: it creates and disposes its own context per read, so it holds nothing across a circuit.
 builder.Services.AddScoped<DashboardReader>();
+
+builder.Services.AddScoped<ActivityStore>();
+builder.Services.AddScoped<StravaActivitySync>();
+
+// A singleton, so its state outlives any one circuit - a page refresh starts a new one - and so the
+// one-at-a-time guard covers the whole process rather than one browser tab (research R13).
+builder.Services.AddSingleton<SyncCoordinator>();
 
 var app = builder.Build();
 
@@ -51,6 +74,7 @@ app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages:
 app.UseAntiforgery();
 
 app.MapStaticAssets();
+app.MapStravaConnect();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 

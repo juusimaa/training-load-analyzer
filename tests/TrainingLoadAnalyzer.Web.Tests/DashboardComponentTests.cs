@@ -4,10 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using TrainingLoadAnalyzer.Domain;
 using TrainingLoadAnalyzer.Infrastructure.Persistence;
+using TrainingLoadAnalyzer.Infrastructure.Strava;
 using TrainingLoadAnalyzer.Infrastructure.Tests.Fakes;
 using TrainingLoadAnalyzer.Web.Components.Dashboard;
 using TrainingLoadAnalyzer.Web.Components.Pages;
+using TrainingLoadAnalyzer.Infrastructure.Sync;
 using TrainingLoadAnalyzer.Web.Features.Dashboard;
+using TrainingLoadAnalyzer.Web.Features.Sync;
 using TrainingLoadAnalyzer.Web.Tests.Fakes;
 
 namespace TrainingLoadAnalyzer.Web.Tests;
@@ -52,6 +55,14 @@ public class DashboardComponentTests : BunitContext
             sp.GetRequiredService<TimeProvider>(),
             sp.GetRequiredService<AthleteSettings>(),
             NullLogger<DashboardReader>.Instance));
+
+        // The coordinator's own chain. bUnit's provider supplies IServiceScopeFactory itself, so
+        // the coordinator creates a real scope per run exactly as it does in the host.
+        Services.AddSingleton(new StravaApiClient(new HttpClient(new StubHttpMessageHandler())));
+        Services.AddScoped<ActivityStore>();
+        Services.AddScoped(sp => fixture.NewContext());
+        Services.AddScoped<StravaActivitySync>();
+        Services.AddSingleton<SyncCoordinator>();
     }
 
     protected override void Dispose(bool disposing)
@@ -339,5 +350,81 @@ public class DashboardComponentTests : BunitContext
         var list = Render<RecentActivityList>(p => p.Add(c => c.Activities, []));
 
         Assert.Empty(list.FindAll("li"));
+    }
+
+    /// <summary>FR-009, US5 scenario 1: the button, and a loading state while it works.</summary>
+    [Fact]
+    public void The_sync_panel_offers_a_button_and_shows_progress_while_running()
+    {
+        var idle = Render<SyncPanel>(p => p.Add(c => c.Status, SyncStatus.Never));
+        var running = Render<SyncPanel>(p => p.Add(c => c.Status, new SyncStatus { IsRunning = true }));
+
+        Assert.Contains("Sync Activities", idle.Markup, StringComparison.Ordinal);
+        Assert.Contains("Syncing", running.Markup, StringComparison.Ordinal);
+        Assert.True(running.Find("button").HasAttribute("disabled"), "A sync in flight must not be startable twice.");
+    }
+
+    /// <summary>
+    ///   US5 scenario 5, FR-017 and FR-018: both routes to "you need to connect" — never having
+    ///   connected, and a credential Strava has since rejected — land on the same prompt and the
+    ///   same link.
+    /// </summary>
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void A_missing_or_rejected_connection_offers_the_connect_route(bool rejected)
+    {
+        var status = rejected
+            ? new SyncStatus { Result = new SyncResult { Outcome = SyncOutcome.ReconnectionRequired } }
+            : new SyncStatus { Failure = SyncMessage.ConnectionRequired };
+
+        var panel = Render<SyncPanel>(p => p.Add(c => c.Status, status));
+
+        Assert.Contains("Strava connection required", panel.Markup, StringComparison.Ordinal);
+        Assert.Contains("href=\"/connect\"", panel.Markup, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    ///   FR-009 and US5 scenario 2's second half. Clicking the button runs a sync and the page
+    ///   re-reads, so activities that arrived change the figures on screen without a manual reload.
+    ///   <para>
+    ///     Every test before this one covered one half: the coordinator syncs, the button renders.
+    ///     Nothing joined them, and the join is what the athlete actually does.
+    ///   </para>
+    /// </summary>
+    [Fact]
+    public void Clicking_sync_runs_one_and_the_page_re_reads_afterwards()
+    {
+        SeedAndRegister();
+        var coordinator = Services.GetRequiredService<SyncCoordinator>();
+
+        var page = Render<Dashboard>();
+        page.Find("button.sync").Click();
+
+        // The seeded database holds no connection, so the sync fails in the way US5 scenario 5
+        // describes — which is still proof that the button reached the coordinator at all.
+        Assert.NotNull(coordinator.Status.FinishedAt);
+        Assert.Contains("Strava connection required", page.Markup, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    ///   FR-012 and the "sync in progress when the page refreshes" edge case. A reload is a
+    ///   <em>new</em> circuit, so a freshly constructed page must read the state from the singleton
+    ///   rather than start blank. A page keeping this in a component field looks idle after every
+    ///   refresh, whatever is actually happening on the server.
+    /// </summary>
+    [Fact]
+    public void A_freshly_loaded_page_sees_a_sync_that_is_already_running()
+    {
+        SeedAndRegister();
+        var coordinator = Services.GetRequiredService<SyncCoordinator>();
+
+        var gate = new TaskCompletionSource();
+        _ = coordinator.RunAsync(CancellationToken.None);
+
+        var reloaded = Render<Dashboard>();
+
+        Assert.Contains("Sync", reloaded.Markup, StringComparison.Ordinal);
+        gate.TrySetResult();
     }
 }

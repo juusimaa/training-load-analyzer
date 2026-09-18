@@ -1,10 +1,13 @@
 @page "/"
 @rendermode InteractiveServer
 @inject DashboardReader Reader
+@inject SyncCoordinator Sync
 
 <PageTitle>Training Load</PageTitle>
 
 <h1>Training Load</h1>
+
+<SyncPanel Status="syncStatus" OnSync="RunSyncAsync" />
 
 @if (view is null)
 {
@@ -70,6 +73,23 @@ else
 @code {
     private DashboardView? view;
 
-    protected override async Task OnInitializedAsync() =>
+    // Read from the singleton rather than held here. A reload is a new circuit, so a sync started
+    // before it is still running afterwards and the page must be able to say so (FR-012, C93).
+    private SyncStatus syncStatus = SyncStatus.Never;
+
+    protected override async Task OnInitializedAsync()
+    {
+        syncStatus = Sync.Status;
         view = await Reader.ReadAsync(CancellationToken.None);
+    }
+
+    /// <summary>
+    ///   FR-009 and US5 scenario 2. The view is re-read rather than patched: it is derived, and
+    ///   applying a delta to it by hand is how the tiles and the chart start to disagree (C80).
+    /// </summary>
+    private async Task RunSyncAsync()
+    {
+        syncStatus = await Sync.RunAsync(CancellationToken.None);
+        view = await Reader.ReadAsync(CancellationToken.None);
+    }
 }

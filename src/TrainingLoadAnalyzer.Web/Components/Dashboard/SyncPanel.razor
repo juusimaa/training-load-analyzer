@@ -1,0 +1,43 @@
+@using TrainingLoadAnalyzer.Web.Features.Sync
+
+@* The sync button and whatever the last attempt has to say (FR-009, FR-010). *@
+
+<div class="sync">
+    <button class="sync" type="button" disabled="@Status.IsRunning" @onclick="OnSync">
+        @(Status.IsRunning ? "Syncing…" : "Sync Activities")
+    </button>
+
+    @{
+        var message = SyncMessage.For(Status);
+    }
+
+    @if (!string.IsNullOrEmpty(message))
+    {
+        <p class="sync-message">@message</p>
+    }
+
+    @if (NeedsConnection)
+    {
+        @* FR-017 and FR-018 lead to the same place: a route, not a dead end. *@
+        <a class="connect" href="/connect">Connect Strava</a>
+    }
+
+    @if (Status.FinishedAt is { } finishedAt && !Status.IsRunning)
+    {
+        <p class="sync-when">Last checked @finishedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)</p>
+    }
+</div>
+
+@code {
+    [Parameter] public SyncStatus Status { get; set; } = SyncStatus.Never;
+
+    [Parameter] public EventCallback OnSync { get; set; }
+
+    /// <summary>
+    ///   Both ways the athlete can end up needing to connect: never having done so, and a stored
+    ///   credential Strava has since rejected (US5 sc5, FR-017, FR-018).
+    /// </summary>
+    private bool NeedsConnection =>
+        Status.Failure is not null
+            || Status.Result?.Outcome == SyncOutcome.ReconnectionRequired;
+}

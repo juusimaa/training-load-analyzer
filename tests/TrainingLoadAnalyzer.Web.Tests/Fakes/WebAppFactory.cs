@@ -70,7 +70,11 @@ internal sealed class WebAppFactory : WebApplicationFactory<Program>
             services.RemoveAll<TimeProvider>();
             services.AddSingleton<TimeProvider>(Clock);
 
+            // Both clients: the named one StravaAuthorization uses, and the typed one
+            // StravaApiClient uses. Replacing only one leaves a real outbound call in the other.
             services.AddHttpClient("Strava").ConfigurePrimaryHttpMessageHandler(() => Strava);
+            services.AddHttpClient<TrainingLoadAnalyzer.Infrastructure.Strava.StravaApiClient>()
+                .ConfigurePrimaryHttpMessageHandler(() => Strava);
         });
     }
 
