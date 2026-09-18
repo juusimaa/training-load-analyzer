@@ -134,6 +134,10 @@ This project follows Spec Kit's spec → plan → tasks → implement workflow, 
 before implementation (TDD). See the [specs](specs/) directory for feature specifications and the
 [project plan](training-load-analyzer-plan.md) for overall goals and non-goals.
 
+The project's own evaluation of that process — what Spec Kit and strict TDD were worth here, where
+the AI agent held the line and where it did not — is in the
+[retrospective](RETROSPECTIVE.md).
+
 ## License
 
 [MIT](LICENSE)
