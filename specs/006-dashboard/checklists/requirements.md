@@ -33,4 +33,15 @@
 
 ## Notes
 
-All items complete. Specification is ready for `/speckit-clarify` or `/speckit-plan`.
+All items complete at the time of writing (2026-09-17). Specification was ready for
+`/speckit-clarify` or `/speckit-plan`.
+
+**Re-checked 2026-09-18, after planning.** Designing against the requirements found four problems this
+checklist could not have caught, because each needed a *second* document to be visible: a threshold
+contradicting feature 004's shipped rule, a value (maximum heart rate) that every requirement depends
+on and no feature owns, a "reconnect" instruction with nothing to reconnect from, and a success
+criterion ruled out by feature 005's measured rate limits. All four were put to the developer,
+answered, and written into the spec as FR-005/FR-005a, FR-014 – FR-018 and a restated SC-005. See
+[plan.md](../plan.md#amendments-made-during-planning).
+
+All items above still hold against the amended specification.
