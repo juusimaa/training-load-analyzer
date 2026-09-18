@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Bunit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -287,6 +288,78 @@ public class DashboardComponentTests : BunitContext
 
         Assert.Contains("Not enough data to show trends (30+ days required)", chart.Markup, StringComparison.Ordinal);
         Assert.Empty(chart.FindAll("polyline"));
+    }
+
+    /// <summary>
+    ///   Bug <c>chart-not-rendered</c>. The three lines were computed correctly and then painted
+    ///   with nothing: SVG's initial value for <c>stroke</c> is <c>none</c>, so a polyline with
+    ///   <c>fill="none"</c> and no stroke draws zero pixels. The component delegates every visual
+    ///   property to CSS classes, and no stylesheet defined one of them.
+    /// </summary>
+    /// <remarks>
+    ///   The scope attribute is the assertable part. Blazor only emits <c>b-*</c> onto an element
+    ///   when the component has a companion <c>.razor.css</c>, so its presence on the polylines
+    ///   proves both that the stylesheet exists and that CSS isolation reaches inside the SVG —
+    ///   the one thing about this fix that could not be taken on trust. It is also what catches the
+    ///   subtler regression: move the plot into a child component and the scope stops applying,
+    ///   the chart goes blank again, and every other test in this file still passes.
+    /// </remarks>
+    [Fact]
+    public void Every_chart_line_carries_the_isolation_scope_that_paints_it()
+    {
+        var chart = Render<MetricsChartView>(p => p
+            .Add(c => c.Metrics, ChartSeries(60))
+            .Add(c => c.HasEnoughHistory, true));
+
+        var unscoped = chart
+            .FindAll("polyline")
+            .Where(line => !line.Attributes.Any(a => a.Name.StartsWith("b-", StringComparison.Ordinal)))
+            .Select(line => line.GetAttribute("class") ?? "(no class)")
+            .ToList();
+
+        Assert.Empty(unscoped);
+    }
+
+    /// <summary>
+    ///   The other half of the same bug, and the half a renderer cannot see: bUnit applies no CSS
+    ///   and computes no styles, so a chart whose lines are all <c>stroke: none</c> renders exactly
+    ///   like a correct one. This reads the stylesheet as text instead. Crude, and the only thing
+    ///   standing between a stripped rule and an invisible chart shipping green.
+    /// </summary>
+    [Fact]
+    public void The_chart_stylesheet_gives_every_line_a_stroke()
+    {
+        var path = Path.Combine(
+            RepositoryRoot(),
+            "src", "TrainingLoadAnalyzer.Web", "Components", "Dashboard", "MetricsChartView.razor.css");
+
+        Assert.True(File.Exists(path), $"The chart has no stylesheet, so its lines have no stroke: {path}");
+
+        var stylesheet = File.ReadAllText(path);
+
+        var unpainted = new[] { "line-fitness", "line-fatigue", "line-form" }
+            .Where(cssClass => !Regex.IsMatch(stylesheet, $@"\.{cssClass}\s*\{{[^}}]*\bstroke\s*:"))
+            .ToList();
+
+        Assert.Empty(unpainted);
+        Assert.Matches(@"\.line\s*\{[^}]*\bstroke-width\s*:", stylesheet);
+    }
+
+    /// <summary>
+    ///   Duplicated from <c>WeeklyLoadAndTrendTests</c> rather than shared, to keep this fix to the
+    ///   chart. Worth consolidating into <c>Fixtures</c> the next time a third copy is wanted.
+    /// </summary>
+    private static string RepositoryRoot()
+    {
+        var directory = new DirectoryInfo(AppContext.BaseDirectory);
+
+        while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "TrainingLoadAnalyzer.sln")))
+        {
+            directory = directory.Parent;
+        }
+
+        return directory?.FullName
+            ?? throw new InvalidOperationException("The repository root could not be located from the test output directory.");
     }
 
     private static RecentActivity Entry(
