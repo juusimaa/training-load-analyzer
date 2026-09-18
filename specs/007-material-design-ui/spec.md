@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-18
 
-**Status**: Draft
+**Status**: Draft (Amendment 1 applied 2026-09-18 — see [Amendments](#amendments))
 
 **Input**: User description: "Current implmentation is not visually very pleasing and that has to change. Do not change functionalities, only UI should changes. Mateial Design principles and looks."
 
@@ -43,7 +43,7 @@ An athlete who used the previous version finds every number, label, note, state 
 2. **Given** a metric backed by fewer than the required days of history, **When** the dashboard renders, **Then** the "still settling" qualifier is still present as readable text, not replaced by a purely visual cue
 3. **Given** an activity whose load was estimated rather than measured, **When** the recent-activity list renders, **Then** the "estimated" / "measured" wording is still present as readable text alongside any visual treatment
 4. **Given** the athlete starts a sync, **When** the sync is running and when it finishes, **Then** the same states, messages and last-checked timestamp appear as before, and the control that starts a sync remains a single button that is unavailable while a sync runs
-5. **Given** the trend chart, **When** it renders, **Then** the same three series are plotted over the same range with the same legend wording and the same non-colour differentiation between series
+5. **Given** the trend chart, **When** it renders, **Then** the same three series are plotted over the same range, drawn from the same stored metrics, and the legend still names them Fitness, Fatigue and Form
 
 ---
 
@@ -93,9 +93,9 @@ An athlete using a screen reader, keyboard navigation, high browser zoom or with
 **Acceptance Scenarios**:
 
 1. **Given** any text in the refreshed interface, **When** it is measured against its background in either the light or the dark scheme, **Then** it meets at least a 4.5:1 contrast ratio for body text and 3:1 for large text
-2. **Given** the dark scheme is active, **When** the trend chart renders, **Then** its three series remain legible against the dark surface and remain distinguishable from one another without relying on colour
+2. **Given** the dark scheme is active, **When** the trend chart renders, **Then** its three series remain legible against the dark surface
 3. **Given** the athlete navigates with a keyboard, **When** focus reaches the sync button or any link, **Then** a clearly visible focus indicator appears
-4. **Given** any distinction the interface draws with colour — chart series, load provenance, trend direction — **When** colour is disregarded, **Then** the distinction remains discernible through text, shape or pattern
+4. **Given** any distinction the interface draws with colour outside the trend chart — load provenance, trend direction, state — **When** colour is disregarded, **Then** the distinction remains discernible through text, shape or pattern
 5. **Given** a screen reader user, **When** they traverse the page, **Then** the heading structure describes the regions of the dashboard in a sensible order
 
 ### Edge Cases
@@ -120,7 +120,7 @@ An athlete using a screen reader, keyboard navigation, high browser zoom or with
 
 - **FR-001**: The system MUST NOT change any computation, stored data, imported data, navigation destination, or the conditions under which any message, value or state is shown. Only the presentation of existing content may change.
 - **FR-002**: The system MUST continue to display every text string, figure, label, qualifier, message, timestamp and link that the current interface displays, with identical wording and identical numeric formatting.
-- **FR-003**: The system MUST NOT add new pages, new destinations, new athlete-facing settings, or new interactive controls beyond restyling those that already exist.
+- **FR-003**: The system MUST NOT add new pages, new destinations, or new athlete-facing settings. Interactions that arrive inherent to an adopted Material component — the trend chart's hover tooltips, its clickable legend, a list item's ripple — are permitted, provided they neither change stored data nor reach any destination (Amendment 1).
 
 **Visual system**
 
@@ -133,7 +133,8 @@ An athlete using a screen reader, keyboard navigation, high browser zoom or with
 - **FR-010**: The system MUST render the "Connect Strava" action as a prominent action control rather than an unstyled inline link.
 - **FR-011**: The system MUST present the recent-activity list as evenly structured rows in which the day, activity type, duration, load and provenance occupy consistent positions across all rows.
 - **FR-012**: The system MUST present the load-provenance and reliability qualifiers with a visual treatment (such as a chip or badge) that supplements, and never replaces, their existing text.
-- **FR-013**: The system MUST restyle the trend chart's plot, legend, date range and insufficient-data message to the same visual system, preserving the existing series colours' distinguishability and the existing non-colour differentiation between series.
+- **FR-013**: The system MUST render the trend chart with the Material component library's own line chart, plotting the same three series from the same stored metrics over the same range. The surrounding date range and insufficient-data message MUST remain, restyled to the same visual system (Amendment 1).
+- **FR-013a**: The system MUST identify each chart series by its name — Fitness, Fatigue, Form — in a legend, so that a series can be identified without depending on colour discrimination alone (Amendment 1).
 - **FR-014**: The system MUST present empty, loading and data-unavailable states as designed surfaces with a heading, explanatory text and, where an action exists, a prominent action control.
 - **FR-015**: The system MUST apply the same visual system to the not-found page, the unhandled-error notice and the connection-lost notice.
 
@@ -148,7 +149,7 @@ An athlete using a screen reader, keyboard navigation, high browser zoom or with
 - **FR-019**: The system MUST meet a contrast ratio of at least 4.5:1 for body text and 3:1 for large text and meaningful non-text indicators, against the surface each sits on.
 - **FR-020**: The system MUST show a clearly visible focus indicator on every interactive element when it receives keyboard focus.
 - **FR-021**: The system MUST provide touch targets of at least 48 by 48 device-independent pixels for every interactive control.
-- **FR-022**: The system MUST NOT convey any distinction by colour alone.
+- **FR-022**: The system MUST NOT convey any distinction by colour alone, except the trend chart's three series, which are distinguished in the plot by colour and identified by the named legend and hover labels required by FR-013a (Amendment 1).
 - **FR-023**: The system MUST preserve a meaningful heading structure that names the regions of the dashboard in reading order.
 - **FR-024**: The system MUST honour a reduced-motion preference by suppressing any non-essential animation or transition it introduces.
 
@@ -158,7 +159,7 @@ An athlete using a screen reader, keyboard navigation, high browser zoom or with
 - **FR-026**: The system MUST select between the two schemes automatically from the device or browser appearance preference, and MUST follow a change to that preference without the athlete reloading the page.
 - **FR-027**: The system MUST NOT offer an in-application control for choosing the scheme, since that would be new functionality (FR-003).
 - **FR-028**: The system MUST present identical content in both schemes: no element may be visible in one scheme and absent, illegible or reduced in meaning in the other.
-- **FR-029**: The system MUST keep the trend chart's series legible and mutually distinguishable in both schemes, preserving the non-colour differentiation required by FR-013 in each.
+- **FR-029**: The system MUST keep each trend-chart series legible against the plot background in both schemes, meeting the non-text contrast ratio in FR-019 in each.
 
 ### Non-Functional Requirements
 
@@ -170,12 +171,12 @@ An athlete using a screen reader, keyboard navigation, high browser zoom or with
 ### Measurable Outcomes
 
 - **SC-001**: 100% of the text strings, figures, links and state messages present in the current interface are still present after the redesign, verified by comparing rendered output for identical stored history.
-- **SC-002**: The existing behavioural test suite passes without any assertion being weakened or removed to accommodate the new presentation.
+- **SC-002**: The existing behavioural test suite passes with every assertion intact, except those that test markup the feature deliberately replaces: the chart's own geometry and element type, and the recent-activity list's element type. Each such test is either rewritten to assert the same behaviour against the new markup or, where the behaviour has genuinely moved into the component library, removed with the removal recorded in the completion review. No assertion may be weakened, left vacuous, or removed silently (Amendment 1).
 - **SC-003**: Every athlete-facing surface — populated dashboard, empty state, unconnected state, data-unavailable state, loading state, not-found page, error notice — renders with the shared visual system, with zero surfaces left in browser-default styling.
 - **SC-004**: The dashboard renders without horizontal scrolling or clipped content at every viewport width from 320 pixels to 2560 pixels.
 - **SC-005**: 100% of text and meaningful indicators meet their required contrast ratio (4.5:1 body text, 3:1 large text and indicators), verified independently in both the light and the dark scheme.
 - **SC-006**: 100% of interactive controls present a visible keyboard focus indicator and a touch target of at least 48 by 48 device-independent pixels.
-- **SC-007**: Every distinction the interface draws remains discernible when the page is viewed without colour.
+- **SC-007**: Every distinction the interface draws outside the trend chart's plot remains discernible when the page is viewed without colour. Within the plot, each series remains identifiable by name through the legend and hover labels.
 - **SC-008**: An athlete unfamiliar with the application can identify their current Fitness, Fatigue and Form values within 5 seconds of the dashboard loading.
 - **SC-009**: All colour, text-size, spacing and shape values used in the interface trace to the single defined visual system, with zero one-off values introduced at the point of use.
 - **SC-010**: Every athlete-facing surface listed in SC-003 renders completely in both the light and the dark scheme, with zero surfaces retaining a colour from the opposite scheme.
@@ -186,10 +187,27 @@ An athlete using a screen reader, keyboard navigation, high browser zoom or with
 - The feature description's "Material Design" is taken to mean the current generation of Material Design (Material 3) as a set of visual principles — colour roles, a type scale, a spacing rhythm, elevated and shaped surfaces, and standard action-control treatments. Pixel-exact conformance to any published specification is not required; the goal is that the result reads as Material.
 - "Do not change functionalities" is taken strictly: no new behaviour, no removed behaviour, no changed wording, no changed numbers, no new destinations. Purely presentational chrome (for example a titled application bar carrying the existing page title) is considered presentation, not functionality, and is permitted so long as it introduces no new destination or control.
 - The athlete-facing surfaces in scope are exactly those that exist today: the dashboard and all of its states, the not-found page, the unhandled-error notice and the connection-lost notice. The Strava connect flow itself is a redirect with no page of its own and needs no visual work beyond the dashboard entry points that lead into it.
-- The existing chart series colours were chosen for colour-blind distinguishability and their existing dash patterns carry the same distinction without colour. They are assumed to be kept, or replaced only by values that preserve both properties.
+- The existing chart series colours were chosen for colour-blind distinguishability and are assumed to be carried over as the chart component's palette. Their dash patterns do not survive the move to the component library, which draws every series with a solid stroke; this is the accepted loss recorded in Amendment 1.
 - The existing rule that qualifiers such as "still settling", "estimated" and "measured" are expressed as text is a deliberate accessibility decision and is assumed to remain binding; visual badges may only supplement that text.
 - Only modern evergreen browsers need to be supported. No legacy browser support is assumed.
 - The dark scheme follows the device or browser appearance preference only. There is no stored athlete preference, no per-device override and no in-application switch, because a switch would be new functionality (FR-027).
 - Where a light-scheme surface is separated from its background by a shadow, the dark scheme is assumed to achieve the same separation by another means from the same visual system (for example a lighter surface tone or an outline), rather than by a stronger shadow.
 - Printing, offline appearance and internationalisation of the interface are assumed out of scope.
 - Verification of visual outcomes is assumed to be a mix of automated rendering assertions where markup can carry the check and human review where it cannot; no screenshot-comparison tooling is assumed to be introduced.
+
+## Amendments
+
+### Amendment 1 — adopt the component library's chart and list (2026-09-18)
+
+**Requested by**: the developer, during planning, after the plan established that the feature would be built on MudBlazor.
+
+**Change**: the trend chart is **replaced** by the library's line chart rather than restyled, and the recent-activity list is rendered with the library's list component rather than as a plain list.
+
+**What this costs, accepted knowingly**:
+
+1. **The chart's series lose their dash patterns.** The library draws every series with a solid stroke and exposes no dash option. Feature 006 gave the three series dash patterns specifically so a colour-blind athlete could tell them apart in the static plot; that is lost. A series can still be *identified* by name through the legend and hover labels, which is why FR-013a and the FR-022 carve-out are worded around identification rather than static differentiation. This is a real accessibility regression, not a wording problem.
+2. **The chart gains interactions the athlete did not have**: hover tooltips, clickable series, and a legend that hides a series when clicked. Feature 006 deliberately chose a legend *instead of* a tooltip. FR-003 is relaxed to permit interactions inherent to an adopted component.
+3. **The chart's geometry moves into the library.** The application's own plotting code and the tests that pin its coordinates become dead and are removed. This is the substantive part of the SC-002 amendment.
+4. **The line is interpolated by the component**, so the drawn curve need not pass exactly through every plotted point. The underlying figures are unchanged; only their rendering is.
+
+**What is explicitly *not* conceded**: no computation, stored value, wording or number changes (FR-001, FR-002 stand unamended). The series keep their colour-blind-safe colours. Every test removed must be recorded in the completion review — SC-002 still forbids silent removal and still forbids leaving an assertion vacuous.

@@ -46,3 +46,10 @@
   absence of a toggle explicitly so the choice cannot be re-litigated during planning as a
   harmless addition — it would violate FR-003.
 - No markers remain; every other gap was closed with a documented assumption.
+- **Amendment 1 (2026-09-18, during planning)**: full adoption of the component library's chart and list.
+  Changed FR-003, FR-013 (+ new FR-013a), FR-022, FR-029, SC-002, SC-007, two acceptance scenarios and
+  one assumption. Re-validated: **16/16 still pass.** The amendment concedes a real accessibility
+  regression (chart series lose their dash patterns) and it is recorded as such in the spec rather than
+  written out of the requirements — the checklist item "No implementation details leak into
+  specification" was the one at risk here, since FR-013 now names a component library; it passes because
+  the requirement is phrased as an outcome the athlete sees, not as an API to call.
