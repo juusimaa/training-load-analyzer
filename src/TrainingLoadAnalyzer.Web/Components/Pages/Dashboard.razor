@@ -53,6 +53,18 @@ else
                     Basis="view.Current?.FormBasis ?? LoadBasis.None"
                     IsReliable="view.Current?.IsReliable ?? false" />
     </section>
+
+    <section class="week">
+        <WeeklyLoadPanel Week="view.CurrentWeek" Trend="view.Trend" />
+    </section>
+
+    <section class="trends">
+        <MetricsChartView Metrics="view.Metrics" HasEnoughHistory="view.HasEnoughHistoryForChart" />
+    </section>
+
+    <section class="activities">
+        <RecentActivityList Activities="view.Recent" />
+    </section>
 }
 
 @code {

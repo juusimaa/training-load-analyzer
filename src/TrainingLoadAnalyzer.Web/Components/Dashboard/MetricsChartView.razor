@@ -1,0 +1,59 @@
+@* Fitness, fatigue and form over the last 180 days (FR-006, SC-003).
+
+   Inline SVG: no charting package, no JavaScript, no interop. US3 scenario 3 offers a legend as an
+   alternative to a tooltip, so three polylines and a legend satisfy the requirement — and being
+   plain markup, the geometry is assertable, which is what SC-003 asks for (research R8). *@
+
+<div class="chart">
+    @if (!HasEnoughHistory)
+    {
+        <p class="chart-empty">Not enough data to show trends (30+ days required)</p>
+    }
+    else
+    {
+        <svg class="chart-plot"
+             viewBox="@ViewBox"
+             preserveAspectRatio="none"
+             role="img"
+             aria-label="Fitness, fatigue and form over the last @Metrics.Count days">
+            @foreach (var series in Series)
+            {
+                <polyline class="line line-@series.CssClass"
+                          points="@series.Points"
+                          fill="none"
+                          vector-effect="non-scaling-stroke" />
+            }
+        </svg>
+
+        <ul class="chart-legend">
+            @foreach (var series in Series)
+            {
+                <li class="legend-@series.CssClass">@series.Label</li>
+            }
+        </ul>
+
+        <p class="chart-span">
+            @Display.Day(Metrics[0].Day) — @Display.Day(Metrics[^1].Day)
+        </p>
+    }
+</div>
+
+@code {
+    private const double Width = 600;
+    private const double Height = 200;
+
+    /// <summary>The metrics series, at most 180 days ending today (C83).</summary>
+    [Parameter] public IReadOnlyList<DailyTrainingMetrics> Metrics { get; set; } = [];
+
+    /// <summary>False under 30 days, when a chart would mislead more than it showed (US3 sc2).</summary>
+    [Parameter] public bool HasEnoughHistory { get; set; }
+
+    /// <summary>
+    ///   All geometry comes from one tested place. Every coordinate in it is formatted with the
+    ///   invariant culture, which on this developer's machine is the difference between a chart and
+    ///   a silently malformed one (research R9, C89).
+    /// </summary>
+    private IReadOnlyList<ChartSeries> Series => MetricsChart.Plot(Metrics, Width, Height);
+
+    private static string ViewBox => MetricsChart.ViewBox(Width, Height);
+}

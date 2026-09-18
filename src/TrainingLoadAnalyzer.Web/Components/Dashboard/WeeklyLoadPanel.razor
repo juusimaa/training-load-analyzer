@@ -1,0 +1,39 @@
+@* This ISO week's load, and how it compares with last week's (FR-004, FR-005, FR-005a). *@
+
+<div class="weekly">
+    <span class="weekly-label">This week</span>
+    <span class="weekly-value">@Display.Points(Week?.Points)</span>
+
+    @if (Trend is null)
+    {
+        @* No previous week to compare against. The week's own total still stands (US2 sc3). *@
+        <span class="weekly-change">@Display.Missing</span>
+    }
+    else
+    {
+        <span class="weekly-change">
+            @(Trend.Value.AbsoluteChange >= 0 ? "+" : "")@Display.Points(Trend.Value.AbsoluteChange)
+            (@Display.Percent(Trend.Value.RelativeChange))
+        </span>
+
+        @* The change is shown every day; the judgement only once the week is a like-for-like
+           comparison. That split is feature 004's rule, not a display choice (004 FR-017,
+           FR-005a, research R14). No threshold is applied here - or anywhere in this project. *@
+        <span class="weekly-judgement">@Judgement(Trend.Value)</span>
+    }
+</div>
+
+@code {
+    [Parameter] public WeeklyTrainingLoad? Week { get; set; }
+
+    /// <summary>Null when the history does not reach the previous ISO week (C82).</summary>
+    [Parameter] public WeeklyLoadTrend? Trend { get; set; }
+
+    private static string Judgement(WeeklyLoadTrend trend) => trend.Classification switch
+    {
+        TrendClassification.SignificantIncrease => "Significant increase",
+        TrendClassification.SignificantDecrease => "Significant decrease",
+        TrendClassification.Steady => "Steady",
+        _ => "Week in progress",
+    };
+}

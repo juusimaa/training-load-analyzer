@@ -53,6 +53,32 @@ public class EmptyAndPartialHistoryTests
     }
 
     /// <summary>
+    ///   C82, US2 scenario 3. An athlete whose first session is this Monday has no previous week.
+    ///   <c>TrainingLoadTrendCalculator</c> throws rather than invent one (004 FR-023), so the
+    ///   builder must ask whether there is a week to compare against — not catch the refusal.
+    /// </summary>
+    [Fact]
+    public void A_history_that_does_not_reach_the_previous_week_has_no_trend()
+    {
+        var view = Build([Fixtures.Session(new DateOnly(2026, 9, 14)), Fixtures.Session(Fixtures.Today)]);
+
+        Assert.NotNull(view.CurrentWeek);
+        Assert.Null(view.Trend);
+    }
+
+    /// <summary>
+    ///   And one day earlier — the Sunday closing the previous week — is enough for a comparison.
+    ///   The boundary either side, so the guard is pinned rather than merely present.
+    /// </summary>
+    [Fact]
+    public void A_history_reaching_the_previous_week_has_a_trend()
+    {
+        var view = Build([Fixtures.Session(new DateOnly(2026, 9, 13)), Fixtures.Session(Fixtures.Today)]);
+
+        Assert.NotNull(view.Trend);
+    }
+
+    /// <summary>
     ///   Discriminating check for research R22. A session dated tomorrow — a watch with a wrong
     ///   clock — must not throw and must not silently vanish. The history window ends at the later
     ///   of today and the last recorded day; an implementation that ended it at today either throws
@@ -66,5 +92,18 @@ public class EmptyAndPartialHistoryTests
 
         Assert.NotNull(view.Current);
         Assert.Equal(Fixtures.Today, view.Current.Value.Day);
+    }
+
+    /// <summary>
+    ///   US3 scenario 2's boundary, either side. Twenty-nine days is one short; thirty is enough.
+    ///   A threshold asserted only from the far side is not asserted.
+    /// </summary>
+    [Theory]
+    [InlineData(29, false)]
+    [InlineData(30, true)]
+    [InlineData(31, true)]
+    public void Thirty_days_of_history_is_what_the_chart_needs(int days, bool expected)
+    {
+        Assert.Equal(expected, Build(Fixtures.ConsecutiveDays(days)).HasEnoughHistoryForChart);
     }
 }

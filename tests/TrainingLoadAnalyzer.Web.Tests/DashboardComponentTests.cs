@@ -175,4 +175,169 @@ public class DashboardComponentTests : BunitContext
         Assert.DoesNotContain("tile-value", page.Markup, StringComparison.Ordinal);
     }
 
+    private static WeeklyTrainingLoad Week(decimal points) =>
+        new(IsoWeek.For(Fixtures.Today), points, 4, LoadBasis.Estimated);
+
+    private static WeeklyLoadTrend TrendOf(bool complete) =>
+        new(IsoWeek.For(Fixtures.Today), 480m, 360m, complete, LoadBasis.Estimated);
+
+    /// <summary>
+    ///   FR-004, FR-005 and FR-005a together. Mid-week the change is shown and the judgement is
+    ///   withheld — which is what the athlete should see on six days out of seven (research R14).
+    /// </summary>
+    [Fact]
+    public void The_weekly_panel_shows_the_change_and_withholds_a_judgement_mid_week()
+    {
+        var panel = Render<WeeklyLoadPanel>(p => p
+            .Add(c => c.Week, Week(480m))
+            .Add(c => c.Trend, TrendOf(complete: false)));
+
+        Assert.Contains("480.0", panel.Markup, StringComparison.Ordinal);
+        Assert.Contains("+120.0", panel.Markup, StringComparison.Ordinal);
+        Assert.Contains("+33%", panel.Markup, StringComparison.Ordinal);
+        Assert.Contains("in progress", panel.Markup, StringComparison.Ordinal);
+        Assert.DoesNotContain("Significant", panel.Markup, StringComparison.Ordinal);
+    }
+
+    /// <summary>Once the week is complete, feature 004's judgement is shown as it stands.</summary>
+    [Fact]
+    public void The_weekly_panel_shows_the_judgement_once_the_week_is_complete()
+    {
+        var panel = Render<WeeklyLoadPanel>(p => p
+            .Add(c => c.Week, Week(480m))
+            .Add(c => c.Trend, TrendOf(complete: true)));
+
+        Assert.Contains("Significant increase", panel.Markup, StringComparison.Ordinal);
+        Assert.DoesNotContain("in progress", panel.Markup, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    ///   C100, US2 scenario 3: with no previous week the comparison is a dash, and the weekly total
+    ///   is still shown — the athlete's own training does not disappear for want of a comparison.
+    /// </summary>
+    [Fact]
+    public void With_no_previous_week_the_comparison_is_a_dash_and_the_total_remains()
+    {
+        var panel = Render<WeeklyLoadPanel>(p => p.Add(c => c.Week, Week(480m)));
+
+        Assert.Contains("480.0", panel.Markup, StringComparison.Ordinal);
+        Assert.Contains(Display.Missing, panel.Markup, StringComparison.Ordinal);
+    }
+
+    private static IReadOnlyList<DailyTrainingMetrics> ChartSeries(int days) =>
+    [
+        .. Enumerable.Range(0, days).Select(i => new DailyTrainingMetrics(
+            Fixtures.Today.AddDays(-(days - 1 - i)),
+            40 + i,
+            20 + (i * 2),
+            i >= 42,
+            LoadBasis.Estimated,
+            LoadBasis.Estimated)),
+    ];
+
+    /// <summary>US3 scenario 1: three lines, drawn as markup and nothing else (research R8).</summary>
+    [Fact]
+    public void The_chart_renders_three_polylines_inside_an_svg()
+    {
+        var chart = Render<MetricsChartView>(p => p
+            .Add(c => c.Metrics, ChartSeries(60))
+            .Add(c => c.HasEnoughHistory, true));
+
+        Assert.Contains("<svg", chart.Markup, StringComparison.Ordinal);
+        Assert.Equal(3, chart.FindAll("polyline").Count);
+    }
+
+    /// <summary>
+    ///   US3 scenario 3. The specification offers a legend as an alternative to a tooltip and this
+    ///   takes it — three lines are useless if nobody can tell which is which.
+    /// </summary>
+    [Fact]
+    public void The_chart_names_each_line_in_a_legend()
+    {
+        var chart = Render<MetricsChartView>(p => p
+            .Add(c => c.Metrics, ChartSeries(60))
+            .Add(c => c.HasEnoughHistory, true));
+
+        Assert.Contains("Fitness", chart.Markup, StringComparison.Ordinal);
+        Assert.Contains("Fatigue", chart.Markup, StringComparison.Ordinal);
+        Assert.Contains("Form", chart.Markup, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    ///   US3 scenario 2: under 30 days the athlete is told why there is no chart, rather than shown
+    ///   a line between two points and left to draw the wrong conclusion from it.
+    /// </summary>
+    [Fact]
+    public void Without_enough_history_the_chart_explains_itself_instead_of_drawing()
+    {
+        var chart = Render<MetricsChartView>(p => p
+            .Add(c => c.Metrics, ChartSeries(12))
+            .Add(c => c.HasEnoughHistory, false));
+
+        Assert.Contains("Not enough data to show trends (30+ days required)", chart.Markup, StringComparison.Ordinal);
+        Assert.Empty(chart.FindAll("polyline"));
+    }
+
+    private static RecentActivity Entry(
+        int daysAgo,
+        LoadProvenance provenance,
+        ActivityType type = ActivityType.Running,
+        int minutes = 60) =>
+        new(
+            Fixtures.Today.AddDays(-daysAgo),
+            type,
+            TimeSpan.FromMinutes(minutes),
+            new TrainingLoad(minutes * 2, provenance));
+
+    /// <summary>US4 scenario 1: date, type, moving time and load, newest first.</summary>
+    [Fact]
+    public void The_recent_list_shows_each_sessions_date_type_duration_and_load()
+    {
+        var list = Render<RecentActivityList>(p => p.Add(c => c.Activities,
+        [
+            Entry(0, LoadProvenance.Measured, ActivityType.Cycling, 45),
+            Entry(2, LoadProvenance.Estimated, ActivityType.Running, 90),
+        ]));
+
+        Assert.Contains("2026-09-18", list.Markup, StringComparison.Ordinal);
+        Assert.Contains("Cycling", list.Markup, StringComparison.Ordinal);
+        Assert.Contains("45m", list.Markup, StringComparison.Ordinal);
+        Assert.Contains("90.0", list.Markup, StringComparison.Ordinal);
+        Assert.Contains("1h 30m", list.Markup, StringComparison.Ordinal);
+
+        // Newest first, so the first row's date appears before the second's in the markup.
+        Assert.True(
+            list.Markup.IndexOf("2026-09-18", StringComparison.Ordinal)
+                < list.Markup.IndexOf("2026-09-16", StringComparison.Ordinal),
+            "The newest session must appear first (SC-004).");
+    }
+
+    /// <summary>
+    ///   Discriminating check for C101, US4 scenarios 2 and 3. A measured load and an estimated one
+    ///   differ in the rendered <em>content</em>, not only in a CSS class. FR-008 says the dashboard
+    ///   must indicate which; a difference only a stylesheet expresses is invisible to a screen
+    ///   reader, and invisible to anyone reading the page in a colour they cannot distinguish.
+    /// </summary>
+    [Fact]
+    public void Measured_and_estimated_loads_differ_in_the_markup_not_only_in_styling()
+    {
+        var measured = Render<RecentActivityList>(p => p.Add(c => c.Activities, [Entry(0, LoadProvenance.Measured)]));
+        var estimated = Render<RecentActivityList>(p => p.Add(c => c.Activities, [Entry(0, LoadProvenance.Estimated)]));
+
+        static string WithoutClasses(string markup) =>
+            System.Text.RegularExpressions.Regex.Replace(markup, "class=\"[^\"]*\"", string.Empty);
+
+        Assert.NotEqual(WithoutClasses(measured.Markup), WithoutClasses(estimated.Markup));
+        Assert.Contains("measured", measured.Markup, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("estimated", estimated.Markup, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>US4 scenario 4: an empty list says so rather than rendering an empty table.</summary>
+    [Fact]
+    public void An_empty_recent_list_says_so()
+    {
+        var list = Render<RecentActivityList>(p => p.Add(c => c.Activities, []));
+
+        Assert.Empty(list.FindAll("li"));
+    }
 }

@@ -66,4 +66,47 @@ public class DashboardViewBuilderTests
         Assert.Equal(once.Current, reordered.Current);
         Assert.Equal(once.AsOf, reordered.AsOf);
     }
+
+    /// <summary>
+    ///   FR-006 and C83. With 400 days of history the chart shows the last 180 — today included,
+    ///   so it opens on 2026-03-23. Older training is not discarded: it still feeds fitness and
+    ///   fatigue, because those accumulate from the first recorded day. Only the chart stops.
+    /// </summary>
+    [Fact]
+    public void The_chart_covers_at_most_180_days_ending_today()
+    {
+        var view = Build(Fixtures.ConsecutiveDays(400));
+
+        Assert.Equal(180, view.Metrics.Count);
+        Assert.Equal(new DateOnly(2026, 3, 23), view.Metrics[0].Day);
+        Assert.Equal(Fixtures.Today, view.Metrics[^1].Day);
+    }
+
+    /// <summary>
+    ///   C83: gap-free and ascending, one entry per day. It is
+    ///   <c>TrainingMetricsCalculator</c>'s output unmodified — feature 003 refuses a discontinuous
+    ///   history outright — so this pins that nothing reshapes it on the way out.
+    /// </summary>
+    [Fact]
+    public void The_chart_has_exactly_one_entry_per_day_in_order()
+    {
+        var view = Build(Fixtures.ConsecutiveDays(200));
+
+        for (var i = 1; i < view.Metrics.Count; i++)
+        {
+            Assert.Equal(view.Metrics[i - 1].Day.AddDays(1), view.Metrics[i].Day);
+        }
+    }
+
+    /// <summary>
+    ///   A history shorter than the window shows all of it rather than padding to 180.
+    /// </summary>
+    [Fact]
+    public void A_history_shorter_than_the_window_is_shown_in_full()
+    {
+        var view = Build(Fixtures.ConsecutiveDays(45));
+
+        Assert.Equal(45, view.Metrics.Count);
+        Assert.Equal(Fixtures.Today.AddDays(-44), view.Metrics[0].Day);
+    }
 }
