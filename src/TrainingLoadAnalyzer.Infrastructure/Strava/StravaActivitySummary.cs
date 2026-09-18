@@ -38,6 +38,7 @@ public sealed record StravaActivitySummary
 
     /// <summary>The athlete's offset from UTC, in seconds.</summary>
     [JsonPropertyName("utc_offset")]
+    [JsonConverter(typeof(UtcOffsetConverter))]
     public int UtcOffset { get; init; }
 
     [JsonPropertyName("moving_time")]
@@ -68,5 +69,18 @@ public sealed record StravaActivitySummary
 
         public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options) =>
             writer.WriteStringValue(value);
+    }
+
+    /// <summary>
+    ///   Some real Strava responses render this field with a trailing <c>.0</c> (e.g. <c>10800.0</c>),
+    ///   which the default int converter rejects outright even though the value is whole.
+    /// </summary>
+    private sealed class UtcOffsetConverter : JsonConverter<int>
+    {
+        public override int Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options) =>
+            reader.TryGetInt32(out var value) ? value : (int)reader.GetDouble();
+
+        public override void Write(Utf8JsonWriter writer, int value, JsonSerializerOptions options) =>
+            writer.WriteNumberValue(value);
     }
 }
