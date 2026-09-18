@@ -15,11 +15,19 @@ fundamentals, but:
 
 ## Status
 
-Early development. The current focus is the **Training Activity Domain** (see
-[specs/001-training-activity-domain](specs/001-training-activity-domain/spec.md)): the core
-`TrainingActivity` model — identifier, start time with timezone offset, duration, activity type,
-optional heart-rate data, and a training-load calculation (measured from heart-rate zones when
-available, otherwise an explicit estimate).
+All six MVP features are implemented. The application connects a Strava account, imports and
+incrementally syncs activities, and shows a dashboard with current Fitness, Fatigue and Form, the
+current ISO week's load and its comparison with last week's, a 180-day chart of the three metrics,
+and the seven most recent sessions with each load marked measured or estimated.
+
+| Feature | Spec |
+|---|---|
+| 1. Training activity domain | [001](specs/001-training-activity-domain/spec.md) |
+| 2. Training load aggregation | [002](specs/002-training-load-aggregation/spec.md) |
+| 3. Fitness, fatigue and form | [003](specs/003-fitness-fatigue-form/spec.md) |
+| 4. Load trends | [004](specs/004-load-trends/spec.md) |
+| 5. Strava import | [005](specs/005-strava-import/spec.md) |
+| 6. Dashboard | [006](specs/006-dashboard/spec.md) |
 
 ## Planned scope (MVP)
 
@@ -53,12 +61,21 @@ introduce architectural complexity only if needed (YAGNI principle).
 
 ```
 src/
-  TrainingLoadAnalyzer.Domain/         Core domain model (no external dependencies)
+  TrainingLoadAnalyzer.Domain/               Core domain model (no external dependencies)
+  TrainingLoadAnalyzer.Infrastructure/       Strava integration and SQLite persistence
+  TrainingLoadAnalyzer.Web/                  Blazor Interactive Server dashboard
 tests/
-  TrainingLoadAnalyzer.Domain.Tests/   Domain unit tests
-specs/                                  Spec Kit feature specs, plans, and tasks
-training-load-analyzer-plan.md          Preliminary project plan
+  TrainingLoadAnalyzer.Domain.Tests/         Domain unit tests
+  TrainingLoadAnalyzer.Infrastructure.Tests/ Integration tests at the Strava/SQLite boundary
+  TrainingLoadAnalyzer.Web.Tests/            Read-model, component (bUnit) and endpoint tests
+scripts/
+  compliance-006.sh                          The dashboard's constitution checks, as commands
+specs/                                        Spec Kit feature specs, plans, and tasks
+training-load-analyzer-plan.md                Preliminary project plan
 ```
+
+The domain has **zero** package references and zero project references, and the dependency runs one
+way only: `Web → Infrastructure → Domain`.
 
 ## Getting started
 
@@ -67,6 +84,48 @@ Requires the .NET SDK version pinned in [global.json](global.json).
 ```bash
 dotnet build
 dotnet test
+```
+
+## Running the dashboard
+
+Four settings are required. The secret and the maximum heart rate belong in user secrets, never in a
+tracked file.
+
+```bash
+cd src/TrainingLoadAnalyzer.Web
+dotnet user-secrets init
+dotnet user-secrets set "Athlete:MaximumHeartRate" "190"
+dotnet user-secrets set "Strava:ClientId"     "<your client id>"
+dotnet user-secrets set "Strava:ClientSecret" "<your client secret>"
+```
+
+`ConnectionStrings:Import` has a working default in `appsettings.json` and names a local SQLite file.
+At <https://www.strava.com/settings/api>, set the application's **Authorization Callback Domain** to
+`localhost`.
+
+```bash
+dotnet run --project src/TrainingLoadAnalyzer.Web
+```
+
+Then open the printed URL, connect a Strava account, and sync. **The application refuses to start
+without `Athlete:MaximumHeartRate`** — every measured training load is computed from it, and starting
+against a default nobody chose would produce confidently wrong figures with nothing on screen to
+suggest it.
+
+The first sync of a multi-year history **will** stop at Strava's rate limit and report when to retry.
+That is by design, not a fault: roughly 1,200 activities cost more requests than one fifteen-minute
+window allows.
+
+## Verifying a change
+
+```bash
+dotnet test                # the whole suite
+./scripts/compliance-006.sh   # the dashboard's constitution checks
+
+# The suite must pass identically under a comma-decimal locale. An SVG coordinate built without
+# the invariant culture renders points="0,45,3 1,5,12,25" — valid-looking markup, wrong geometry,
+# no exception, and correct on an en-US machine.
+DOTNET_SYSTEM_GLOBALIZATION_PREDEFINED_CULTURES_ONLY=false LANG=fi_FI.UTF-8 dotnet test
 ```
 
 ## Development process
