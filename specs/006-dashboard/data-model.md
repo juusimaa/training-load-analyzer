@@ -236,7 +236,9 @@ A singleton holding one `SemaphoreSlim` and the current `SyncStatus`, creating a
 resolving the scoped `StravaActivitySync` inside it.
 
 It is a singleton because the specification requires state that outlives a circuit — a page refresh is
-a *new* circuit (edge case), FR-012 wants the state restored on reload, and FR-010's counts must
+a *new* circuit (edge case), FR-012 wants the state restored on reload — and FR-012a puts it on the
+server rather than in the browser, because a reload leaves nothing of the previous circuit behind
+(research R23) — and FR-010's counts must
 survive long enough to be read. Restoring feature 005's FR-040 guarantee is a by-product: the probe in
 research R13 showed that `StravaActivitySync` cannot be registered as a singleton at all, and that as a
 scoped service two circuits get two semaphores.
@@ -285,6 +287,7 @@ maximum is unreachable in the running application (research R4, R19).
 | FR-010 | `SyncStatus` + `SyncMessage.For` |
 | FR-011 | `DashboardView.HasActivities` = false, with `IsStravaConnected` deciding the guidance shown |
 | FR-012 | `SyncCoordinator` singleton — state outlives the circuit |
+| FR-012a | the same singleton: nothing is written to browser storage, and the figures are recomputed per load (research R23) |
 | FR-013 | `DashboardReader` reads only `ImportDbContext`; nothing else makes a network call |
 | FR-014, FR-015 | `AthleteSettings`, validated at startup |
 | FR-016 | the two connect endpoints — see [contracts/web-contract.md](./contracts/web-contract.md) |

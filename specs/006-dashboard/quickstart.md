@@ -223,6 +223,15 @@ grep -rn "TrainingLoadAggregator\|TrainingMetricsCalculator\|TrainingLoadTrendCa
 
 Must print nothing. All three belong in `DashboardViewBuilder`.
 
+**FR-012a — no state lives in the browser:**
+
+```bash
+grep -rni "localStorage\|sessionStorage\|IJSRuntime" src/TrainingLoadAnalyzer.Web
+```
+
+Must print nothing. A reload is a new circuit, so the state is the application's; the same grep keeps
+research R8's "no JavaScript" honest.
+
 **Contract C76 / C78 — no credential is committed or rendered:**
 
 ```bash

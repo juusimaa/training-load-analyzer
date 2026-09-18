@@ -173,7 +173,7 @@ Phase 3's first RED step before Phase 2 finishes, you can — that is research R
 - [ ] T011 RED: assert **FR-015** and **C77** — building the host with `Athlete:MaximumHeartRate` absent throws at startup, and the message names the key. Confirm it fails because nothing reads the key — file: `tests/TrainingLoadAnalyzer.Web.Tests/StartupTests.cs`
 - [ ] T012 GREEN: create `src/TrainingLoadAnalyzer.Web/AthleteSettings.cs` as `public sealed record AthleteSettings(int MaximumHeartRate)`, bind it from `Athlete:MaximumHeartRate` in `Program.cs`, and **fail startup** when the value is absent or not positive. Add `public partial class Program;` at the end of `Program.cs` so the test project can name it. Nothing else — no DbContext, no dashboard page; T015 is what forces those
 - [ ] T013 [P] CONFIRM: assert **C77**'s boundaries — `0` is refused, `-1` is refused, `190` is accepted. A non-positive maximum must not reach `CalculateTrainingLoad`, whose own `ArgumentOutOfRangeException` would surface as a broken page rather than a configuration error (research R4, R19) — file: `tests/TrainingLoadAnalyzer.Web.Tests/StartupTests.cs`
-- [ ] T014 [P] Write `tests/TrainingLoadAnalyzer.Web.Tests/Fakes/WebAppFactory.cs` — a `WebApplicationFactory<Program>` that supplies `Athlete:MaximumHeartRate=190` and the Strava configuration, replaces the database with a `SqliteFixture` connection the test holds open, replaces `TimeProvider` with `FixedLocalClock`, and routes `StravaApiClient`'s and `StravaAuthorization`'s `HttpClient` through `StubHttpMessageHandler`. Test code, no RED step — but it may reference no production type that does not yet exist
+- [ ] T014 [P] Write `tests/TrainingLoadAnalyzer.Web.Tests/Fakes/WebAppFactory.cs` — a `WebApplicationFactory<Program>` that supplies `Athlete:MaximumHeartRate=190` and the Strava configuration, replaces the database with a `SqliteFixture` connection the test holds open, replaces `TimeProvider` with `FixedLocalClock`, and routes `StravaApiClient`'s and `StravaAuthorization`'s `HttpClient` through `StubHttpMessageHandler`. Test code, so no RED step — but it must come **after T012**, which is what makes `Program` nameable from the test project
 - [ ] T015 RED: assert **C73** — `GET /` returns **200** against an empty database, with no Strava connection and no network. Confirm it fails because there is no dashboard route and no database wiring — file: `tests/TrainingLoadAnalyzer.Web.Tests/StartupTests.cs`
 - [ ] T016 GREEN: wire `Program.cs` — `AddRazorComponents().AddInteractiveServerComponents()`, **exactly one** `AddDbContextFactory<ImportDbContext>(…)` call, `AddHttpClient<StravaApiClient>()`, `StravaCredentials` from configuration, `TimeProvider.System`, and `db.Database.MigrateAsync()` at startup — plus a placeholder `Components/Pages/Dashboard.razor` at `@page "/"` containing a heading and nothing else. **Do not also call `AddDbContext`**: verified by probe, the pair fails at container build with *"Cannot resolve scoped service `IEnumerable<IDbContextOptionsConfiguration<ImportDbContext>>` from root provider"* (research R12). **Do not use `EnsureCreated`**: feature 005 generated three migrations and the two do not mix (research R20)
 - [ ] T017 [P] CONFIRM: assert **C86** and research R12 — one `AddDbContextFactory` call yields **both** a resolvable `IDbContextFactory<ImportDbContext>` **and** a resolvable scoped `ImportDbContext`, and the provider builds with `ValidateOnBuild` and `ValidateScopes` enabled — file: `tests/TrainingLoadAnalyzer.Web.Tests/StartupTests.cs`
@@ -194,7 +194,7 @@ testable with no sync, no chart, no Strava.
 
 ### The read model, and the figures it carries
 
-- [ ] T020 [US1] RED: assert **FR-001 – FR-003** against fixture **H1** — `DashboardViewBuilder.Build` returns a `Current` whose `Fitness` is **2.8233976017308082**, `Fatigue` is **15.974652029978209** and `Form` is their difference. Confirm it fails to compile because `DashboardViewBuilder` does not exist. These are the real CTL and ATL for a single 120-point day, not the load itself — an implementation that displayed the raw 120 would fail here — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardViewBuilderTests.cs`
+- [ ] T020 [US1] RED: assert **FR-001**, **FR-002** and **FR-003** against fixture **H1** — `DashboardViewBuilder.Build` returns a `Current` whose `Fitness` is **2.8233976017308082**, `Fatigue` is **15.974652029978209** and `Form` is their difference. Confirm it fails to compile because `DashboardViewBuilder` does not exist. These are the real CTL and ATL for a single 120-point day, not the load itself — an implementation that displayed the raw 120 would fail here — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardViewBuilderTests.cs`
 - [ ] T021 [US1] GREEN: create `src/TrainingLoadAnalyzer.Web/Features/Dashboard/DashboardView.cs` and `DashboardViewBuilder.cs` with the minimum: aggregate the history daily over `firstActivityDay … max(today, lastActivityDay)`, compute metrics over the chart range, and expose `Current`. No weekly total, no trend, no recent list — T048, T051 and T078 are what force those
 - [ ] T022 [P] [US1] CONFIRM: assert **C80** — `Current` is the last entry of `Metrics`, not a stored field. The tiles and the chart's final point are therefore the same figures by construction, which is what makes **SC-002** structural rather than maintained — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardViewBuilderTests.cs`
 - [ ] T023 [P] [US1] CONFIRM: assert **C79** — `Build` is pure: called twice with the same arguments it returns equal views, and shuffling the order of `activities` changes nothing. It reads no clock (`today` is a parameter), no storage and no ambient state, continuing 002 C13 — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardViewBuilderTests.cs`
@@ -206,6 +206,7 @@ testable with no sync, no chart, no Strava.
 ### Reading it from the store
 
 - [ ] T028 [US1] RED: assert **FR-013** — `DashboardReader.ReadAsync` over a `SqliteFixture` seeded with fixture **H1** returns the same figures T020 asserts. Confirm it fails to compile because `DashboardReader` does not exist — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardReaderTests.cs`
+- [ ] T028a [P] [US1] CONFIRM: assert **FR-013** and **C72** — during a dashboard load the stub handler records **zero** requests. T028 proves the figures come from the store; this proves nothing else was consulted to produce them, which is the half of FR-013 that says "no external API calls beyond the sync operation itself" — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardReaderTests.cs`
 - [ ] T029 [US1] GREEN: create `src/TrainingLoadAnalyzer.Web/Features/Dashboard/DashboardReader.cs` taking `IDbContextFactory<ImportDbContext>`, `TimeProvider` and `AthleteSettings`, performing **one** `ActivityStore.InRangeAsync` over the whole stored history and handing the result to `DashboardViewBuilder`. One read serves all five sections (research R15) — do not add a method to `ActivityStore` and do not query per section
 - [ ] T030 [P] [US1] CONFIRM: assert **C86** — `ReadAsync` creates its own `ImportDbContext` from the factory and disposes it, so two consecutive reads share no change-tracking state. A circuit-lifetime context is the pitfall this avoids (research R12) — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardReaderTests.cs`
 - [ ] T031 [US1] RED — **discriminating check** for **C88** and **R22**: with the clock at **2026-09-18T22:00:00Z** and the fixture zone at +03:00, the athlete's local moment is **2026-09-19T01:00+03:00**, so `AsOf` must be **2026-09-19**. Confirm it fails against an implementation using `GetUtcNow()`. This is the defect that would otherwise put an evening session into the wrong ISO week, and only for evening sessions — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardReaderTests.cs`
@@ -217,7 +218,7 @@ testable with no sync, no chart, no Strava.
 
 - [ ] T035 [US1] RED: assert **SC-002**, **C99** and **C100** — a formatting helper renders `2.8233976017308082` as **`2.8`**, `15.974652029978209` as **`16.0`**, `-13.151254428247402` as **`-13.2`**, and `null` as **`—`**. Set `CultureInfo.CurrentCulture` to `fi-FI` inside the test: the assertion must still hold. Confirm it fails to compile because no helper exists. Verified by probe — the naive version renders `45,3` on this developer's machine (research R9) — file: `tests/TrainingLoadAnalyzer.Web.Tests/DisplayFormatTests.cs`
 - [ ] T036 [US1] GREEN: create `src/TrainingLoadAnalyzer.Web/Features/Dashboard/Display.cs` with a single metric formatter using `CultureInfo.InvariantCulture` and the `0.0` format, returning `—` for null
-- [ ] T037 [US1] RED: assert **FR-001 – FR-003** in markup — `MetricTile` renders its label and its value. Confirm it fails because the component does not exist — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
+- [ ] T037 [US1] RED: assert **FR-001**, **FR-002** and **FR-003** in markup — `MetricTile` renders its label and its value. Confirm it fails because the component does not exist — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
 - [ ] T038 [US1] GREEN: create `src/TrainingLoadAnalyzer.Web/Components/Dashboard/MetricTile.razor` with `Label`, `Value`, `Basis` and `IsReliable` parameters, formatting through `Display`. Derive the test class from **`BunitContext`**, not `TestContext` — the latter is ambiguous with `Xunit.TestContext` under xUnit v3 (`CS0104`, research R10)
 - [ ] T039 [P] [US1] CONFIRM: assert **C100** — a tile with no value renders `—`, never `0.0`, never an empty element (**US1 sc2**) — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
 - [ ] T040 [P] [US1] CONFIRM: assert **003 FR-014** reaches the page — a figure whose `IsReliable` is false is marked as still warming up, so a reading from four days of history is not presented as though it were settled — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
@@ -226,6 +227,7 @@ testable with no sync, no chart, no Strava.
 - [ ] T043 [US1] RED: assert **FR-011** and **FR-017** against fixture **H3a** — with no activities and no connection, the page shows "No activities recorded" and an anchor to **`/connect`**. Confirm it fails because there is no empty state. The route itself arrives in Phase 7 at T089; asserting the anchor does not require it to resolve yet — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
 - [ ] T044 [US1] GREEN: add the empty state, choosing its guidance from `IsStravaConnected` — connect, or sync
 - [ ] T045 [P] [US1] CONFIRM: assert the "metric calculations fail" edge case in markup — a view with `IsUnavailable` renders "Data unavailable" and no tiles, rather than a stack trace or a blank page — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
+- [ ] T045a [P] [US1] CONFIRM: assert **SC-006** and **C73** — with fixture **H1** stored, **no Strava connection**, and the stub handler refusing every request, `GET /` still returns 200 and still renders `2.8`, `16.0` and `-13.2`. T015 asserts the page survives having no data; this asserts it serves the data it *has* when Strava is unreachable, which is the half of SC-006 that says "displays cached data". The messaging half is T112 — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
 - [ ] T046 [US1] REFACTOR: with US1 green, review `DashboardViewBuilder` for the one thing this story can get structurally wrong — a stored `Fitness` field shadowing `Metrics[^1]`. `Current` must remain derived (C80)
 - [ ] T047 [US1] VERIFY: `dotnet test` — all green, including all 309 existing tests. Confirm `Features/Dashboard/` contains no weekly, trend, chart or recent-activity code: this story showed three numbers and nothing else
 
@@ -264,6 +266,7 @@ list and sync.
 - [ ] T059 [US2] GREEN: create `src/TrainingLoadAnalyzer.Web/Components/Dashboard/WeeklyLoadPanel.razor` taking `Week` and `Trend`, rendering the change **always** and the classification **only** when the week is complete (research R14)
 - [ ] T060 [P] [US2] CONFIRM: assert **C100** and **US2 sc3** — with `Trend` null, the panel renders `—` for the comparison and still shows the weekly total — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
 - [ ] T061 [P] [US2] CONFIRM — **discriminating check** for **C103** and research R5: `grep -rnE '0\.15|0\.05|\b15 ?%|\b5 ?%|\b50\b' src/TrainingLoadAnalyzer.Web --include=*.cs --include=*.razor` produces no threshold. The spec's original "≥5%" rule contradicted feature 004's shipped 15%-plus-50-points; the resolution was that the dashboard applies **no** threshold of its own, and this is where that stays true — file: `tests/TrainingLoadAnalyzer.Web.Tests/WeeklyLoadAndTrendTests.cs`
+- [ ] T061a [US2] REFACTOR: review `DashboardViewBuilder`'s weekly path for the one thing it can get structurally wrong — a comparison, a percentage or a sign test that has crept in beside the call to `TrainingLoadTrendCalculator`. The builder selects and passes through; it does not judge (C103)
 - [ ] T062 [US2] VERIFY: `dotnet test` green. Confirm no arithmetic beyond display rounding was added to any component (C103)
 
 **Checkpoint**: User Stories 1 and 2 both work. The athlete sees where they are and whether this week
@@ -301,6 +304,7 @@ of sync and of the recent list.
 - [ ] T074 [US3] RED: assert **US3 sc3** — a legend naming Fitness, Fatigue and Form is present, so each line can be identified. The specification offers a legend as an alternative to a tooltip and this takes it. Confirm it fails because there is no legend — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
 - [ ] T075 [US3] GREEN: add the legend
 - [ ] T076 [P] [US3] CONFIRM: assert **US3 sc2** in markup — with `HasEnoughHistoryForChart` false, the component renders "Not enough data to show trends (30+ days required)" and no `<polyline>` — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
+- [ ] T076a [US3] REFACTOR: review `MetricsChart` for a second place where a number becomes a string. Every such place is another chance for the current culture to get in (research R9), so there should be exactly one formatting helper and every coordinate should pass through it
 - [ ] T077 [US3] VERIFY: `dotnet test` green, and `grep -rn 'IJSRuntime\|<script' src/TrainingLoadAnalyzer.Web/Components/Dashboard/` produces no output — the chart is markup, and stays markup
 
 **Checkpoint**: the athlete can see how their training has moved over half a year.
@@ -324,6 +328,7 @@ and sync.
 - [ ] T084 [US4] GREEN: create `src/TrainingLoadAnalyzer.Web/Components/Dashboard/RecentActivityList.razor`
 - [ ] T085 [US4] RED — **discriminating check** for **C101**, **US4 sc2** and **US4 sc3**: a measured row and an estimated row differ in the rendered **markup** — a badge, a title or text — and not only in a CSS class. A difference a screen reader cannot reach does not satisfy FR-008. Confirm it fails against an implementation that only varies styling — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
 - [ ] T086 [US4] GREEN: render the provenance as content, not as styling alone
+- [ ] T086a [US4] REFACTOR: review `RecentActivity` and its component for any path that reads `Load.Points` without its `Provenance`. The two travel together by design (001 SC-007), and FR-008 is only structurally safe while that stays true
 - [ ] T087 [US4] VERIFY: `dotnet test` green. Confirm `ActivityStore` was not modified — `git diff src/TrainingLoadAnalyzer.Infrastructure/` is empty (research R15)
 
 **Checkpoint**: all four display stories are complete. The dashboard is fully useful against data that
@@ -339,7 +344,7 @@ and every way that can end is something the page can say.
 **Independent Test**: drive the connect endpoints and the coordinator against the stub handler. No
 real Strava call is made by any test.
 
-### Connecting an account (FR-016 – FR-018)
+### Connecting an account (FR-016, FR-017, FR-018)
 
 These requirements were added during planning: US5 sc5 required directing the athlete to reconnect, and
 feature 005 built no host to reconnect from ([plan.md](./plan.md#amendments-made-during-planning), R6).
@@ -375,6 +380,8 @@ feature 005 built no host to reconnect from ([plan.md](./plan.md#amendments-made
 
 - [ ] T108 [US5] RED: assert **FR-009** and **US5 sc1** — `SyncPanel` renders a "Sync Activities" button, and shows a loading indication while `Status.IsRunning`. Confirm it fails because the component does not exist — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
 - [ ] T109 [US5] GREEN: create `src/TrainingLoadAnalyzer.Web/Components/Dashboard/SyncPanel.razor` taking `Status` and an `OnSync` callback
+- [ ] T109a [US5] RED: assert **FR-009** and **US5 sc2**'s second half — clicking the button invokes `SyncCoordinator.RunAsync`, and when it returns the page **re-reads** the view, so a sync that imported activities changes the figures and the recent list on screen without a manual reload. Confirm it fails because the button is wired to nothing. Every task before this one tested the two halves separately: T102 proved the coordinator syncs, T108 proved the button renders. Nothing yet joins them, and the join is what the athlete actually does — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
+- [ ] T109b [US5] GREEN: wire `SyncPanel`'s `OnSync` to the injected `SyncCoordinator` in `Components/Pages/Dashboard.razor`, and re-read `DashboardReader` when it returns. Re-read rather than patch: the view is derived, and applying a delta to it by hand is how the tiles and the chart start to disagree (C80)
 - [ ] T110 [US5] RED: assert **FR-012** and the "sync in progress when the page refreshes" edge case — a **freshly constructed** `Dashboard` component, standing in for a new circuit, reads `IsRunning` from the coordinator and says a sync is running. Confirm it fails if the page kept that state in a component field — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
 - [ ] T111 [US5] GREEN: read the status from the injected singleton on initialisation, never from component state
 - [ ] T112 [P] [US5] CONFIRM: assert **US5 sc5**, **FR-017** and **FR-018** in markup — with no connection, and again with a `ReconnectionRequired` outcome, the panel shows "Strava connection required" and an anchor to `/connect`, which T089 now makes a real route — file: `tests/TrainingLoadAnalyzer.Web.Tests/DashboardComponentTests.cs`
@@ -399,6 +406,7 @@ by someone who has never touched the database by hand.
 - [ ] T120 [P] Principle III / research R8, R17 — `grep -rn -E 'ChartJs|ApexCharts|Plotly|Blazorise|Moq|NSubstitute|FakeItEasy|InMemory|Playwright|Selenium' src/TrainingLoadAnalyzer.Web tests/TrainingLoadAnalyzer.Web.Tests` produces no output. The risk is not a package added deliberately but one added in passing, to solve a problem research already solved without it
 - [ ] T121 [P] research **R9** — run the **whole** suite under a comma-decimal locale: `DOTNET_SYSTEM_GLOBALIZATION_PREDEFINED_CULTURES_ONLY=false LANG=fi_FI.UTF-8 dotnet test`. Every test must pass identically. This is the developer's own machine locale, and the failure it catches is invisible on an `en-US` one
 - [ ] T122 [P] **C76** / **C78** — `grep -rni 'client_secret\|AccessToken\|RefreshToken' src/TrainingLoadAnalyzer.Web/Components src/TrainingLoadAnalyzer.Web/appsettings*.json` produces no output, and `git check-ignore src/TrainingLoadAnalyzer.Web/*.db` confirms the database is ignored
+- [ ] T122a [P] **FR-012a** / research R23 — `grep -rni 'localStorage\|sessionStorage\|IJSRuntime' src/TrainingLoadAnalyzer.Web` produces no output. FR-012 originally called for state "on athlete's device"; under Interactive Server a reload is a new circuit, so the state is the application's and the browser holds none of it. This is where that stays true — and it is the same grep that keeps R8's "no JavaScript" honest
 - [ ] T123 [P] **SC-007** — `grep -rn '<script\|IJSRuntime' src/TrainingLoadAnalyzer.Web/Components` finds nothing beyond Blazor's own circuit script in `App.razor`. No charting library means no third-party JavaScript to differ between browsers
 - [ ] T124 **SC-001** — measure rather than assume: start the host against a real multi-year database and time three loads of `/` with `curl -o /dev/null -s -w "%{time_total}\n"`. Research R16 measured 292–677 ms in process for a 3-year-9-month, 953-activity, 1.7-million-sample history. A warm figure above 2 seconds reopens R16; a projection does not
 - [ ] T125 **SC-005** — time a manual sync of an already-current history end to end. A first import of a multi-year history is explicitly outside this criterion and will stop at Strava's rate limit by design (spec SC-005, 005 R24)
@@ -446,7 +454,8 @@ exists. VERIFY closes each phase.
 
 ### Parallel Opportunities
 
-- **T010, T014** — the clock and the test host, different files
+- **T010, T013** — the clock and the startup boundary checks, different files
+- **T014** is *not* parallel with T010: it names `Program`, which only becomes nameable at T012
 - **T013, T017, T018** — the startup CONFIRMs, once the behaviour each pins exists
 - **T022, T023, T026, T027** — US1's read-model CONFIRMs
 - **T039, T040, T045** — US1's component CONFIRMs, all in `DashboardComponentTests.cs`
@@ -497,8 +506,8 @@ forward on their own: they depend on nothing in Phases 3–6.
 
 ## Notes
 
-- **131 tasks**, against 21 functional requirements (13 original, 8 added during planning), 7 success
-  criteria, 32 new contract guarantees (C72–C103), and 5 user stories
+- **139 tasks**, against 20 functional requirements (13 original, 7 added during planning and analysis),
+  7 success criteria, 32 new contract guarantees (C72–C103), and 5 user stories
 - Phase 1 is the **only** non-TDD phase, and it creates no type under `Features/`. Every task from T010
   onward starts RED — the mitigation the Constitution Check in [plan.md](./plan.md) records for this
   feature's named Principle I risk, which here is **markup**, not plumbing

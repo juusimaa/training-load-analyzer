@@ -2,8 +2,9 @@
 
 **Feature**: 006-dashboard | **Date**: 2026-09-18 | **Plan**: [plan.md](./plan.md)
 
-Twenty-two decisions. Four were put to the developer and answered on 2026-09-18 (R4–R7); all four
-amended [spec.md](./spec.md) before any task was generated. Seven were settled by **building and
+Twenty-three decisions. Five were put to the developer and answered on 2026-09-18 — R4–R7 during
+planning, and R23 after `/speckit-analyze` found that the design had settled it silently. All five
+amended [spec.md](./spec.md). Seven were settled by **building and
 running probes** rather than by reasoning (R8–R13, R16), and three of those came out against the
 obvious answer.
 
@@ -76,7 +77,9 @@ substituting the store. Neither exists (see R17 — the store is exercised for r
 ## Decisions put to the developer
 
 These four were raised rather than settled here, under Principle VII. All were answered on 2026-09-18
-and all four changed [spec.md](./spec.md).
+and all four changed [spec.md](./spec.md). A fifth, **R23**, belongs with them in substance but not in
+sequence: it was settled silently in the design and only caught afterwards, so it is written up below
+with the design decisions rather than here.
 
 ### R4 — The athlete's maximum heart rate comes from configuration
 
@@ -490,6 +493,34 @@ two makes the two panels agree.
 **Alternatives considered**: UTC throughout (rejected: disagrees with how every stored figure is already
 bucketed); a configured timezone (rejected: a setting nobody asked for, for a single-athlete MVP running
 on the athlete's own machine).
+
+### R23 — State lives on the server, because a reload is a new circuit
+
+**Decision**: the sync's state is held by a process-wide singleton and the figures are recomputed on
+each load. Nothing is written to browser session storage or local storage.
+
+**Rationale**: FR-012 as written named the browser — "persist on athlete's device (browser session or
+storage)" — and under Interactive Server that is the one place it cannot usefully go. The components
+already run on the server; a reload starts a **new circuit**, so storing state in the browser would
+mean a JavaScript interop boundary whose only job is to hand the server back something it could simply
+have kept. It would also be this feature's only JavaScript, which R8 and SC-007 both spent effort
+avoiding.
+
+**This one was raised late.** It was found by `/speckit-analyze` after the plan and tasks were written,
+not during planning with R4–R7 — the design had already settled it silently, which is exactly what
+Principle VII forbids. It is written up at full length, and carried into the plan's amendments table as
+a fifth row, for that reason: an amendments list that records four items while a fifth was decided in
+silence is a worse record than one that records five.
+
+**Alternatives considered**: `localStorage` through JS interop (rejected: the feature's only JavaScript,
+introduced to duplicate state the server already holds, and it throws in private browsing so every
+access needs a guard); a session cookie (rejected: the same, with a size limit and a round trip per
+request); recomputing the sync state from feature 005's `SyncState` row (rejected: it records how the
+*last* sync ended, not that one is *running* — and "running" is the half the page-refresh edge case is
+about).
+
+**Revisit trigger**: the README's WebAssembly refactoring. Components running in the browser change this
+answer completely, because then the browser is where the state already is.
 
 ---
 

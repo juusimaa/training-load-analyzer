@@ -117,7 +117,8 @@ The athlete can click a "Sync Activities" button to fetch new activities from St
 - **FR-009**: Dashboard MUST provide a "Sync Activities" button that triggers a manual synchronization with Strava
 - **FR-010**: Dashboard MUST display appropriate feedback during sync (loading state, success/failure/rate-limited messages, count of new activities)
 - **FR-011**: Dashboard MUST gracefully handle the absence of data (no activities, no history) with a clear empty state and guidance on next steps
-- **FR-012**: Dashboard MUST persist on athlete's device (browser session or storage) and restore state on page reload, maintaining display consistency
+- **FR-012**: Dashboard MUST restore its state on page reload — the figures, and the outcome and progress of the most recent sync — so that a reload, or a second tab, shows the same thing rather than a blank slate
+- **FR-012a**: That state MUST be held by the application rather than by the browser. A reload of a server-rendered page starts a new connection, so anything held only by the previous one is already gone by the time the athlete sees the new page
 - **FR-013**: Dashboard MUST display all metrics and activities using only locally-stored data; no external API calls beyond the sync operation itself
 
 #### The athlete's maximum heart rate
@@ -156,11 +157,12 @@ The athlete can click a "Sync Activities" button to fetch new activities from St
 
 - **Athlete connection**: Feature 5 built the authorization code but no host to run it from, so this feature provides the connect flow itself (FR-016). Once connected, the connection persists and the dashboard is usable offline against stored data
 - **Data availability**: At least one training activity has been imported; if none exist, the feature gracefully handles empty state
-- **Browser environment**: The application runs in a modern web browser with JavaScript enabled and supports local storage
+- **Browser environment**: The application runs in a modern web browser with JavaScript enabled, which Blazor's server-side connection requires. It does **not** require browser storage of any kind (FR-012a)
 - **Display rounding**: Metrics are rounded to 1 decimal place for display (Fitness: 45.3, Fatigue: 12.1, Form: 33.2). The decimal point shown is the one in these examples on every machine: the figures are formatted against a fixed culture rather than the server's, so the display does not change with the operating system's locale
 - **Week definition**: ISO 8601 week definition is used (week starts Monday, week 1 is the week with the first Thursday of the year)
-- **Chart timespan**: Time-series chart displays all available history up to 180 days (not limited to 180, but 180 is the window used for heart-rate streams in Strava import)
+- **Chart timespan**: The chart covers the **last 180 days**, or all available history when there is less. The cap is not arbitrary: 180 days is the window feature 5 uses for heart-rate streams, so it is exactly the span over which loads are measured rather than estimated. Older training is **not** discarded — it still feeds Fitness and Fatigue, because those accumulate from the first recorded day. It is only the chart that stops at 180 days
 - **Sync initiation**: Manual sync uses the existing `StravaActivitySync.SyncAsync()` method (incremental sync, not full resync)
 - **Maximum heart rate is one athlete's, set once**: consistent with the MVP's single-athlete scope. Changing it means changing configuration and restarting, and there is no settings screen (FR-014)
 - **No artificial delays**: UI does not add artificial delays; all waits are due to actual data processing or network latency
 - **Blazor Interactive Server**: The application uses Blazor Interactive Server render mode, meaning components run on the server and communicate via SignalR; no separate HTTP API is needed for this MVP
+- **State lives on the server, not in the browser**: the dashboard holds nothing in browser session storage or local storage. Every figure is recomputed from the local database on each load, which is cheap enough to need no cache, and the one piece of genuinely transient state — whether a sync is running and how the last one ended — is held by the application process. Nothing the athlete sees depends on their browser remembering anything (FR-012a)

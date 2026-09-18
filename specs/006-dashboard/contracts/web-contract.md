@@ -222,7 +222,9 @@ public sealed class SyncCoordinator   // registered as a singleton
 ```
 
 **C93** — `SyncCoordinator` is a singleton, so its `Status` outlives any one circuit and is what a
-reloaded page reads (**FR-012**, edge case "sync in progress when the page refreshes").
+reloaded page reads (**FR-012**, **FR-012a**, edge case "sync in progress when the page refreshes").
+Nothing is written to browser session storage or local storage, and no JavaScript interop exists to
+write it with (**FR-012a**, research R23).
 
 **C94** — at most one sync runs at a time across the whole process. A second request while one is in
 flight returns the running status and starts nothing, restoring the guarantee 005 FR-040 intended
