@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-19
 
-**Status**: Draft
+**Status**: Draft (Amendment 1 applied 2026-09-19 — see [Amendments](#amendments))
 
 **Input**: User description: "I added UI design docs (static web page and readme) to \"/docs/ui\" folder. Specify a new feature 008 from these design docs."
 
@@ -119,7 +119,7 @@ An athlete using a screen reader, keyboard navigation, high browser zoom or with
 
 **Scope guard**
 
-- **FR-001**: The system MUST NOT change any computation, stored data, imported data, navigation destination, or the conditions under which any message, value or state is shown. Only the presentation of existing content may change.
+- **FR-001**: The system MUST NOT change any computation, stored data, imported data, navigation destination, or the conditions under which any message, value or state is shown, **except for the three additions named in Amendment 1** (the chart window control, the maximum heart rate shown in the rail, and the ISO week designation). Apart from those, only the presentation of existing content may change.
 - **FR-002**: The system MUST continue to display every text string, figure, label, qualifier, message, timestamp and link that the current interface displays, with identical wording and identical numeric formatting.
 
 **Layout**
@@ -142,7 +142,7 @@ An athlete using a screen reader, keyboard navigation, high browser zoom or with
 
 **Accessibility**
 
-- **FR-015**: The system MUST meet a contrast ratio of at least 4.5:1 for body text and 3:1 for large text and meaningful non-text indicators, against the surface each sits on.
+- **FR-015**: The system MUST meet a contrast ratio of at least 4.5:1 for body text and 3:1 for large text and meaningful non-text indicators, against the surface each sits on. The trend chart's daily-load bars are exempt, as a contextual backdrop rather than a required indicator (Amendment 1); the chart's zero rule and its three metric lines are not exempt.
 - **FR-016**: The system MUST show a clearly visible focus indicator on every interactive element when it receives keyboard focus.
 - **FR-017**: The system MUST provide touch targets of at least 48 by 48 device-independent pixels for every interactive control.
 - **FR-018**: The system MUST NOT convey any distinction by colour alone, except the trend chart's series, which are additionally identified by name in the legend.
@@ -170,7 +170,7 @@ An athlete using a screen reader, keyboard navigation, high browser zoom or with
 - **SC-004**: The dashboard renders without horizontal scrolling or clipped content at every viewport width from 320 pixels to 2560 pixels.
 - **SC-005**: 100% of text and meaningful indicators meet their required contrast ratio (4.5:1 body text, 3:1 large text and indicators), verified independently in both the light and the dark appearance.
 - **SC-006**: 100% of interactive controls present a visible keyboard focus indicator and a touch target of at least 48 by 48 device-independent pixels.
-- **SC-007**: Every distinction the interface draws outside the trend chart's plot remains discernible when the page is viewed without colour.
+- **SC-007**: Every distinction the interface draws outside the trend chart's plot remains discernible when the page is viewed without colour. Within the plot, each series remains identifiable by name through the legend, and the three lines remain distinguishable from one another by stroke pattern as well as colour.
 - **SC-008**: An athlete unfamiliar with the redesign can identify their current Fitness, Fatigue and Form values within 5 seconds of the dashboard loading.
 - **SC-009**: Every athlete-facing surface listed in SC-003 renders completely in both the light and the dark appearance, with zero surfaces retaining a colour from the opposite appearance.
 - **SC-010**: Switching the device appearance preference while the dashboard is open changes the appearance without a reload and without any loss or change of displayed content.
@@ -185,3 +185,54 @@ An athlete using a screen reader, keyboard navigation, high browser zoom or with
 - The dark appearance follows the device or browser preference only; there is no stored athlete preference and no in-application switch, consistent with current behaviour.
 - Printing, offline appearance and internationalisation of the interface are out of scope.
 - Verification of visual outcomes is a mix of automated rendering assertions where markup can carry the check and human review where it cannot.
+
+## Amendments
+
+### Amendment 1 — admit three deliberate additions, and exempt the chart's load bars (2026-09-19)
+
+**Requested by**: the developer, during planning, after a pre-implementation audit of the reference
+design against this specification.
+
+#### (a) FR-001's scope guard is narrowed to admit three additions
+
+FR-001 was carried over from feature 007, where the instruction genuinely was "change nothing but
+the appearance". It was never narrowed to admit the new content that FR-003 and FR-005 — in this
+same specification — require. Three items are therefore new athlete-facing behaviour or content,
+and are deliberately in scope:
+
+1. **The chart window control** (FR-005). The chart currently renders a fixed range; choosing
+   between 30, 90 and 180 days is new behaviour.
+2. **The configured maximum heart rate in the rail** (FR-003). The value exists in configuration
+   and already feeds load estimation, but is displayed nowhere today. Showing it adds a member to
+   the dashboard read model.
+3. **The ISO week designation in the rail** (FR-003). The weekly figure is currently labelled
+   "This week" with no week identifier.
+
+Nothing else is added. FR-002 — that every existing string, figure, qualifier, message and link
+survives with identical wording and formatting — stands unamended.
+
+#### (b) The trend chart's daily-load bars are exempt from FR-015
+
+Measured against the page background, the bars as drawn in the reference design reach 1.33:1 and
+the zero rule 1.80:1, against FR-015's 3:1 bar for meaningful non-text indicators. The lightest
+step of the design system's neutral ramp that clears 3:1 is the same value as the Form line, so
+complying would give the backdrop the weight of a data line and collapse the figure-and-ground
+separation the design is built on.
+
+The bars are therefore treated as a contextual backdrop rather than an indicator required to
+understand the content: the three metric lines carry the chart's message, the chart is titled with
+its window, and the same daily figures are published as text in the recent-sessions table.
+
+**What is explicitly *not* conceded**: the zero rule is darkened to meet 3:1, since it is a genuine
+reference indicator and costs nothing visually. The three metric lines are not exempt. Every other
+measured shortfall found in the same audit — the primary button label, links, table headings,
+muted text, the chart's date axis and the "Form" legend label — is fixed by stepping down the
+design system's existing ramps, not by exemption.
+
+#### (c) Chart series regain stroke-pattern differentiation
+
+Feature 007's Amendment 1 recorded the loss of per-series dash patterns as "a real accessibility
+regression", forced by the Material chart component drawing every series with a solid stroke.
+Returning to a hand-drawn plot removes that constraint, and the reference design dashes the Form
+line. SC-007 is amended to require the three lines be distinguishable by stroke pattern as well as
+colour, restoring what feature 006 specified.
