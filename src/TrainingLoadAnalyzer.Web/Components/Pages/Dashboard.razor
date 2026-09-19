@@ -5,70 +5,92 @@
 
 <PageTitle>Training Load</PageTitle>
 
-<h1>Training Load</h1>
+<div class="page">
+    @* The page's only h1. Routes.razor focuses it after navigation, and the app bar's title is
+       deliberately a span so this stays unique (007 FR-023, research R10). *@
+    <MudText Typo="Typo.h4" HtmlTag="h1">Training Load</MudText>
 
-<SyncPanel Status="syncStatus" OnSync="RunSyncAsync" />
+    <SyncPanel Status="syncStatus" OnSync="RunSyncAsync" />
 
-@if (view is null)
-{
-    <p class="loading">Reading your training history…</p>
-}
-else if (view.IsUnavailable)
-{
-    @* The edge case: the stored data could not be read. The athlete is told, rather than shown a
-       stack trace or a page of zeroes (C87). *@
-    <section class="empty">
-        <h2>Data unavailable</h2>
-        <p>Your stored training history could not be read. Nothing has been lost — try again, and
-           if it persists, the application log says why.</p>
-    </section>
-}
-else if (!view.HasActivities)
-{
-    <section class="empty">
-        <h2>No activities recorded</h2>
+    @if (view is null)
+    {
+        <MudPaper Class="state" Elevation="1">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small" />
+            <MudText Typo="Typo.body1">Reading your training history…</MudText>
+        </MudPaper>
+    }
+    else if (view.IsUnavailable)
+    {
+        @* The edge case: the stored data could not be read. The athlete is told, rather than shown a
+           stack trace or a page of zeroes (C87). *@
+        <MudPaper Class="state state-unavailable" Elevation="1">
+            <MudText Typo="Typo.h6" HtmlTag="h2">Data unavailable</MudText>
+            <MudText Typo="Typo.body1">
+                Your stored training history could not be read. Nothing has been lost — try again, and
+                if it persists, the application log says why.
+            </MudText>
+        </MudPaper>
+    }
+    else if (!view.HasActivities)
+    {
+        <MudPaper Class="state" Elevation="1">
+            <MudText Typo="Typo.h6" HtmlTag="h2">No activities recorded</MudText>
 
-        @if (view.IsStravaConnected)
-        {
-            <p>Your Strava account is connected, but nothing has been imported yet.
-               Sync to bring your training in.</p>
-        }
-        else
-        {
-            <p>Connect your Strava account to bring your training in.</p>
-            <a class="connect" href="/connect">Connect Strava</a>
-        }
-    </section>
-}
-else
-{
-    <section class="status">
-        <MetricTile Label="Fitness"
-                    Value="view.Current?.Fitness"
-                    Basis="view.Current?.FitnessBasis ?? LoadBasis.None"
-                    IsReliable="view.Current?.IsReliable ?? false" />
-        <MetricTile Label="Fatigue"
-                    Value="view.Current?.Fatigue"
-                    Basis="view.Current?.FatigueBasis ?? LoadBasis.None"
-                    IsReliable="view.Current?.IsReliable ?? false" />
-        <MetricTile Label="Form"
-                    Value="view.Current?.Form"
-                    Basis="view.Current?.FormBasis ?? LoadBasis.None"
-                    IsReliable="view.Current?.IsReliable ?? false" />
-    </section>
+            @if (view.IsStravaConnected)
+            {
+                <MudText Typo="Typo.body1">
+                    Your Strava account is connected, but nothing has been imported yet.
+                    Sync to bring your training in.
+                </MudText>
+            }
+            else
+            {
+                <MudText Typo="Typo.body1">Connect your Strava account to bring your training in.</MudText>
+                <MudButton Class="connect"
+                           Href="/connect"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary">Connect Strava</MudButton>
+            }
+        </MudPaper>
+    }
+    else
+    {
+        @* Three peers on a wide viewport, one column on a phone - xs="12" sm="4" is the whole of
+           007 FR-016 for this row, with no breakpoint list to maintain. *@
+        <MudGrid Spacing="3" Class="status">
+            <MudItem xs="12" sm="4">
+                <MetricTile Label="Fitness"
+                            Value="view.Current?.Fitness"
+                            Basis="view.Current?.FitnessBasis ?? LoadBasis.None"
+                            IsReliable="view.Current?.IsReliable ?? false" />
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MetricTile Label="Fatigue"
+                            Value="view.Current?.Fatigue"
+                            Basis="view.Current?.FatigueBasis ?? LoadBasis.None"
+                            IsReliable="view.Current?.IsReliable ?? false" />
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MetricTile Label="Form"
+                            Value="view.Current?.Form"
+                            Basis="view.Current?.FormBasis ?? LoadBasis.None"
+                            IsReliable="view.Current?.IsReliable ?? false" />
+            </MudItem>
+        </MudGrid>
 
-    <section class="week">
-        <WeeklyLoadPanel Week="view.CurrentWeek" Trend="view.Trend" />
-    </section>
+        <div class="week">
+            <WeeklyLoadPanel Week="view.CurrentWeek" Trend="view.Trend" />
+        </div>
 
-    <section class="trends">
-        <MetricsChartView Metrics="view.Metrics" HasEnoughHistory="view.HasEnoughHistoryForChart" />
-    </section>
+        <div class="trends">
+            <MetricsChartView Metrics="view.Metrics" HasEnoughHistory="view.HasEnoughHistoryForChart" />
+        </div>
 
-    <section class="activities">
-        <RecentActivityList Activities="view.Recent" />
-    </section>
-}
+        <div class="activities">
+            <RecentActivityList Activities="view.Recent" />
+        </div>
+    }
+</div>
 
 @code {
     private DashboardView? view;

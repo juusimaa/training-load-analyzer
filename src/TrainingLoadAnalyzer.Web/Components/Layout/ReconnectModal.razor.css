@@ -1,3 +1,11 @@
+/*
+   The connection-lost notice (007 FR-015, FR-028).
+
+   Restyled onto MudBlazor's generated palette variables so it works in both schemes. It was not in
+   the plan's file list - the colour-discipline test found it, which is the point of scanning the
+   repository rather than only the files someone remembered.
+*/
+
 .components-reconnect-first-attempt-visible,
 .components-reconnect-repeated-attempt-visible,
 .components-reconnect-failed-visible,
@@ -21,13 +29,13 @@
 
 
 #components-reconnect-modal {
-    background-color: white;
+    background-color: var(--mud-palette-surface);
     width: 20rem;
     margin: 20vh auto;
     padding: 2rem;
     border: 0;
     border-radius: 0.5rem;
-    box-shadow: 0 3px 6px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--mud-elevation-8);
     opacity: 0;
     transition: display 0.5s allow-discrete, overlay 0.5s allow-discrete;
     animation: components-reconnect-modal-fadeOutOpacity 0.5s both;
@@ -41,7 +49,7 @@
 }
 
 #components-reconnect-modal::backdrop {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: var(--mud-palette-overlay-dark);
     animation: components-reconnect-modal-fadeInOpacity 0.5s ease-in-out;
     opacity: 1;
 }
@@ -90,18 +98,18 @@
 
 #components-reconnect-modal button {
     border: 0;
-    background-color: #6b9ed2;
-    color: white;
+    background-color: var(--mud-palette-primary);
+    color: var(--mud-palette-primary-text);
     padding: 4px 24px;
     border-radius: 4px;
 }
 
     #components-reconnect-modal button:hover {
-        background-color: #3b6ea2;
+        background-color: var(--mud-palette-primary-darken);
     }
 
     #components-reconnect-modal button:active {
-        background-color: #6b9ed2;
+        background-color: var(--mud-palette-primary);
     }
 
 .components-rejoining-animation {
@@ -112,7 +120,7 @@
 
     .components-rejoining-animation div {
         position: absolute;
-        border: 3px solid #0087ff;
+        border: 3px solid var(--mud-palette-primary);
         opacity: 1;
         border-radius: 50%;
         animation: components-rejoining-animation 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;

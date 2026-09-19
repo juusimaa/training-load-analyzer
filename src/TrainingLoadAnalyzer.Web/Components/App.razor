@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
     <ResourcePreloader />
+    <link rel="stylesheet" href="@Assets["_content/MudBlazor/MudBlazor.min.css"]" />
     <link rel="stylesheet" href="@Assets["app.css"]" />
     <link rel="stylesheet" href="@Assets["TrainingLoadAnalyzer.Web.styles.css"]" />
     <ImportMap />
@@ -13,9 +14,15 @@
 </head>
 
 <body>
-    <Routes />
+    @* 007: interactive at the root so MudThemeProvider - which lives in the layout - gets an
+       OnAfterRenderAsync and can ask the browser for the appearance preference. Under static SSR it
+       renders once, never runs its JS, and every page stays in the light palette regardless of the
+       device setting (007 FR-025, FR-026). A render mode cannot go on the layout itself, because
+       its @Body RenderFragment cannot cross a render-mode boundary. *@
+    <Routes @rendermode="InteractiveServer" />
     <ReconnectModal />
     <script src="@Assets["_framework/blazor.web.js"]"></script>
+    <script src="@Assets["_content/MudBlazor/MudBlazor.min.js"]"></script>
 </body>
 
 </html>

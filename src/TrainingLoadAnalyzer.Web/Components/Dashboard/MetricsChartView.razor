@@ -1,47 +1,38 @@
 @* Fitness, fatigue and form over the last 180 days (FR-006, SC-003).
 
-   Inline SVG: no charting package, no JavaScript, no interop. US3 scenario 3 offers a legend as an
-   alternative to a tooltip, so three polylines and a legend satisfy the requirement — and being
-   plain markup, the geometry is assertable, which is what SC-003 asks for (research R8). *@
+   007 Amendment 1: the plot is MudChart's, not this project's. The consequences are recorded in the
+   specification and are real - the three series no longer carry dash patterns, because MudChart
+   draws every series with a solid stroke and offers no dash option, so a series is identified by
+   the legend and hover label rather than by the shape of its line (007 FR-013a). The geometry this
+   component used to compute itself went with it. *@
 
-<div class="chart">
+<MudPaper Class="chart" Elevation="1">
     @if (!HasEnoughHistory)
     {
-        <p class="chart-empty">Not enough data to show trends (30+ days required)</p>
+        <MudText Typo="Typo.body1" Class="chart-empty">Not enough data to show trends (30+ days required)</MudText>
     }
     else
     {
-        <svg class="chart-plot"
-             viewBox="@ViewBox"
-             preserveAspectRatio="none"
-             role="img"
-             aria-label="Fitness, fatigue and form over the last @Metrics.Count days">
-            @foreach (var series in Series)
-            {
-                <polyline class="line line-@series.CssClass"
-                          points="@series.Points"
-                          fill="none"
-                          vector-effect="non-scaling-stroke" />
-            }
-        </svg>
+        @* MatchBoundsToSize is load-bearing, not decoration. Without it MudChart keeps its default
+           700x350 viewBox, and preserveAspectRatio defaults to "xMidYMid meet" - so on a wide panel
+           the svg element fills the width while the drawing inside it is scaled to fit the height
+           and centred, leaving a ~330px gap down the left. This makes the viewBox track the
+           rendered size instead. *@
+        <MudChart T="double"
+                  ChartType="ChartType.Line"
+                  ChartSeries="@Series"
+                  ChartOptions="@Options"
+                  MatchBoundsToSize="true"
+                  Width="100%"
+                  Height="240px" />
 
-        <ul class="chart-legend">
-            @foreach (var series in Series)
-            {
-                <li class="legend-@series.CssClass">@series.Label</li>
-            }
-        </ul>
-
-        <p class="chart-span">
+        <MudText Typo="Typo.caption" Class="chart-span">
             @Display.Day(Metrics[0].Day) — @Display.Day(Metrics[^1].Day)
-        </p>
+        </MudText>
     }
-</div>
+</MudPaper>
 
 @code {
-    private const double Width = 600;
-    private const double Height = 200;
-
     /// <summary>The metrics series, at most 180 days ending today (C83).</summary>
     [Parameter] public IReadOnlyList<DailyTrainingMetrics> Metrics { get; set; } = [];
 
@@ -49,11 +40,26 @@
     [Parameter] public bool HasEnoughHistory { get; set; }
 
     /// <summary>
-    ///   All geometry comes from one tested place. Every coordinate in it is formatted with the
-    ///   invariant culture, which on this developer's machine is the difference between a chart and
-    ///   a silently malformed one (research R9, C89).
+    ///   Which palette the plot draws with. Cascaded from <c>MainLayout</c>, which owns the theme
+    ///   provider and is the only place that knows the active scheme (007 research R5).
     /// </summary>
-    private IReadOnlyList<ChartSeries> Series => MetricsChart.Plot(Metrics, Width, Height);
+    [CascadingParameter(Name = "IsDarkMode")] private bool IsDarkMode { get; set; }
 
-    private static string ViewBox => MetricsChart.ViewBox(Width, Height);
+    /// <summary>
+    ///   The series names are load-bearing, not decoration: MudChart derives its legend from them,
+    ///   and since Amendment 1 the legend is the only thing that tells one line from another
+    ///   (007 FR-013a, FR-002).
+    /// </summary>
+    private List<ChartSeries<double>> Series =>
+    [
+        new() { Name = "Fitness", Data = new ChartData<double>([.. Metrics.Select(m => m.Fitness)]) },
+        new() { Name = "Fatigue", Data = new ChartData<double>([.. Metrics.Select(m => m.Fatigue)]) },
+        new() { Name = "Form", Data = new ChartData<double>([.. Metrics.Select(m => m.Form)]) },
+    ];
+
+    /// <summary>
+    ///   The palette is positional - MudChart matches colour to series by index - so its order and
+    ///   <see cref="Series"/>' order are the same fact written twice and must not drift.
+    /// </summary>
+    private ChartOptions Options => new() { ChartPalette = ChartPalette.For(IsDarkMode) };
 }

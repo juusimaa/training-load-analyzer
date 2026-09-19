@@ -1,16 +1,29 @@
+/*
+   The unhandled-error notice (007 FR-015).
+
+   Every colour comes from MudBlazor's generated palette variables, which are the theme in CSS form
+   and are re-emitted when the scheme changes. That is what lets this work in both schemes - it
+   previously pinned itself to light with `color-scheme: light only` and a lightyellow background,
+   which is exactly the kind of surface FR-028 is about.
+*/
+
 #blazor-error-ui {
-    color-scheme: light only;
-    background: lightyellow;
+    background: var(--mud-palette-error);
+    color: var(--mud-palette-error-text);
     bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--mud-elevation-8);
     box-sizing: border-box;
     display: none;
     left: 0;
     padding: 0.6rem 1.25rem 0.7rem 1.25rem;
     position: fixed;
     width: 100%;
-    z-index: 1000;
+    z-index: 2000;
 }
+
+    #blazor-error-ui .reload {
+        color: var(--mud-palette-error-text);
+    }
 
     #blazor-error-ui .dismiss {
         cursor: pointer;

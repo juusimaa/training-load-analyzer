@@ -4,11 +4,26 @@
     <ProjectReference Include="..\TrainingLoadAnalyzer.Infrastructure\TrainingLoadAnalyzer.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="9.10.0" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+
+    <!--
+      Points at the local user-secrets store holding Strava:ClientId, Strava:ClientSecret and
+      Athlete:MaximumHeartRate. The store already existed; the project had never referenced it, so
+      the configuration was silently absent and the app fell back to empty credentials - a sync
+      then reached Strava with client_id= and was told the client id was invalid.
+
+      The id is a pointer to a folder under ~/.microsoft/usersecrets, not a secret, and is only
+      read in the Development environment.
+    -->
+    <UserSecretsId>6b9735b5-f210-48a1-8b73-0abd33458fd9</UserSecretsId>
   </PropertyGroup>
 
 </Project>

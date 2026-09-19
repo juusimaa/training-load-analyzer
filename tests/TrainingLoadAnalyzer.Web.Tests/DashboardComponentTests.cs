@@ -1,5 +1,5 @@
-using System.Text.RegularExpressions;
 using Bunit;
+using MudBlazor.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -29,6 +29,19 @@ namespace TrainingLoadAnalyzer.Web.Tests;
 public class DashboardComponentTests : BunitContext
 {
     private readonly SqliteFixture<ImportDbContext> fixture = new(options => new ImportDbContext(options));
+
+    /// <summary>
+    ///   Feature 007. MudBlazor components resolve their own services and call into JS as they
+    ///   render, so every render in this class needs both. Loose interop returns default for calls
+    ///   nobody planned rather than throwing — right for tests that are about content, and a
+    ///   deliberate cost recorded in 007 research R13: interop failures stop being visible here.
+    /// </summary>
+    public DashboardComponentTests()
+    {
+        Services.AddMudServices();
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        MudChartBounds.Supply(JSInterop);
+    }
 
     private readonly FixedLocalClock clock = new();
 
@@ -247,18 +260,6 @@ public class DashboardComponentTests : BunitContext
             LoadBasis.Estimated)),
     ];
 
-    /// <summary>US3 scenario 1: three lines, drawn as markup and nothing else (research R8).</summary>
-    [Fact]
-    public void The_chart_renders_three_polylines_inside_an_svg()
-    {
-        var chart = Render<MetricsChartView>(p => p
-            .Add(c => c.Metrics, ChartSeries(60))
-            .Add(c => c.HasEnoughHistory, true));
-
-        Assert.Contains("<svg", chart.Markup, StringComparison.Ordinal);
-        Assert.Equal(3, chart.FindAll("polyline").Count);
-    }
-
     /// <summary>
     ///   US3 scenario 3. The specification offers a legend as an alternative to a tooltip and this
     ///   takes it — three lines are useless if nobody can tell which is which.
@@ -287,79 +288,10 @@ public class DashboardComponentTests : BunitContext
             .Add(c => c.HasEnoughHistory, false));
 
         Assert.Contains("Not enough data to show trends (30+ days required)", chart.Markup, StringComparison.Ordinal);
-        Assert.Empty(chart.FindAll("polyline"));
-    }
 
-    /// <summary>
-    ///   Bug <c>chart-not-rendered</c>. The three lines were computed correctly and then painted
-    ///   with nothing: SVG's initial value for <c>stroke</c> is <c>none</c>, so a polyline with
-    ///   <c>fill="none"</c> and no stroke draws zero pixels. The component delegates every visual
-    ///   property to CSS classes, and no stylesheet defined one of them.
-    /// </summary>
-    /// <remarks>
-    ///   The scope attribute is the assertable part. Blazor only emits <c>b-*</c> onto an element
-    ///   when the component has a companion <c>.razor.css</c>, so its presence on the polylines
-    ///   proves both that the stylesheet exists and that CSS isolation reaches inside the SVG —
-    ///   the one thing about this fix that could not be taken on trust. It is also what catches the
-    ///   subtler regression: move the plot into a child component and the scope stops applying,
-    ///   the chart goes blank again, and every other test in this file still passes.
-    /// </remarks>
-    [Fact]
-    public void Every_chart_line_carries_the_isolation_scope_that_paints_it()
-    {
-        var chart = Render<MetricsChartView>(p => p
-            .Add(c => c.Metrics, ChartSeries(60))
-            .Add(c => c.HasEnoughHistory, true));
-
-        var unscoped = chart
-            .FindAll("polyline")
-            .Where(line => !line.Attributes.Any(a => a.Name.StartsWith("b-", StringComparison.Ordinal)))
-            .Select(line => line.GetAttribute("class") ?? "(no class)")
-            .ToList();
-
-        Assert.Empty(unscoped);
-    }
-
-    /// <summary>
-    ///   The other half of the same bug, and the half a renderer cannot see: bUnit applies no CSS
-    ///   and computes no styles, so a chart whose lines are all <c>stroke: none</c> renders exactly
-    ///   like a correct one. This reads the stylesheet as text instead. Crude, and the only thing
-    ///   standing between a stripped rule and an invisible chart shipping green.
-    /// </summary>
-    [Fact]
-    public void The_chart_stylesheet_gives_every_line_a_stroke()
-    {
-        var path = Path.Combine(
-            RepositoryRoot(),
-            "src", "TrainingLoadAnalyzer.Web", "Components", "Dashboard", "MetricsChartView.razor.css");
-
-        Assert.True(File.Exists(path), $"The chart has no stylesheet, so its lines have no stroke: {path}");
-
-        var stylesheet = File.ReadAllText(path);
-
-        var unpainted = new[] { "line-fitness", "line-fatigue", "line-form" }
-            .Where(cssClass => !Regex.IsMatch(stylesheet, $@"\.{cssClass}\s*\{{[^}}]*\bstroke\s*:"))
-            .ToList();
-
-        Assert.Empty(unpainted);
-        Assert.Matches(@"\.line\s*\{[^}]*\bstroke-width\s*:", stylesheet);
-    }
-
-    /// <summary>
-    ///   Duplicated from <c>WeeklyLoadAndTrendTests</c> rather than shared, to keep this fix to the
-    ///   chart. Worth consolidating into <c>Fixtures</c> the next time a third copy is wanted.
-    /// </summary>
-    private static string RepositoryRoot()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-
-        while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "TrainingLoadAnalyzer.sln")))
-        {
-            directory = directory.Parent;
-        }
-
-        return directory?.FullName
-            ?? throw new InvalidOperationException("The repository root could not be located from the test output directory.");
+        // Amendment 1: the plot is MudChart's now, so "nothing was drawn" is the absence of its
+        // svg rather than of our polylines. The assertion is the same claim, against new markup.
+        Assert.Empty(chart.FindAll("svg"));
     }
 
     private static RecentActivity Entry(
@@ -417,12 +349,20 @@ public class DashboardComponentTests : BunitContext
     }
 
     /// <summary>US4 scenario 4: an empty list says so rather than rendering an empty table.</summary>
+    /// <remarks>
+    ///   Rewritten for 007 Amendment 1, not deleted. This used to assert
+    ///   <c>Assert.Empty(FindAll("li"))</c>, and against MudList — which renders <c>div</c>s — that
+    ///   would have gone on passing while testing nothing at all: green, and vacuous. The claim it
+    ///   was actually making is that an empty list says so in words and draws no rows, so that is
+    ///   what it now asserts, against the markup MudList produces.
+    /// </remarks>
     [Fact]
     public void An_empty_recent_list_says_so()
     {
         var list = Render<RecentActivityList>(p => p.Add(c => c.Activities, []));
 
-        Assert.Empty(list.FindAll("li"));
+        Assert.Contains("Nothing recorded yet.", list.Markup, StringComparison.Ordinal);
+        Assert.Empty(list.FindAll(".recent-row"));
     }
 
     /// <summary>FR-009, US5 scenario 1: the button, and a loading state while it works.</summary>

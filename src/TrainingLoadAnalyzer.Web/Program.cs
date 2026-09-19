@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 using TrainingLoadAnalyzer.Infrastructure.Persistence;
 using TrainingLoadAnalyzer.Infrastructure.Strava;
 using TrainingLoadAnalyzer.Infrastructure.Sync;
@@ -15,6 +16,10 @@ const string StravaHttpClient = "Strava";
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Feature 007: the Material component library the interface is built from. Only the theme provider
+// is used, so none of MudBlazor's popover, dialog or snackbar infrastructure is registered here.
+builder.Services.AddMudServices();
 
 // Read before anything else is registered, so an application without a maximum heart rate fails
 // here rather than on the first page load with a broken figure on it (FR-015, C77).

@@ -1,114 +1,22 @@
 /*
-   The chart's presentation (FR-006, SC-003, bug chart-not-rendered).
+   What is left of this component's styling after 007 Amendment 1 handed the plot to MudChart.
 
-   Scoped to the component rather than added to app.css, for the same reason the geometry lives in
-   MetricsChart.cs rather than in the markup: one owner. `line`, `chart` and `legend` are words
-   generic enough that a global rule would eventually hit markup that never asked for it.
-
-   Every declaration here is load-bearing. SVG's initial value for `stroke` is `none`, so the three
-   polylines were being computed correctly and then painted with nothing - a chart present in the
-   DOM, occupying space, drawing zero pixels. `.line` below is what makes it visible at all.
+   The colours that used to live here now live in Theme/ChartPalette.cs and reach the chart as a
+   parameter, which is what lets them follow the scheme and lets the contrast test read them
+   (007 FR-005, research R5). Nothing here names a colour.
 */
 
 .chart {
-    /* Declared once, used by both the polylines and their legend swatches, so a line and the key
-       that names it cannot drift to different colours. */
-    --fitness: #0072b2;
-    --fatigue: #d55e00;
-    --form: #009e73;
-
-    /* Colour alone excludes a colour-blind athlete, so each series carries a dash pattern too. The
-       patterns are in stroke units, hence the bare numbers. */
-    --fatigue-dash: 7 4;
-    --form-dash: 2 4;
-
-    margin: 1.5rem 0;
-}
-
-.chart-plot {
-    /* An explicit box. The viewBox is 600x200 and preserveAspectRatio is "none", so stretching to
-       the container's width is the intended behaviour and no ratio needs preserving. Without a
-       height an inline SVG falls back to the replaced-element default and the plot is whatever
-       size the browser felt like. */
-    display: block;
-    width: 100%;
-    height: 200px;
-}
-
-.line {
-    /* fill is already none on the element; repeated here so the rule is complete on its own and a
-       polyline cannot end up filled by some future cascade. */
-    fill: none;
-    stroke-width: 2px;
-    stroke-linejoin: round;
-    stroke-linecap: round;
-}
-
-.line-fitness {
-    stroke: var(--fitness);
-}
-
-.line-fatigue {
-    stroke: var(--fatigue);
-    stroke-dasharray: var(--fatigue-dash);
-}
-
-.line-form {
-    stroke: var(--form);
-    stroke-dasharray: var(--form-dash);
-}
-
-.chart-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin: 0.5rem 0 0;
-    padding: 0;
-    list-style: none;
-    font-size: 0.875rem;
-}
-
-.chart-legend li {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-}
-
-/* The swatch repeats its line's dash pattern rather than showing a plain block of colour, so the
-   legend is readable the same way the chart is - by shape as well as by hue. */
-.chart-legend li::before {
-    content: "";
-    width: 1.75rem;
-    height: 0;
-    border-top-width: 2px;
-    border-top-style: solid;
-}
-
-.legend-fitness::before {
-    border-top-color: var(--fitness);
-}
-
-.legend-fatigue::before {
-    border-top-color: var(--fatigue);
-    border-top-style: dashed;
-}
-
-.legend-form::before {
-    border-top-color: var(--form);
-    border-top-style: dotted;
+    padding: 1rem;
 }
 
 .chart-span {
-    margin: 0.25rem 0 0;
-    font-size: 0.8125rem;
-    color: #555;
+    display: block;
+    margin-top: 0.25rem;
 }
 
 .chart-empty {
-    margin: 0;
+    display: block;
     padding: 2rem 1rem;
     text-align: center;
-    color: #555;
-    background: #f5f5f5;
-    border-radius: 0.25rem;
 }
