@@ -80,7 +80,9 @@ consume it, plus the `.nav`, `.card`, `.dialog` and `.input` component classes.
 | Foreground | Background | Minimum |
 | --- | --- | --- |
 | `--color-text` | `--color-bg` | 4.5:1 |
-| `--color-bg` (button label) | `--color-accent-700` | 4.5:1 |
+| `--color-bg` (button label) | `--color-accent-700` (resting) | 4.5:1 |
+| `--color-bg` (button label) | `--color-accent-800` (`:hover`) | 4.5:1 |
+| `--color-bg` (button label) | `--color-accent-900` (`:active`) | 4.5:1 |
 | `--color-accent-700` (links, `.tag-outline`) | `--color-bg` | 4.5:1 |
 | 70% ink (`.table th`, `.text-muted`) | `--color-bg` | 4.5:1 |
 | `--color-neutral-700` (axis, Form legend label) | `--color-bg` | 4.5:1 |

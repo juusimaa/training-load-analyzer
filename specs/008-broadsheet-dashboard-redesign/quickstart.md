@@ -90,6 +90,16 @@ State these explicitly in the completion review rather than implying a test cove
   whether the dashed Form line still reads at a glance is not.
 - That whitespace and hairline rules separate regions as convincingly in dark as in light — the
   vendored tokens' own comment notes elevation works differently there.
+- **SC-008**: show the dashboard to someone who has not seen it and confirm they can name their
+  Fitness, Fatigue and Form figures within 5 seconds. A display-size figure row should make this
+  easy; if it does not, the hierarchy is wrong.
+
+## Measuring NFR-001
+
+The claim that the redesign renders no slower is an argument until measured. Load `/` with the same
+fixture history on the pre-redesign commit and on the redesigned build, with the browser's network
+panel recording, and note the time to the first rendered figure in each. Record both numbers in the
+completion review rather than asserting the improvement.
 
 ## Compliance sweep
 

@@ -114,11 +114,20 @@ functionality).
 chart's daily-load bars from FR-015 via a recorded spec amendment; darken the zero rule to comply.
 
 **Rationale**: The reference design and the vendored tokens were audited against WCAG 2.1 before
-planning, not after. Measured ratios against `--color-bg` (`#f3f2f2`):
+planning, not after. Measured ratios against `--color-bg` (`#f3f2f2`).
+
+**Interactive states are part of the audit, not an afterthought.** The vendored sheet darkens
+`.btn-primary` on hover by one ramp step, which was correct when the base was `--color-accent`.
+Once the base moves to `-700` to clear 4.5:1, the old hover value becomes *lighter* than the base
+and fails at 3.74:1 — a new defect introduced by the accessibility fix itself. The whole state ramp
+is therefore re-derived together, and the contrast tests assert hover and active alongside resting
+(T003, T004).
 
 | Element | Value as drawn | Ratio | Needs | Remedy |
 | --- | --- | --- | --- | --- |
 | `.btn-primary` label, 14px | on `--color-accent` | 3.65:1 | 4.5:1 | background → `--color-accent-700` (5.72:1) |
+| `.btn-primary:hover` label | on `--color-accent-600` | 3.74:1 | 4.5:1 | → `--color-accent-800` (8.84:1) |
+| `.btn-primary:active` label | on `--color-accent-700` | — | 4.5:1 | → `--color-accent-900` (12.49:1), so pressing still darkens |
 | Links, `.btn-ghost`, 14px | `--color-accent` | 3.65:1 | 4.5:1 | → `--color-accent-700` (5.72:1) |
 | `.table th`, 11px | 60% ink | 4.23:1 | 4.5:1 | → 70% ink (5.79:1) |
 | `.text-muted`, `figcaption` | 55% ink | 3.66:1 | 4.5:1 | → 70% ink (5.79:1) |
