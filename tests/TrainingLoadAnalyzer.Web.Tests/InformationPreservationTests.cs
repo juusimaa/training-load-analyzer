@@ -43,6 +43,7 @@ public class InformationPreservationTests : BunitContext
     {
         Services.AddMudServices();
         JSInterop.Mode = JSRuntimeMode.Loose;
+        MudChartBounds.Supply(JSInterop);
     }
 
     protected override void Dispose(bool disposing)

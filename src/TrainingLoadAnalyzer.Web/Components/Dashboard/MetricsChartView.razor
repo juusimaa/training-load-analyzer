@@ -13,10 +13,16 @@
     }
     else
     {
+        @* MatchBoundsToSize is load-bearing, not decoration. Without it MudChart keeps its default
+           700x350 viewBox, and preserveAspectRatio defaults to "xMidYMid meet" - so on a wide panel
+           the svg element fills the width while the drawing inside it is scaled to fit the height
+           and centred, leaving a ~330px gap down the left. This makes the viewBox track the
+           rendered size instead. *@
         <MudChart T="double"
                   ChartType="ChartType.Line"
                   ChartSeries="@Series"
                   ChartOptions="@Options"
+                  MatchBoundsToSize="true"
                   Width="100%"
                   Height="240px" />
 

@@ -40,6 +40,7 @@ public class DashboardComponentTests : BunitContext
     {
         Services.AddMudServices();
         JSInterop.Mode = JSRuntimeMode.Loose;
+        MudChartBounds.Supply(JSInterop);
     }
 
     private readonly FixedLocalClock clock = new();

@@ -281,6 +281,26 @@ Verified from `Line.razor` at `v9.10.0`, not assumed:
 
 `MudList` also brings ripple and hover affordances on read-only content. Permitted by the amended FR-003 as inherent to the component, but worth checking in review that a row does not *look* clickable when nothing happens.
 
+## R17: Making MudChart fill its panel (found in testing)
+
+**Problem**: the chart drew in the middle of its panel with roughly 330px of empty space down the left. Reported after the feature was committed.
+
+**Cause, measured rather than guessed**: the `<svg>` element *was* full width — 1088px in a 1088px panel — so `Width="100%"` was working. The letterboxing was inside it. MudChart's default view box is `0 0 700 350`, a 2:1 box being fitted into a 4.53:1 element, and `preserveAspectRatio` defaults to `xMidYMid meet`. The drawing scaled to the height and centred, leaving the gap.
+
+**Decision**: `MatchBoundsToSize="true"`, the library's own parameter for this — "make the chart fill the parent". The view box then tracks the element (`0 0 1088 240`) and the remaining 35px left gap is the y-axis labels, which is correct.
+
+**The catch, and why the tests mattered**: this broke two tests, including the one guarding FR-013a. `MudAxisChartBase.OnParametersSet` does:
+
+```csharp
+if (MatchBoundsToSize && _elementSize is null) return;   // RebuildChart never runs
+```
+
+`_elementSize` comes from a `mudObserveElementSize` interop call. Under bUnit there is no browser and loose interop answers with `default`, so the chart built no series and rendered **no legend** — and since Amendment 1 removed the dash patterns, the legend is the only thing identifying a series.
+
+**Resolution**: supply the size in the test setup (`Fakes/MudChartBounds.cs`) rather than weaken the assertions. The tests assert exactly what they asserted before; the only change is that they now tell the component something a browser would have told it.
+
+This is the cost recorded in R13 arriving in practice: loose interop makes unplanned JS calls silently return nothing, so a component that depends on a measurement renders as though it had none. Worth remembering for any future MudBlazor component that measures itself.
+
 ## R16: What Amendment 1 does not license
 
 Recorded because an amendment tends to be read more broadly than it was written.

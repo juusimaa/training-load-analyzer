@@ -95,5 +95,5 @@ Not merely by tests. Both schemes were emulated over CDP and the computed palett
 
 - [ ] **Human review of the AI-generated code**, which the constitution requires before a feature is complete
 - [ ] The prerender flash (R14) is still present and is now slightly worse: the scheme resolves after the first *interactive* render, not merely after interop. A dark-mode user sees a light flash on every load
-- [ ] The chart does not fill its container's width — MudChart centres its plot, leaving a wide left margin on desktop. Cosmetic, not a requirement breach
+- [x] ~~The chart does not fill its container's width~~ — fixed after testing feedback with `MatchBoundsToSize="true"`; see research R17. Verified 288–1088px, both schemes
 - [ ] The sync panel is a full-width surface holding one button, which reads as empty. Worth a second look
