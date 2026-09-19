@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Training Load Analyzer — dashboard UI reference</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { margin: 0; }
+  .page { display: grid; grid-template-columns: 250px 1fr; gap: 60px; max-width: 1240px; margin-inline: auto; padding: 30px 40px 60px; }
+  .rail { display: flex; flex-direction: column; gap: 30px; align-self: start; position: sticky; top: 20px; }
+  .kicker { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-neutral-700); }
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; align-items: end; }
+  .figure { font-size: 72px; line-height: 0.95; font-weight: 600; }
+  .note { font-size: 16px; font-style: italic; color: var(--color-neutral-700); }
+  .num { font-variant-numeric: tabular-nums; }
+  .legend { display: flex; gap: 20px; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .axis { display: flex; justify-content: space-between; font-size: 14px; color: var(--color-neutral-600); margin-top: 8px; }
+  .block { margin-top: 50px; }
+  .block-head { display: flex; align-items: baseline; justify-content: space-between; }
+  .seg-opt { min-height: 44px; font-size: 15px; }
+  .seg-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .btn-primary { min-height: 48px; }
+  a { color: var(--color-accent-700); }
+  a:hover { color: var(--color-accent-2); }
+  @media (max-width: 60rem) {
+    .page { grid-template-columns: 1fr; gap: 30px; padding: 20px; }
+    .rail { position: static; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .figure { font-size: 56px; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <aside class="rail">
+    <div>
+      <div style="height:4px; background:var(--color-text)"></div>
+      <div style="font-size:26px; line-height:1.1; margin-top:10px; font-family:var(--font-heading); font-weight:var(--font-heading-weight)">Training<br>Load</div>
+    </div>
+    <div>
+      <div class="kicker">As of</div>
+      <div style="font-size:19px" id="as-of">19 September 2026</div>
+      <div class="note">ISO week 2026-W38</div>
+    </div>
+    <div>
+      <div class="kicker">Window</div>
+      <div class="seg" style="margin-top:8px" id="window">
+        <label class="seg-opt"><input type="radio" name="window" value="30">30 days</label>
+        <label class="seg-opt"><input type="radio" name="window" value="90">90 days</label>
+        <label class="seg-opt"><input type="radio" name="window" value="180" checked>180 days</label>
+      </div>
+    </div>
+    <div>
+      <div class="kicker">Strava</div>
+      <div style="font-size:18px; margin:4px 0 12px">Connected · synced 06.42</div>
+      <button class="btn btn-primary btn-block" id="sync">Sync activities</button>
+      <p class="note" style="margin:12px 0 0; font-size:15px; line-height:1.45; font-style:normal; color:var(--color-neutral-700)" id="sync-note">Last sync imported 3 activities. Syncing is manual — nothing runs on a schedule.</p>
+    </div>
+    <div>
+      <div class="kicker">Max heart rate</div>
+      <div style="font-size:19px">186 bpm · from configuration</div>
+    </div>
+  </aside>
+
+  <section>
+    <div class="metrics">
+      <div>
+        <div class="kicker">Fitness</div>
+        <div class="figure num" style="color:var(--color-accent-700)" id="fitness">—</div>
+      </div>
+      <div>
+        <div class="kicker">Fatigue</div>
+        <div class="figure num" style="color:var(--color-accent-2-700)" id="fatigue">—</div>
+      </div>
+      <div>
+        <div class="kicker">Form</div>
+        <div class="figure num" id="form">—</div>
+      </div>
+      <div>
+        <div class="kicker">Week load</div>
+        <div class="figure num" id="week-load">—</div>
+        <div class="note" id="week-trend">—</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head">
+        <h2 style="margin:0; font-size:24px" id="chart-title">Daily load and metrics · last 180 days</h2>
+        <div class="legend">
+          <span style="color:var(--color-accent-700)">Fitness</span>
+          <span style="color:var(--color-accent-2-700)">Fatigue</span>
+          <span style="color:var(--color-neutral-600)">Form</span>
+        </div>
+      </div>
+      <svg viewBox="0 0 1000 300" preserveAspectRatio="none" style="width:100%; height:300px; display:block; margin-top:15px" role="img" aria-label="Daily training load with fitness, fatigue and form">
+        <g id="bars"></g>
+        <line id="zero" x1="0" y1="150" x2="1000" y2="150" stroke="#bab6b6" stroke-width="1" vector-effect="non-scaling-stroke"></line>
+        <polyline id="tsb" fill="none" stroke="#7d7979" stroke-width="1.5" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"></polyline>
+        <polyline id="atl" fill="none" stroke="#d6006c" stroke-width="2" vector-effect="non-scaling-stroke"></polyline>
+        <polyline id="ctl" fill="none" stroke="#0088b0" stroke-width="2.5" vector-effect="non-scaling-stroke"></polyline>
+      </svg>
+      <div class="axis" id="axis"></div>
+    </div>
+
+    <div class="block">
+      <h2 style="margin:0 0 15px; font-size:24px">Recent sessions</h2>
+      <table class="table" style="width:100%">
+        <thead>
+          <tr><th style="text-align:left">Day</th><th style="text-align:left">Type</th><th style="text-align:left">Moving time</th><th style="text-align:left">Basis</th><th style="text-align:right">Load</th></tr>
+        </thead>
+        <tbody id="recent"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+// Sample figures only. The shipped page binds these to DashboardView.
+function series() {
+  const pat = [0.55, 1.65, 0.85, 0, 1.35, 0.6, 1.0], ps = pat.reduce((a, b) => a + b, 0);
+  const target = w => w === 0 ? 620 : w === 1 ? 528 : w === 2 ? 565 : w === 3 ? 470
+    : 430 + 70 * Math.sin(w / 3.2) + 30 * Math.sin(w / 1.7);
+  const out = [];
+  let ctl = 52, atl = 52;
+  for (let i = 0; i < 180; i++) {
+    const back = 179 - i;
+    const load = target(Math.floor(back / 7)) * pat[back % 7] / ps;
+    ctl += (load - ctl) / 42;
+    atl += (load - atl) / 7;
+    out.push({ load, ctl, atl, tsb: ctl - atl });
+  }
+  return out;
+}
+const all = series(), cur = all[all.length - 1];
+const recent = [];
+for (let i = all.length - 1; i >= 0 && recent.length < 7; i--) {
+  if (all[i].load <= 0) continue;
+  const d = new Date(2026, 8, 19);
+  d.setDate(d.getDate() - (all.length - 1 - i));
+  const mins = Math.round(all[i].load * 0.62);
+  recent.push([
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`,
+    i % 3 === 0 ? 'Ride' : 'Run',
+    mins >= 60 ? `${Math.floor(mins / 60)}h ${String(mins % 60).padStart(2, '0')}m` : mins + 'm',
+    all[i].load.toFixed(1),
+    i % 4 !== 1,
+  ]);
+}
+const sum = a => a.reduce((t, r) => t + r.load, 0);
+const week = sum(all.slice(-7)), prev = sum(all.slice(-14, -7));
+const change = (week - prev) / prev;
+document.getElementById('fitness').textContent = cur.ctl.toFixed(1);
+document.getElementById('fatigue').textContent = cur.atl.toFixed(1);
+document.getElementById('form').textContent = cur.tsb.toFixed(1);
+document.getElementById('week-load').textContent = week.toFixed(1);
+document.getElementById('week-trend').textContent =
+  (change >= 0 ? '+' : '') + (change * 100).toFixed(0) + '% · ' +
+  (Math.abs(change) < 0.1 ? 'steady' : change > 0 ? 'a significant increase' : 'a significant decrease');
+
+document.getElementById('recent').innerHTML = recent.map(([day, type, dur, load, m]) => `
+  <tr>
+    <td class="num" style="color:var(--color-neutral-700)">${day}</td>
+    <td>${type}</td>
+    <td class="num">${dur}</td>
+    <td><span class="tag ${m ? 'tag-accent' : 'tag-outline'}">${m ? 'measured' : 'estimated'}</span></td>
+    <td class="num" style="text-align:right">${load}</td>
+  </tr>`).join('');
+
+function draw(n) {
+  const rows = all.slice(-n), h = 300;
+  const vals = rows.flatMap(r => [r.ctl, r.atl, r.tsb]);
+  const max = Math.max(...vals) + 6, min = Math.min(...vals) - 6;
+  const x = i => (i / (rows.length - 1)) * 1000;
+  const y = v => ((max - v) / (max - min)) * h;
+  const pts = k => rows.map((r, i) => `${x(i).toFixed(1)},${y(r[k]).toFixed(1)}`).join(' ');
+  ['ctl', 'atl', 'tsb'].forEach(k => document.getElementById(k).setAttribute('points', pts(k)));
+  document.getElementById('zero').setAttribute('y1', y(0)); document.getElementById('zero').setAttribute('y2', y(0));
+  const maxLoad = Math.max(...rows.map(r => r.load)), bw = Math.max(2, 1000 / rows.length - 2);
+  document.getElementById('bars').innerHTML = rows.map((r, i) => {
+    const bh = (r.load / maxLoad) * (h * 0.5);
+    return `<rect x="${(x(i) - bw / 2).toFixed(1)}" y="${(h - bh).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="#d7d3d3"></rect>`;
+  }).join('');
+  const end = new Date(2026, 8, 19), ticks = [];
+  for (let i = 0; i < 6; i++) {
+    const d = new Date(end); d.setDate(end.getDate() - Math.round((n - 1) * (5 - i) / 5));
+    ticks.push(d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }));
+  }
+  document.getElementById('axis').innerHTML = ticks.map(t => `<span>${t}</span>`).join('');
+  document.getElementById('chart-title').textContent = `Daily load and metrics · last ${n} days`;
+}
+draw(180);
+document.getElementById('window').addEventListener('change', e => draw(Number(e.target.value)));
+document.getElementById('sync').addEventListener('click', () => {
+  document.getElementById('sync-note').textContent = 'Already up to date. 0 activities imported.';
+});
+</script>
+</body>
+</html>
