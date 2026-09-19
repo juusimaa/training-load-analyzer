@@ -28,6 +28,7 @@ and the seven most recent sessions with each load marked measured or estimated.
 | 4. Load trends | [004](specs/004-load-trends/spec.md) |
 | 5. Strava import | [005](specs/005-strava-import/spec.md) |
 | 6. Dashboard | [006](specs/006-dashboard/spec.md) |
+| 7. Material Design visual refresh | [007](specs/007-material-design-ui/spec.md) |
 
 ## Planned scope (MVP)
 
@@ -50,7 +51,18 @@ infrastructure.
 
 **UI render mode**: The dashboard (Feature 6) uses Blazor **Interactive Server** to keep the MVP
 scope minimal and maintain focus on TDD discipline. This means Blazor components run on the server
-and communicate via SignalR, with no separate HTTP API needed.
+and communicate via SignalR, with no separate HTTP API needed. Feature 7 moved the render mode from
+the page to `<Routes>`, so the whole app — including the layout — is interactive: the theme provider
+lives in the layout and needs a JavaScript round trip to read the device's appearance preference.
+
+**UI component library**: Feature 7 added **MudBlazor** (9.10.0), a Material Design component
+library, and with it a light and a dark colour scheme that follow the device preference. It is the
+web project's only package dependency and the one deliberate exception to the constitution's
+"intentionally lightweight frontend" constraint — the reason is documented in
+[007 research R1](specs/007-material-design-ui/research.md) and justified in that feature's plan.
+The entire visual system (both palettes, type scale, shape) lives in
+`src/TrainingLoadAnalyzer.Web/Theme/TrainingLoadTheme.cs`; no other file may name a colour, and a
+test enforces it.
 
 **Future refactoring path**: If scalability or separation of concerns requires it, the UI can be
 refactored to **Interactive WebAssembly** (with an HTTP API and shared contracts project) using the
@@ -63,7 +75,7 @@ introduce architectural complexity only if needed (YAGNI principle).
 src/
   TrainingLoadAnalyzer.Domain/               Core domain model (no external dependencies)
   TrainingLoadAnalyzer.Infrastructure/       Strava integration and SQLite persistence
-  TrainingLoadAnalyzer.Web/                  Blazor Interactive Server dashboard
+  TrainingLoadAnalyzer.Web/                  Blazor Interactive Server dashboard (MudBlazor)
 tests/
   TrainingLoadAnalyzer.Domain.Tests/         Domain unit tests
   TrainingLoadAnalyzer.Infrastructure.Tests/ Integration tests at the Strava/SQLite boundary

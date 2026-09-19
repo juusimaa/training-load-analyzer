@@ -1,21 +1,26 @@
 @* One headline figure: fitness, fatigue or form (FR-001 - FR-003). *@
 
-<div class="tile">
-    <span class="tile-label">@Label</span>
-    <span class="tile-value">@Display.Metric(Value)</span>
+<MudPaper Class="tile" Elevation="1">
+    <MudText Typo="Typo.caption" Color="Color.Default" Class="tile-label">@Label</MudText>
+    <MudText Typo="Typo.h3" Class="tile-value">@Display.Metric(Value)</MudText>
 
-    @if (Value is not null && !IsReliable)
-    {
-        @* 003 FR-014: fewer than 42 days of history behind it, so the zero it started from has
-           not decayed out yet. Said rather than styled, so it survives a screen reader. *@
-        <span class="tile-note">still settling</span>
-    }
+    <div class="tile-notes">
+        @if (Value is not null && !IsReliable)
+        {
+            @* 003 FR-014: fewer than 42 days of history behind it, so the zero it started from has
+               not decayed out yet. The word is inside the chip, never replaced by it - a difference
+               only a colour expresses is invisible to a screen reader (007 FR-012, C101). *@
+            <MudChip T="string" Size="Size.Small" Variant="Variant.Text" Class="tile-note">still settling</MudChip>
+        }
 
-    @if (Value is not null && Basis is LoadBasis.Estimated or LoadBasis.Mixed)
-    {
-        <span class="tile-note">@(Basis == LoadBasis.Mixed ? "partly estimated" : "estimated")</span>
-    }
-</div>
+        @if (Value is not null && Basis is LoadBasis.Estimated or LoadBasis.Mixed)
+        {
+            <MudChip T="string" Size="Size.Small" Variant="Variant.Text" Class="tile-note">
+                @(Basis == LoadBasis.Mixed ? "partly estimated" : "estimated")
+            </MudChip>
+        }
+    </div>
+</MudPaper>
 
 @code {
     [Parameter] public string Label { get; set; } = string.Empty;

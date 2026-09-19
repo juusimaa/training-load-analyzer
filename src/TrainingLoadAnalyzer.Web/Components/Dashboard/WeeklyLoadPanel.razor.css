@@ -1,0 +1,8 @@
+/* Layout only; the theme supplies everything else. */
+
+.weekly {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem;
+}

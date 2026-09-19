@@ -69,23 +69,52 @@ The 99-test baseline is the SC-002 gate: still 99 passing, no assertion weakened
 
 ---
 
-## R3: Dark scheme — automatic, verified from source
+## R3: Dark scheme — half automatic, corrected during implementation
 
-**Decision**: `<MudThemeProvider Theme="TrainingLoadTheme.Instance" @bind-IsDarkMode="isDarkMode" />` in `MainLayout`. Nothing else.
+**Decision**: `<MudThemeProvider @ref="themeProvider" Theme="TrainingLoadTheme.Instance" @bind-IsDarkMode="isDarkMode" />` in `MainLayout`, **plus** an explicit `GetSystemDarkModeAsync()` call on the first interactive render, **plus** `<Routes @rendermode="InteractiveServer" />` in `App.razor`.
 
-**Verified, not assumed** — from `MudThemeProvider.razor.cs` at tag `v9.10.0`:
+> **Corrected 2026-09-18, during implementation.** This section previously concluded that a bare
+> `<MudThemeProvider />` follows the device preference with no code written. That was wrong, and the
+> page rendered light under an emulated dark preference until it was fixed. The original reasoning
+> and the two things it missed are recorded below, because this project exists to evaluate the
+> process and a silently corrected research error teaches nothing.
 
-- `ObserveSystemDarkModeChange` is `[Parameter]` with **default `true`** (line 71).
-- `OnAfterRenderAsync(firstRender)` calls `WatchDarkMode()` when that flag is set.
-- `SystemDarkModeChangedAsync` is `[JSInvokable]`, called from the browser's `matchMedia` listener, and sets the state.
+**What the original research got right**: `ObserveSystemDarkModeChange` is `[Parameter]` with default `true`, and `OnAfterRenderAsync(firstRender)` does call `WatchDarkMode()`.
 
-So the provider follows the OS preference **and live changes to it** with no code written. This satisfies FR-026 (no reload) and FR-025, and FR-027 is satisfied by simply not adding a toggle.
+**What it missed — the library's JavaScript**:
 
-`IsDarkMode` is bound out to `MainLayout` because the chart needs it (R5), not because anything sets it.
+```js
+watchDarkMode(e){ Y = e, W.addEventListener("change", pe) }
+```
 
-**Mechanism caveat**: this path requires `MudBlazor.min.js` to be loaded; the provider logs an error if it is missing (`WarnIfScriptMissingAsync`). Unlike a CSS media query, dark mode here depends on interop succeeding. See R14.
+That is the whole implementation. It registers a listener for the preference **changing** and never reads what the preference already is. `isDarkMode()` exists as a separate function that nobody calls on the component's behalf. So the flag covers only half of what its name suggests: a device that was already dark when the page loaded stays light until the setting is toggled twice.
 
----
+The error was reading the C# far enough to see a watcher being wired up, then inferring the behaviour from the parameter's name instead of following the call through to the JavaScript it invokes. The fix is one call in `OnAfterRenderAsync`:
+
+```csharp
+if (firstRender)
+{
+    isDarkMode = await themeProvider.GetSystemDarkModeAsync();
+    StateHasChanged();
+}
+```
+
+**What it also missed — the render mode**: `MudThemeProvider` lives in `MainLayout`, and a layout in a Blazor Web App renders as static SSR by default even when the page it wraps is interactive. `OnAfterRenderAsync` never runs there, so no interop happens at all and every page stays light regardless of the device setting. The fix is `<Routes @rendermode="InteractiveServer" />` in `App.razor`.
+
+A render mode **cannot** be put on the layout itself: `@rendermode` on `MainLayout` compiles, and then silently renders nothing — its `@Body` is a `RenderFragment`, which cannot cross a render-mode boundary. That was tried first and produced a page with no app bar and no theme at all.
+
+**How both were caught**: by emulating `prefers-color-scheme: dark` over CDP and reading the computed `--mud-palette-*` variables back out of the page. Chrome's `--force-dark-mode` flag is useless here — it applies a rendering filter that makes any page look dark, and the app looked convincingly dark under it while the theme was still entirely light. The giveaway was the app bar still painting the light scheme's blue.
+
+**Verified working**, both schemes, after the fix:
+
+| | Light | Dark |
+|---|---|---|
+| `--mud-palette-background` | `#FDFCFF` | `#111318` |
+| `--mud-palette-surface` | `#F1F3F9` | `#1E2025` |
+| `--mud-palette-appbar-background` | `#00639B` | `#1E2025` |
+| Chart strokes | `#0072B2` `#D55E00` `#009E73` | `#56B4E9` `#E69F00` `#009E73` |
+
+FR-027 is still satisfied by simply not adding a toggle.
 
 ## R4: Palette — the measured values, expressed as a MudTheme
 

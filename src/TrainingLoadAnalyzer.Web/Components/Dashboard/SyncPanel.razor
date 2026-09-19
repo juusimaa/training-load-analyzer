@@ -2,10 +2,17 @@
 
 @* The sync button and whatever the last attempt has to say (FR-009, FR-010). *@
 
-<div class="sync">
-    <button class="sync" type="button" disabled="@Status.IsRunning" @onclick="OnSync">
+<MudPaper Class="sync" Elevation="1">
+    @* Class="sync" survives onto the rendered <button>: MudBlazor appends it to the element's own
+       classes, which is what keeps the existing button.sync tests binding to it. *@
+    <MudButton Class="sync"
+               Variant="Variant.Filled"
+               Color="Color.Primary"
+               ButtonType="ButtonType.Button"
+               Disabled="@Status.IsRunning"
+               OnClick="OnSync">
         @(Status.IsRunning ? "Syncing…" : "Sync Activities")
-    </button>
+    </MudButton>
 
     @{
         var message = SyncMessage.For(Status);
@@ -13,20 +20,23 @@
 
     @if (!string.IsNullOrEmpty(message))
     {
-        <p class="sync-message">@message</p>
+        <MudText Typo="Typo.body1" Class="sync-message">@message</MudText>
     }
 
     @if (NeedsConnection)
     {
         @* FR-017 and FR-018 lead to the same place: a route, not a dead end. *@
-        <a class="connect" href="/connect">Connect Strava</a>
+        <MudButton Class="connect"
+                   Href="/connect"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary">Connect Strava</MudButton>
     }
 
     @if (Status.FinishedAt is { } finishedAt && !Status.IsRunning)
     {
-        <p class="sync-when">Last checked @finishedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)</p>
+        <MudText Typo="Typo.caption" Class="sync-when">Last checked @finishedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)</MudText>
     }
-</div>
+</MudPaper>
 
 @code {
     [Parameter] public SyncStatus Status { get; set; } = SyncStatus.Never;

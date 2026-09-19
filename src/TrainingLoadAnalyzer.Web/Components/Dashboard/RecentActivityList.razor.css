@@ -1,0 +1,35 @@
+/*
+   Layout only. Colour, type and radius come from the theme (007 FR-005).
+
+   The row is a grid so the five values line up down the list rather than each row setting its own
+   rhythm (007 FR-011). It collapses to two lines on a narrow viewport instead of clipping or
+   pushing the load figure off the edge (007 FR-017, and the long-activity-type edge case).
+*/
+
+.recent {
+    padding: 1rem;
+}
+
+.recent-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.recent-type {
+    /* The one column that can be arbitrarily long, so it is the one that gives way. */
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 40rem) {
+    .recent-row {
+        grid-template-columns: auto 1fr auto;
+        row-gap: 0.25rem;
+    }
+
+    .recent-day {
+        grid-column: 1 / -1;
+    }
+}
