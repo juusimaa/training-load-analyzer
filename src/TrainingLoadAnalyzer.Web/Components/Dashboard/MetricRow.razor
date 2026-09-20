@@ -1,0 +1,105 @@
+@* The four display figures, as one row of peers (008 FR-004, FR-008).
+
+   MetricTile and WeeklyLoadPanel merged into this. The reference design sets Fitness, Fatigue,
+   Form and the week's load as four equals on one line rather than three cards and a separate
+   panel, and two components rendering one row could only disagree about its rhythm.
+
+   Every string, format and qualifier is carried over unchanged (008 FR-002). *@
+
+<div class="metrics">
+    <div class="figure">
+        <div class="kicker">Fitness</div>
+        <div class="tile-value series-fitness">@Display.Metric(Current?.Fitness)</div>
+        <div class="notes">@Qualifiers(Current?.Fitness, Current?.FitnessBasis)</div>
+    </div>
+
+    <div class="figure">
+        <div class="kicker">Fatigue</div>
+        <div class="tile-value series-fatigue">@Display.Metric(Current?.Fatigue)</div>
+        <div class="notes">@Qualifiers(Current?.Fatigue, Current?.FatigueBasis)</div>
+    </div>
+
+    <div class="figure">
+        <div class="kicker">Form</div>
+        <div class="tile-value">@Display.Metric(Current?.Form)</div>
+        <div class="notes">@Qualifiers(Current?.Form, Current?.FormBasis)</div>
+    </div>
+
+    <div class="figure">
+        @* "This week" rather than the reference's "Week load": the wording an athlete already
+           reads is what FR-002 preserves, and the reference is the source of the layout, not of
+           the words. *@
+        <div class="kicker">This week</div>
+        <div class="tile-value">@Display.Points(Week?.Points)</div>
+        <div class="notes">
+            @if (Trend is null)
+            {
+                @* No previous week to compare against. The week's own total still stands (US2 sc3). *@
+                <span class="note">@Display.Missing</span>
+            }
+            else
+            {
+                <span class="note">
+                    @(Trend.Value.AbsoluteChange >= 0 ? "+" : "")@Display.Points(Trend.Value.AbsoluteChange)
+                    (@Display.Percent(Trend.Value.RelativeChange))
+                </span>
+
+                @* The change is shown every day; the judgement only once the week is a
+                   like-for-like comparison. That split is feature 004's rule, not a display
+                   choice (004 FR-017, FR-005a, research R14). No threshold is applied here. *@
+                <span class="tag tag-neutral">@Judgement(Trend.Value)</span>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    /// <summary>Today's figures, or nothing when there is no history to compute them from.</summary>
+    [Parameter] public DailyTrainingMetrics? Current { get; set; }
+
+    [Parameter] public WeeklyTrainingLoad? Week { get; set; }
+
+    /// <summary>Null when the history does not reach the previous ISO week (C82).</summary>
+    [Parameter] public WeeklyLoadTrend? Trend { get; set; }
+
+    /// <summary>
+    ///   The qualifiers a figure carries, as words.
+    /// </summary>
+    /// <remarks>
+    ///   Inside the tag, never replaced by it. A difference only a colour expresses is invisible to
+    ///   a screen reader and to anyone who cannot tell the two colours apart (007 FR-012, C101).
+    /// </remarks>
+    private RenderFragment Qualifiers(double? value, LoadBasis? basis) => builder =>
+    {
+        if (value is null)
+        {
+            return;
+        }
+
+        // 003 FR-014: fewer than 42 days of history behind it, so the zero it started from has not
+        // decayed out yet.
+        if (Current is { IsReliable: false })
+        {
+            builder.OpenElement(0, "span");
+            builder.AddAttribute(1, "class", "tag tag-neutral");
+            builder.AddContent(2, "still settling");
+            builder.CloseElement();
+        }
+
+        if (basis is LoadBasis.Estimated or LoadBasis.Mixed)
+        {
+            builder.OpenElement(3, "span");
+            builder.AddAttribute(4, "class", "tag tag-neutral");
+            builder.AddContent(5, basis == LoadBasis.Mixed ? "partly estimated" : "estimated");
+            builder.CloseElement();
+        }
+    };
+
+    private static string Judgement(WeeklyLoadTrend trend) => trend.Classification switch
+    {
+        TrendClassification.SignificantIncrease => "Significant increase",
+        TrendClassification.SignificantDecrease => "Significant decrease",
+        TrendClassification.Steady => "Steady",
+        _ => "Week in progress",
+    };
+}

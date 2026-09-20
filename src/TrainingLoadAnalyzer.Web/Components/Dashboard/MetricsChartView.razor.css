@@ -1,22 +1,110 @@
 /*
-   What is left of this component's styling after 007 Amendment 1 handed the plot to MudChart.
+   The plot's ink (008 FR-006, FR-015, research R4 and R5).
 
-   The colours that used to live here now live in Theme/ChartPalette.cs and reach the chart as a
-   parameter, which is what lets them follow the scheme and lets the contrast test read them
-   (007 FR-005, research R5). Nothing here names a colour.
+   Colour lives here rather than on the SVG elements for two reasons, and the second is the one
+   that matters: a presentation attribute would fail ColourDisciplineTests, and — worse — it could
+   not respond to prefers-color-scheme, leaving the chart as the single region of the page that
+   ignores a dark device.
+
+   Every value below is measured by PaletteContrastTests against the page background in both
+   schemes. The one exclusion, the load bars, is named there rather than left out.
 */
 
-.chart {
-    padding: 1rem;
+.chart-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
 }
 
-.chart-span {
+.chart-head h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.legend {
+    display: flex;
+    gap: var(--space-4);
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.legend-fitness {
+    color: var(--color-accent-700);
+}
+
+.legend-fatigue {
+    color: var(--color-accent-2-700);
+}
+
+/* R4: the swatch for a neutral series is still a word, and at 14px it needs 4.5:1 — which
+   --color-neutral-600 (3.85:1) misses and --color-neutral-700 (5.83:1) clears. The LINE keeps
+   -600, because a line is a non-text indicator and 3:1 is its bar. */
+.legend-form {
+    color: var(--color-neutral-700);
+}
+
+.plot {
     display: block;
-    margin-top: 0.25rem;
+    width: 100%;
+    height: 300px;
+    margin-top: var(--space-3);
+}
+
+/*
+   The daily-load backdrop, exempt from the 3:1 bar by Amendment 1(b).
+
+   It measures 1.33:1 against the page. The lightest step of the neutral ramp that would comply is
+   --color-neutral-600, which is the Form line's own value — so complying would give the backdrop
+   the weight of a data line and collapse the figure-and-ground separation the design is built on.
+   The exemption is asserted by name in PaletteContrastTests so it stays a decision with a reason.
+*/
+.load-bar {
+    fill: var(--color-neutral-300);
+}
+
+/* Not exempt, and darkened from the reference's neutral-400 (1.80:1) to clear 3:1. It is a
+   genuine reference indicator and costs nothing visually. */
+.zero-rule {
+    stroke: var(--color-neutral-600);
+    stroke-width: 1;
+}
+
+.series-fitness {
+    stroke: var(--color-accent);
+    stroke-width: 2.5;
+}
+
+.series-fatigue {
+    stroke: var(--color-accent-2);
+    stroke-width: 2;
+}
+
+/* SC-007 as amended (008 Amendment 1(c)): the pattern, not only the colour, tells this line from
+   the other two — restoring what feature 007's Amendment 1 recorded losing. */
+.series-form {
+    stroke: var(--color-neutral-600);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 4;
+}
+
+/* R4: the axis is 14px text, so 4.5:1, not the 3:1 the reference's neutral-600 clears. */
+.chart-axis {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-neutral-700);
 }
 
 .chart-empty {
-    display: block;
-    padding: 2rem 1rem;
+    margin: var(--space-4) 0 0;
+    padding: var(--space-8) var(--space-3);
     text-align: center;
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
 }

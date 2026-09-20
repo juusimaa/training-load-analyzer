@@ -1,14 +1,8 @@
 using System.Text.RegularExpressions;
 using Bunit;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging.Abstractions;
-using MudBlazor.Services;
 using TrainingLoadAnalyzer.Domain;
-using TrainingLoadAnalyzer.Infrastructure.Persistence;
-using TrainingLoadAnalyzer.Infrastructure.Strava;
-using TrainingLoadAnalyzer.Infrastructure.Sync;
-using TrainingLoadAnalyzer.Infrastructure.Tests.Fakes;
 using TrainingLoadAnalyzer.Web.Components.Dashboard;
 using TrainingLoadAnalyzer.Web.Components.Pages;
 using TrainingLoadAnalyzer.Web.Features.Dashboard;
@@ -33,29 +27,8 @@ namespace TrainingLoadAnalyzer.Web.Tests;
 ///     re-approve it blindly. The text is the invariant worth freezing.
 ///   </para>
 /// </remarks>
-public class InformationPreservationTests : BunitContext
+public class InformationPreservationTests : DashboardRenderContext
 {
-    private readonly SqliteFixture<ImportDbContext> fixture = new(options => new ImportDbContext(options));
-
-    private readonly FixedLocalClock clock = new();
-
-    public InformationPreservationTests()
-    {
-        Services.AddMudServices();
-        JSInterop.Mode = JSRuntimeMode.Loose;
-        MudChartBounds.Supply(JSInterop);
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            fixture.Dispose();
-        }
-
-        base.Dispose(disposing);
-    }
-
     // ---- The populated dashboard (US2 scenario 1) ----
 
     /// <summary>
@@ -81,7 +54,7 @@ public class InformationPreservationTests : BunitContext
     [Fact]
     public void An_absent_figure_is_still_a_dash()
     {
-        var text = TextOf(Render<MetricTile>(p => p.Add(c => c.Label, "Fitness")));
+        var text = TextOf(Render<MetricRow>());
 
         Assert.Contains(Display.Missing, text, StringComparison.Ordinal);
         Assert.DoesNotContain("0.0", text, StringComparison.Ordinal);
@@ -110,11 +83,8 @@ public class InformationPreservationTests : BunitContext
     [InlineData(true, LoadBasis.Mixed, "partly estimated")]
     public void A_qualifier_is_still_a_word_and_not_only_a_colour(bool isReliable, LoadBasis basis, string expected)
     {
-        var tile = Render<MetricTile>(p => p
-            .Add(c => c.Label, "Fitness")
-            .Add(c => c.Value, 2.8)
-            .Add(c => c.Basis, basis)
-            .Add(c => c.IsReliable, isReliable));
+        var tile = Render<MetricRow>(p => p
+            .Add(c => c.Current, new DailyTrainingMetrics(Fixtures.Today, 2.8, 0, isReliable, basis, basis)));
 
         Assert.Contains(expected, TextOf(tile), StringComparison.Ordinal);
     }
@@ -123,11 +93,9 @@ public class InformationPreservationTests : BunitContext
     [Fact]
     public void Two_qualifiers_at_once_both_survive()
     {
-        var tile = Render<MetricTile>(p => p
-            .Add(c => c.Label, "Fitness")
-            .Add(c => c.Value, 2.8)
-            .Add(c => c.Basis, LoadBasis.Mixed)
-            .Add(c => c.IsReliable, false));
+        var tile = Render<MetricRow>(p => p.Add(
+            c => c.Current,
+            new DailyTrainingMetrics(Fixtures.Today, 2.8, 0, false, LoadBasis.Mixed, LoadBasis.Mixed)));
 
         var text = TextOf(tile);
 
@@ -317,32 +285,88 @@ public class InformationPreservationTests : BunitContext
             LoadBasis.Estimated,
             LoadBasis.Estimated))];
 
-    private IRenderedComponent<Dashboard> RenderDashboard(params TrainingActivity[] activities)
-    {
-        using (var db = fixture.NewContext())
-        {
-            var store = new ActivityStore(db);
+    // ---- Feature 008 (US2): the redesign adds, and takes nothing away ----
 
-            foreach (var activity in activities)
-            {
-                store.UpsertAsync(activity, false, CancellationToken.None).GetAwaiter().GetResult();
-            }
+    /// <summary>
+    ///   008 Amendment 1(a): the rail's two additions are <em>additional to</em> every string the
+    ///   previous interface showed, never in place of one.
+    /// </summary>
+    /// <remarks>
+    ///   The failure this catches is the plausible one. A rail that reads "186 bpm · 2026-W38"
+    ///   beside four big figures looks complete, and it is easy to drop "This week" or a
+    ///   qualifier on the way there and never notice — the page would still look finished. So the
+    ///   old strings and the new ones are asserted in the same test, together.
+    /// </remarks>
+    [Fact]
+    public void The_rails_two_additions_are_additional_to_everything_that_was_there_before()
+    {
+        var text = TextOf(RenderDashboard([.. Fixtures.H3f]));
+
+        // What feature 007's dashboard showed.
+        foreach (var previous in new[]
+                 {
+                     "Training Load", "Fitness", "Fatigue", "Form", "This week",
+                     "Recent activities", "Sync Activities", "measured", "estimated",
+                 })
+        {
+            Assert.Contains(previous, text, StringComparison.Ordinal);
         }
 
-        Services.AddSingleton<TimeProvider>(clock);
-        Services.AddSingleton(new AthleteSettings(Fixtures.MaximumHeartRate));
-        Services.AddSingleton<IDbContextFactory<ImportDbContext>>(new FixtureContextFactory(fixture));
-        Services.AddSingleton(sp => new DashboardReader(
-            sp.GetRequiredService<IDbContextFactory<ImportDbContext>>(),
-            sp.GetRequiredService<TimeProvider>(),
-            sp.GetRequiredService<AthleteSettings>(),
-            NullLogger<DashboardReader>.Instance));
-        Services.AddSingleton(new StravaApiClient(new HttpClient(new StubHttpMessageHandler())));
-        Services.AddScoped<ActivityStore>();
-        Services.AddScoped(sp => fixture.NewContext());
-        Services.AddScoped<StravaActivitySync>();
-        Services.AddSingleton<SyncCoordinator>();
+        // And what feature 008 adds beside them.
+        Assert.Contains("2026-W38", text, StringComparison.Ordinal);
+        Assert.Contains($"{Fixtures.MaximumHeartRate} bpm", text, StringComparison.Ordinal);
+    }
 
-        return Render<Dashboard>();
+    /// <summary>
+    ///   <para>
+    ///     The three <c>/connect</c> outcomes land on the dashboard, and it renders normally.
+    ///   </para>
+    ///   <para>
+    ///     <strong>A recorded gap, not a preserved message.</strong> <c>/strava/callback</c>
+    ///     redirects to <c>/?connect=declined</c>, <c>=scope</c> and <c>=mismatch</c>, and nothing
+    ///     on the dashboard reads that parameter — the athlete who declines consent, withholds a
+    ///     scope or authorizes as a different athlete is returned to an unchanged page with no
+    ///     explanation. That was true before this feature and is true after it. Feature 008 is
+    ///     information-preserving, and there is no message here to preserve; inventing one would be
+    ///     new athlete-facing content no requirement asks for (Principle VII).
+    ///   </para>
+    ///   <para>
+    ///     What this does assert is the part that could regress: the redesigned page renders its
+    ///     ordinary content under each of those query strings rather than breaking on a parameter
+    ///     it does not recognise. If a message is ever added, this test is where its wording
+    ///     belongs.
+    ///   </para>
+    /// </summary>
+    [Theory]
+    [InlineData("declined")]
+    [InlineData("scope")]
+    [InlineData("mismatch")]
+    public void A_connect_outcome_returns_to_a_dashboard_that_still_renders(string outcome)
+    {
+        SeedAndRegister([.. Fixtures.H1]);
+
+        Services.GetRequiredService<NavigationManager>().NavigateTo($"/?connect={outcome}");
+
+        var text = TextOf(Render<Dashboard>());
+
+        Assert.Contains("Fitness", text, StringComparison.Ordinal);
+        Assert.Contains("Recent activities", text, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    ///   US2 scenario 2, through the whole page rather than one component: a figure with fewer than
+    ///   42 days behind it says so in words on the rendered dashboard.
+    /// </summary>
+    /// <remarks>
+    ///   The component-level test above proves the row can render the qualifier. This proves the
+    ///   page actually asks it to — a row wired up without its <c>Current</c> would pass the first
+    ///   and fail this one.
+    /// </remarks>
+    [Fact]
+    public void A_settling_figure_still_says_so_on_the_rendered_page()
+    {
+        var text = TextOf(RenderDashboard([.. Fixtures.ConsecutiveDays(35)]));
+
+        Assert.Contains("still settling", text, StringComparison.Ordinal);
     }
 }

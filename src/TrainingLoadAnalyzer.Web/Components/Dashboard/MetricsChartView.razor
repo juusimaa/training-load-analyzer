@@ -1,65 +1,104 @@
-@* Fitness, fatigue and form over the last 180 days (FR-006, SC-003).
+@* Daily load and the three metrics over the selected window (008 FR-005, FR-006).
 
-   007 Amendment 1: the plot is MudChart's, not this project's. The consequences are recorded in the
-   specification and are real - the three series no longer carry dash patterns, because MudChart
-   draws every series with a solid stroke and offers no dash option, so a series is identified by
-   the legend and hover label rather than by the shape of its line (007 FR-013a). The geometry this
-   component used to compute itself went with it. *@
+   Hand-drawn again. Feature 007's Amendment 1 handed the plot to MudChart and recorded what that
+   cost: the three series lost their dash patterns, because that component draws every series with
+   a solid stroke, so a line could only be identified by the legend (007 FR-013a). Drawing it here
+   restores the dash patterns and the exact interpolation, and adds the bars, the zero rule and the
+   date axis the reference design has.
 
-<MudPaper Class="chart" Elevation="1">
+   No stroke or fill is written into this markup. Every one resolves from a class in the scoped
+   stylesheet, so the plot follows the appearance the device is set to — a presentation attribute
+   could not (008 research R5). *@
+
+<section class="chart">
+    <div class="chart-head">
+        <h2>Daily load and metrics · last @WindowDays days</h2>
+
+        @* The legend names every series. Since feature 006 it has been the answer to "which line
+           is which"; the dash patterns now answer it a second way (SC-007, Amendment 1(c)). *@
+        <div class="legend">
+            <span class="legend-fitness">Fitness</span>
+            <span class="legend-fatigue">Fatigue</span>
+            <span class="legend-form">Form</span>
+        </div>
+    </div>
+
     @if (!HasEnoughHistory)
     {
-        <MudText Typo="Typo.body1" Class="chart-empty">Not enough data to show trends (30+ days required)</MudText>
+        <p class="chart-empty">Not enough data to show trends (30+ days required)</p>
     }
     else
     {
-        @* MatchBoundsToSize is load-bearing, not decoration. Without it MudChart keeps its default
-           700x350 viewBox, and preserveAspectRatio defaults to "xMidYMid meet" - so on a wide panel
-           the svg element fills the width while the drawing inside it is scaled to fit the height
-           and centred, leaving a ~330px gap down the left. This makes the viewBox track the
-           rendered size instead. *@
-        <MudChart T="double"
-                  ChartType="ChartType.Line"
-                  ChartSeries="@Series"
-                  ChartOptions="@Options"
-                  MatchBoundsToSize="true"
-                  Width="100%"
-                  Height="240px" />
+        <svg class="plot"
+             viewBox="@MetricsChart.ViewBox(Width, Height)"
+             preserveAspectRatio="none"
+             role="img"
+             aria-label="Daily training load with fitness, fatigue and form">
+            @* Back to front: the bars are a backdrop, the rule a reference, the lines the message. *@
+            <g class="bars">
+                @foreach (var bar in MetricsChart.LoadBars(DailyLoad, Width, Height))
+                {
+                    <rect class="load-bar" x="@bar.X" y="@bar.Y" width="@bar.Width" height="@bar.Height" />
+                }
+            </g>
 
-        <MudText Typo="Typo.caption" Class="chart-span">
-            @Display.Day(Metrics[0].Day) — @Display.Day(Metrics[^1].Day)
-        </MudText>
+            @if (MetricsChart.ZeroRule(Metrics, Width, Height) is { } zero)
+            {
+                <line class="zero-rule"
+                      x1="0"
+                      y1="@zero"
+                      x2="@PlotWidth"
+                      y2="@zero"
+                      vector-effect="non-scaling-stroke" />
+            }
+
+            @* Reversed, so Fitness is painted last and sits on top of the other two. *@
+            @foreach (var series in MetricsChart.Plot(Metrics, Width, Height).Reverse())
+            {
+                <polyline class="@series.CssClass"
+                          fill="none"
+                          points="@series.Points"
+                          vector-effect="non-scaling-stroke" />
+            }
+        </svg>
+
+        <div class="chart-axis">
+            @foreach (var tick in MetricsChart.AxisTicks(Metrics, AxisTickCount))
+            {
+                <span>@tick</span>
+            }
+        </div>
     }
-</MudPaper>
+</section>
 
 @code {
-    /// <summary>The metrics series, at most 180 days ending today (C83).</summary>
+    /// <summary>The plot's coordinate space. Only the ratio matters; it scales to its container.</summary>
+    private const double Width = 1000;
+
+    private const double Height = 300;
+
+    /// <summary>Enough labels to read the span without crowding them at a phone's width.</summary>
+    private const int AxisTickCount = 6;
+
+    /// <summary>
+    ///   The plot's width as it reaches the markup, formatted once and invariantly. A double
+    ///   interpolated into an attribute is formatted with the <em>current</em> culture, which is
+    ///   the failure MetricsChart exists to prevent arriving through a different door.
+    /// </summary>
+    private static readonly string PlotWidth = Width.ToString(CultureInfo.InvariantCulture);
+
+    /// <summary>The metrics to plot, already sliced to the selected window by the page.</summary>
     [Parameter] public IReadOnlyList<DailyTrainingMetrics> Metrics { get; set; } = [];
 
-    /// <summary>False under 30 days, when a chart would mislead more than it showed (US3 sc2).</summary>
+    /// <summary>The daily load behind them, aligned day for day (008 Amendment 2).</summary>
+    [Parameter] public IReadOnlyList<DailyTrainingLoad> DailyLoad { get; set; } = [];
+
+    /// <summary>
+    ///   False under 30 days of stored history, when a chart would mislead more than it showed
+    ///   (US3 sc2). A property of the history, never of the chosen window (008 research R6).
+    /// </summary>
     [Parameter] public bool HasEnoughHistory { get; set; }
 
-    /// <summary>
-    ///   Which palette the plot draws with. Cascaded from <c>MainLayout</c>, which owns the theme
-    ///   provider and is the only place that knows the active scheme (007 research R5).
-    /// </summary>
-    [CascadingParameter(Name = "IsDarkMode")] private bool IsDarkMode { get; set; }
-
-    /// <summary>
-    ///   The series names are load-bearing, not decoration: MudChart derives its legend from them,
-    ///   and since Amendment 1 the legend is the only thing that tells one line from another
-    ///   (007 FR-013a, FR-002).
-    /// </summary>
-    private List<ChartSeries<double>> Series =>
-    [
-        new() { Name = "Fitness", Data = new ChartData<double>([.. Metrics.Select(m => m.Fitness)]) },
-        new() { Name = "Fatigue", Data = new ChartData<double>([.. Metrics.Select(m => m.Fatigue)]) },
-        new() { Name = "Form", Data = new ChartData<double>([.. Metrics.Select(m => m.Form)]) },
-    ];
-
-    /// <summary>
-    ///   The palette is positional - MudChart matches colour to series by index - so its order and
-    ///   <see cref="Series"/>' order are the same fact written twice and must not drift.
-    /// </summary>
-    private ChartOptions Options => new() { ChartPalette = ChartPalette.For(IsDarkMode) };
+    /// <summary>The window the heading names, so it cannot disagree with what is drawn.</summary>
+    [Parameter] public int WindowDays { get; set; }
 }

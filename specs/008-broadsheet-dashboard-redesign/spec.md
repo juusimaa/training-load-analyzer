@@ -236,3 +236,32 @@ regression", forced by the Material chart component drawing every series with a 
 Returning to a hand-drawn plot removes that constraint, and the reference design dashes the Form
 line. SC-007 is amended to require the three lines be distinguishable by stroke pattern as well as
 colour, restoring what feature 006 specified.
+
+### Amendment 2 — the read model carries the daily load the chart's bars are drawn from (2026-09-20)
+
+**Raised by**: implementation, at the point of writing the chart geometry.
+
+**The gap**: FR-006 requires the trend chart to render "daily load as bars behind the Fitness,
+Fatigue and Form lines". The dashboard read model has no daily-load series. `DashboardView.Metrics`
+is a list of `DailyTrainingMetrics`, which carries fitness, fatigue, form, reliability and basis —
+and no load. `DashboardView.Recent` carries a load per activity, but only for the seven most recent
+sessions, not for the chart's window. So FR-006 as written cannot be satisfied by any arrangement
+of the data currently on the view, and the data model's `LoadBars(metrics, width, height)`
+signature does not describe a function that could exist.
+
+**The resolution**: `DashboardView` gains `DailyLoad`, the same day-by-day
+`IReadOnlyList<DailyTrainingLoad>` the builder already computes on its way to the metrics series,
+sliced to exactly the range `Metrics` covers so the two are aligned index for index.
+
+This is a fourth admitted addition alongside Amendment 1(a)'s three, and it is recorded here rather
+than taken silently in code (Principle VII). It is narrower than those three: it displays no new
+*content* — the bars are required by FR-006, which is unamended — and it introduces no computation.
+`DashboardViewBuilder` already calls `TrainingLoadAggregator.AggregateDaily` and already holds the
+result; this carries that value onto the view instead of discarding it. There is no new query and
+no new arithmetic.
+
+**Alternative rejected**: reconstructing each day's load by inverting the fatigue exponential
+moving average (`load = fatigue(t−1) + (fatigue(t) − fatigue(t−1)) / α`). It is exactly invertible
+in principle, but it adds arithmetic to the presentation layer that FR-001 forbids, it is
+numerically noisy, and it has no answer for the first day of the window — where there is no prior
+value to invert from.

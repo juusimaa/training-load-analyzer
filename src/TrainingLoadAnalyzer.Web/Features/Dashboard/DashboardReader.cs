@@ -71,6 +71,11 @@ public sealed class DashboardReader(
                 AsOf = today,
                 IsStravaConnected = connected,
                 IsUnavailable = true,
+
+                // The rail renders either side of this branch, so both members it needs are
+                // populated here too. Neither depends on the history that could not be read.
+                MaximumHeartRate = settings.MaximumHeartRate,
+                IsoWeek = DashboardViewBuilder.Designation(today),
             };
         }
     }

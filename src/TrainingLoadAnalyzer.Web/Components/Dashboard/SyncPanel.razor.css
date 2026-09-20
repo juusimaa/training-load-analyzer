@@ -1,9 +1,26 @@
-/* Layout only; the theme supplies the rest. */
+/* Layout only; the vendored tokens supply the rest. */
 
-.sync {
+.sync-panel {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+}
+
+/* FR-017: a 48x48 touch target. The vendored .btn computes to about 38px tall, which is
+   comfortable with a mouse and too small to hit reliably with a thumb. */
+.sync-panel .btn {
+    min-height: 48px;
+}
+
+.sync-message {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+.sync-when {
+    margin: 0;
+    font-size: 13px;
+    color: color-mix(in srgb, var(--color-text) 70%, transparent);
 }

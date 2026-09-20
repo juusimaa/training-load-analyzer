@@ -1,18 +1,14 @@
 using Bunit;
-using MudBlazor.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging.Abstractions;
-using TrainingLoadAnalyzer.Domain;
 using TrainingLoadAnalyzer.Infrastructure.Persistence;
-using TrainingLoadAnalyzer.Infrastructure.Strava;
-using TrainingLoadAnalyzer.Infrastructure.Tests.Fakes;
+using TrainingLoadAnalyzer.Web.Tests.Fakes;
+using TrainingLoadAnalyzer.Domain;
+using TrainingLoadAnalyzer.Infrastructure.Sync;
 using TrainingLoadAnalyzer.Web.Components.Dashboard;
 using TrainingLoadAnalyzer.Web.Components.Pages;
-using TrainingLoadAnalyzer.Infrastructure.Sync;
 using TrainingLoadAnalyzer.Web.Features.Dashboard;
 using TrainingLoadAnalyzer.Web.Features.Sync;
-using TrainingLoadAnalyzer.Web.Tests.Fakes;
 
 namespace TrainingLoadAnalyzer.Web.Tests;
 
@@ -22,93 +18,40 @@ namespace TrainingLoadAnalyzer.Web.Tests;
 ///   a renderer (research R11).
 /// </summary>
 /// <remarks>
-///   Derives from <c>BunitContext</c>, not <c>TestContext</c>: under xUnit v3 the latter is
-///   ambiguous with <c>Xunit.TestContext</c> (CS0104), which every bUnit 1.x tutorial still shows
-///   (research R10).
+///   <para>
+///     Derives from <see cref="DashboardRenderContext"/>, which holds the container setup this
+///     class shared verbatim with <c>InformationPreservationTests</c> (008 research R11). That base
+///     derives in turn from <c>BunitContext</c>, not <c>TestContext</c>: under xUnit v3 the latter
+///     is ambiguous with <c>Xunit.TestContext</c> (CS0104), which every bUnit 1.x tutorial still
+///     shows (research R10).
+///   </para>
 /// </remarks>
-public class DashboardComponentTests : BunitContext
+public class DashboardComponentTests : DashboardRenderContext
 {
-    private readonly SqliteFixture<ImportDbContext> fixture = new(options => new ImportDbContext(options));
-
-    /// <summary>
-    ///   Feature 007. MudBlazor components resolve their own services and call into JS as they
-    ///   render, so every render in this class needs both. Loose interop returns default for calls
-    ///   nobody planned rather than throwing — right for tests that are about content, and a
-    ///   deliberate cost recorded in 007 research R13: interop failures stop being visible here.
-    /// </summary>
-    public DashboardComponentTests()
-    {
-        Services.AddMudServices();
-        JSInterop.Mode = JSRuntimeMode.Loose;
-        MudChartBounds.Supply(JSInterop);
-    }
-
-    private readonly FixedLocalClock clock = new();
-
-    /// <summary>
-    ///   Registers the page's one dependency over a real SQLite database. The page fetches; the
-    ///   five panels below it take a <c>DashboardView</c> and reach for nothing (C102).
-    /// </summary>
-    private void SeedAndRegister(params TrainingActivity[] activities)
-    {
-        using (var db = fixture.NewContext())
-        {
-            var store = new ActivityStore(db);
-
-            foreach (var activity in activities)
-            {
-                store.UpsertAsync(activity, false, CancellationToken.None).GetAwaiter().GetResult();
-            }
-        }
-
-        Services.AddSingleton<TimeProvider>(clock);
-        Services.AddSingleton(new AthleteSettings(Fixtures.MaximumHeartRate));
-        Services.AddSingleton<IDbContextFactory<ImportDbContext>>(new FixtureContextFactory(fixture));
-        Services.AddSingleton(sp => new DashboardReader(
-            sp.GetRequiredService<IDbContextFactory<ImportDbContext>>(),
-            sp.GetRequiredService<TimeProvider>(),
-            sp.GetRequiredService<AthleteSettings>(),
-            NullLogger<DashboardReader>.Instance));
-
-        // The coordinator's own chain. bUnit's provider supplies IServiceScopeFactory itself, so
-        // the coordinator creates a real scope per run exactly as it does in the host.
-        Services.AddSingleton(new StravaApiClient(new HttpClient(new StubHttpMessageHandler())));
-        Services.AddScoped<ActivityStore>();
-        Services.AddScoped(sp => fixture.NewContext());
-        Services.AddScoped<StravaActivitySync>();
-        Services.AddSingleton<SyncCoordinator>();
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            fixture.Dispose();
-        }
-
-        base.Dispose(disposing);
-    }
-
-    /// <summary>FR-001 - FR-003: a tile shows what it is and what it reads.</summary>
+    /// <summary>FR-001 - FR-003: a figure shows what it is and what it reads.</summary>
+    /// <remarks>
+    ///   Repointed from <c>MetricTile</c> to <c>MetricRow</c> by feature 008, which merged the
+    ///   three tiles and the weekly panel into one row. Every assertion is unchanged — SC-002
+    ///   permits moving an assertion onto markup this feature deliberately replaces, and forbids
+    ///   weakening it on the way.
+    /// </remarks>
     [Fact]
-    public void A_metric_tile_shows_its_label_and_its_figure()
+    public void A_metric_figure_shows_its_label_and_its_value()
     {
-        var tile = Render<MetricTile>(p => p
-            .Add(c => c.Label, "Fitness")
-            .Add(c => c.Value, 2.8233976017308082));
+        var row = Render<MetricRow>(p => p.Add(c => c.Current, Snapshot(fitness: 2.8233976017308082)));
 
-        Assert.Contains("Fitness", tile.Markup, StringComparison.Ordinal);
-        Assert.Contains("2.8", tile.Markup, StringComparison.Ordinal);
+        Assert.Contains("Fitness", row.Markup, StringComparison.Ordinal);
+        Assert.Contains("2.8", row.Markup, StringComparison.Ordinal);
     }
 
     /// <summary>C100, US1 scenario 2: nothing to show is a dash, not a confident zero.</summary>
     [Fact]
-    public void A_metric_tile_with_no_figure_shows_a_dash()
+    public void A_metric_figure_with_nothing_to_show_is_a_dash()
     {
-        var tile = Render<MetricTile>(p => p.Add(c => c.Label, "Fitness"));
+        var row = Render<MetricRow>();
 
-        Assert.Contains(Display.Missing, tile.Markup, StringComparison.Ordinal);
-        Assert.DoesNotContain("0.0", tile.Markup, StringComparison.Ordinal);
+        Assert.Contains(Display.Missing, row.Markup, StringComparison.Ordinal);
+        Assert.DoesNotContain("0.0", row.Markup, StringComparison.Ordinal);
     }
 
     /// <summary>
@@ -118,11 +61,8 @@ public class DashboardComponentTests : BunitContext
     [Fact]
     public void A_figure_that_has_not_warmed_up_says_so()
     {
-        var warming = Render<MetricTile>(p => p
-            .Add(c => c.Label, "Fitness").Add(c => c.Value, 2.8).Add(c => c.IsReliable, false));
-
-        var settled = Render<MetricTile>(p => p
-            .Add(c => c.Label, "Fitness").Add(c => c.Value, 45.3).Add(c => c.IsReliable, true));
+        var warming = Render<MetricRow>(p => p.Add(c => c.Current, Snapshot(2.8, isReliable: false)));
+        var settled = Render<MetricRow>(p => p.Add(c => c.Current, Snapshot(45.3, isReliable: true)));
 
         Assert.Contains("settling", warming.Markup, StringComparison.Ordinal);
         Assert.DoesNotContain("settling", settled.Markup, StringComparison.Ordinal);
@@ -164,17 +104,7 @@ public class DashboardComponentTests : BunitContext
     [Fact]
     public void With_a_connection_but_no_activities_the_page_offers_a_sync()
     {
-        using (var db = fixture.NewContext())
-        {
-            db.Connections.Add(new Infrastructure.Persistence.StravaConnection
-            {
-                AthleteId = 900001,
-                AccessToken = "a",
-                RefreshToken = "r",
-                GrantedScopes = "activity:read_all",
-            });
-            db.SaveChanges();
-        }
+        Connect();
 
         SeedAndRegister();
 
@@ -192,7 +122,7 @@ public class DashboardComponentTests : BunitContext
     public void A_history_that_cannot_be_read_shows_data_unavailable_rather_than_tiles()
     {
         SeedAndRegister([.. Fixtures.H1]);
-        fixture.Execute("UPDATE Activities SET Type = 'Swimming'");
+        Fixture.Execute("UPDATE Activities SET Type = 'Swimming'");
 
         var page = Render<Dashboard>();
 
@@ -213,7 +143,7 @@ public class DashboardComponentTests : BunitContext
     [Fact]
     public void The_weekly_panel_shows_the_change_and_withholds_a_judgement_mid_week()
     {
-        var panel = Render<WeeklyLoadPanel>(p => p
+        var panel = Render<MetricRow>(p => p
             .Add(c => c.Week, Week(480m))
             .Add(c => c.Trend, TrendOf(complete: false)));
 
@@ -228,7 +158,7 @@ public class DashboardComponentTests : BunitContext
     [Fact]
     public void The_weekly_panel_shows_the_judgement_once_the_week_is_complete()
     {
-        var panel = Render<WeeklyLoadPanel>(p => p
+        var panel = Render<MetricRow>(p => p
             .Add(c => c.Week, Week(480m))
             .Add(c => c.Trend, TrendOf(complete: true)));
 
@@ -243,7 +173,7 @@ public class DashboardComponentTests : BunitContext
     [Fact]
     public void With_no_previous_week_the_comparison_is_a_dash_and_the_total_remains()
     {
-        var panel = Render<WeeklyLoadPanel>(p => p.Add(c => c.Week, Week(480m)));
+        var panel = Render<MetricRow>(p => p.Add(c => c.Week, Week(480m)));
 
         Assert.Contains("480.0", panel.Markup, StringComparison.Ordinal);
         Assert.Contains(Display.Missing, panel.Markup, StringComparison.Ordinal);
@@ -439,5 +369,456 @@ public class DashboardComponentTests : BunitContext
 
         Assert.Contains("Sync", reloaded.Markup, StringComparison.Ordinal);
         gate.TrySetResult();
+    }
+
+    // ---- Feature 008: the rail (US1, FR-003) ----
+
+    /// <summary>
+    ///   FR-003: one rail holds the as-of date, the ISO week, the window control, the Strava state
+    ///   with its sync control, and the configured maximum heart rate.
+    /// </summary>
+    [Fact]
+    public void The_rail_holds_the_as_of_date_the_week_the_window_the_sync_control_and_the_maximum()
+    {
+        SeedAndRegister([.. Fixtures.H1]);
+
+        var rail = Render<Dashboard>().Find("aside.rail");
+
+        Assert.Contains(Display.Day(Fixtures.Today), rail.InnerHtml, StringComparison.Ordinal);
+        Assert.Contains("2026-W38", rail.InnerHtml, StringComparison.Ordinal);
+        Assert.Contains("30", rail.InnerHtml, StringComparison.Ordinal);
+        Assert.Contains("90", rail.InnerHtml, StringComparison.Ordinal);
+        Assert.Contains("180", rail.InnerHtml, StringComparison.Ordinal);
+        Assert.Contains("Sync", rail.InnerHtml, StringComparison.Ordinal);
+        Assert.Contains("190", rail.InnerHtml, StringComparison.Ordinal);
+        Assert.Contains("bpm", rail.InnerHtml, StringComparison.Ordinal);
+        Assert.NotNull(rail.QuerySelector("button.sync"));
+    }
+
+    /// <summary>
+    ///   FR-003's organising rule, and the one worth a test of its own: <em>no</em> interactive
+    ///   control appears outside the rail.
+    /// </summary>
+    /// <remarks>
+    ///   Stated as a prohibition rather than a list, because the failure mode is a control drifting
+    ///   back into the content column during some later change — which a list of expected controls
+    ///   would not notice. The empty state's connect action is the case to watch: it is guidance
+    ///   inside the explanation, and FR-003 puts it in the rail with everything else.
+    /// </remarks>
+    [Fact]
+    public void No_interactive_control_appears_outside_the_rail()
+    {
+        SeedAndRegister([.. Fixtures.H1]);
+
+        var page = Render<Dashboard>();
+
+        var strays = page
+            .FindAll("button, a[href], input, select, textarea")
+            .Where(control => control.Closest("aside.rail") is null)
+            .Select(control => control.OuterHtml)
+            .ToList();
+
+        Assert.True(
+            strays.Count == 0,
+            "Every control belongs in the rail (FR-003). Found outside it:"
+            + Environment.NewLine
+            + string.Join(Environment.NewLine, strays));
+    }
+
+    // ---- Feature 008: the metric row (US1, FR-004, FR-008) ----
+
+    /// <summary>One day's figures, for the row to render.</summary>
+    private static DailyTrainingMetrics Snapshot(
+        double fitness = 2.8,
+        double fatigue = 16.0,
+        bool isReliable = true,
+        LoadBasis basis = LoadBasis.Estimated) =>
+        new(Fixtures.Today, fitness, fatigue, isReliable, basis, basis);
+
+    /// <summary>
+    ///   FR-004: Fitness, Fatigue, Form and the week's load as four peers in one row, each figure
+    ///   at display size, with Fitness and Fatigue carrying their own series colour.
+    /// </summary>
+    [Fact]
+    public void The_metric_row_shows_four_figures_as_peers()
+    {
+        var row = Render<MetricRow>(p => p
+            .Add(c => c.Current, Snapshot())
+            .Add(c => c.Week, Week(480m)));
+
+        Assert.Equal(4, row.FindAll(".tile-value").Count);
+
+        Assert.Contains("2.8", row.Markup, StringComparison.Ordinal);
+        Assert.Contains("16.0", row.Markup, StringComparison.Ordinal);
+        Assert.Contains("-13.2", row.Markup, StringComparison.Ordinal);
+        Assert.Contains("480.0", row.Markup, StringComparison.Ordinal);
+
+        // FR-004: each of the two accented figures is one consistent colour, distinct from the
+        // other two — carried by the same class the chart's matching line takes, so the figure and
+        // its line can never drift into different colours.
+        Assert.NotNull(row.Find(".series-fitness.tile-value"));
+        Assert.NotNull(row.Find(".series-fatigue.tile-value"));
+        Assert.Empty(row.FindAll(".series-form"));
+    }
+
+    /// <summary>
+    ///   FR-008 and the alignment edge case: a figure that cannot be computed is an em dash, and it
+    ///   <em>still occupies its position</em> so the row does not close up around the gap and
+    ///   re-order the three that remain.
+    /// </summary>
+    [Fact]
+    public void A_row_with_nothing_to_show_keeps_four_positions_of_em_dashes()
+    {
+        var row = Render<MetricRow>();
+
+        var figures = row.FindAll(".tile-value");
+
+        Assert.Equal(4, figures.Count);
+        Assert.All(figures, figure => Assert.Equal(Display.Missing, figure.TextContent.Trim()));
+        Assert.DoesNotContain("0.0", row.Markup, StringComparison.Ordinal);
+    }
+
+    // ---- Feature 008: the chart (US1, FR-006) ----
+
+    private static IReadOnlyList<DailyTrainingLoad> Bars(int days) =>
+    [
+        .. Enumerable.Range(0, days).Select(i => new DailyTrainingLoad(
+            Fixtures.Today.AddDays(-(days - 1 - i)),
+            i % 3 == 0 ? 0m : 60m + (i % 4 * 30),
+            i % 3 == 0 ? 0 : 1,
+            i % 3 == 0 ? LoadBasis.None : LoadBasis.Estimated)),
+    ];
+
+    /// <summary>
+    ///   FR-006: load bars behind the three lines, a zero rule, and a legend naming each series.
+    /// </summary>
+    [Fact]
+    public void The_chart_draws_bars_behind_three_lines_over_a_zero_rule()
+    {
+        var chart = Render<MetricsChartView>(p => p
+            .Add(c => c.Metrics, ChartSeries(60))
+            .Add(c => c.DailyLoad, Bars(60))
+            .Add(c => c.HasEnoughHistory, true));
+
+        var plot = chart.Find("svg");
+
+        Assert.NotEmpty(plot.QuerySelectorAll("rect.load-bar"));
+        Assert.Single(plot.QuerySelectorAll("line.zero-rule"));
+        Assert.Equal(3, plot.QuerySelectorAll("polyline").Length);
+
+        // Back to front: the bars are a backdrop, so every one of them is drawn before the first
+        // line. Asserted by document order, which is what decides SVG painting order.
+        var drawn = plot.QuerySelectorAll("rect.load-bar, polyline").Select(e => e.ClassName).ToList();
+
+        Assert.DoesNotContain(
+            "load-bar",
+            drawn.SkipWhile(c => c == "load-bar"));
+    }
+
+    /// <summary>
+    ///   SC-007 as amended by 008 Amendment 1(c): the three lines differ by stroke <em>pattern</em>
+    ///   as well as colour, which feature 007's Amendment 1 had recorded losing as a real
+    ///   accessibility regression.
+    /// </summary>
+    /// <remarks>
+    ///   Read from the stylesheet rather than the markup, and not by choice: a scoped
+    ///   <c>.razor.css</c> compiles into a separate bundle and never appears in what bUnit renders,
+    ///   so no assertion over <c>chart.Markup</c> could see this rule. The alternative — writing
+    ///   <c>stroke-dasharray</c> as a presentation attribute so a render test could read it — would
+    ///   put the line's appearance back in the markup, which is the pattern R5 moved away from.
+    /// </remarks>
+    [Fact]
+    public void The_form_line_is_distinguished_by_its_stroke_pattern_and_not_only_its_colour()
+    {
+        var dashed = Theme.Stylesheet.Declaration(
+            Theme.Stylesheet.MetricsChart, ".series-form", "stroke-dasharray");
+
+        Assert.False(
+            string.IsNullOrWhiteSpace(dashed),
+            "The Form line has no dash pattern, so the three series are told apart by colour "
+            + "alone (SC-007, Amendment 1(c)).");
+    }
+
+    // ---- Feature 008: recent sessions (US1, FR-007) ----
+
+    /// <summary>
+    ///   FR-007: a table with one row per session and a consistent column for each value, so the
+    ///   figures line up down the list rather than each row setting its own rhythm.
+    /// </summary>
+    [Fact]
+    public void The_recent_sessions_are_a_table_with_one_row_per_session()
+    {
+        var list = Render<RecentActivityList>(p => p.Add(c => c.Activities,
+            [.. Enumerable.Range(0, 7).Select(i => Entry(i, LoadProvenance.Measured))]));
+
+        Assert.NotNull(list.Find("table.table"));
+
+        var rows = list.FindAll("tr.recent-row");
+
+        Assert.Equal(7, rows.Count);
+        Assert.All(rows, row => Assert.Equal(5, row.QuerySelectorAll("td").Length));
+    }
+
+    /// <summary>
+    ///   FR-018: the basis is a tag carrying the <em>word</em>. The tag is a container around the
+    ///   word, never a replacement for it — a distinction only a colour expresses is invisible to a
+    ///   screen reader and to anyone who cannot tell the two colours apart.
+    /// </summary>
+    [Fact]
+    public void The_basis_is_a_tag_that_carries_its_word()
+    {
+        var estimated = Render<RecentActivityList>(p => p.Add(c => c.Activities,
+            [Entry(0, LoadProvenance.Estimated)]));
+
+        Assert.Equal("estimated", estimated.Find("tr.recent-row span.tag").TextContent.Trim());
+    }
+
+    // ---- Feature 008: the window selector (US1, FR-005) ----
+
+    /// <summary>
+    ///   FR-005: choosing a window updates the plot, its heading and its date axis, without a full
+    ///   page reload.
+    /// </summary>
+    [Fact]
+    public void Choosing_a_window_narrows_the_chart_its_heading_and_its_axis()
+    {
+        SeedAndRegister([.. Fixtures.ConsecutiveDays(180)]);
+
+        var page = Render<Dashboard>();
+
+        Assert.Contains("last 180 days", page.Markup, StringComparison.Ordinal);
+        Assert.Contains(Display.Day(Fixtures.Today.AddDays(-179)), page.Markup, StringComparison.Ordinal);
+
+        page.Find("input[name=\"window\"][value=\"90\"]").Change("90");
+
+        Assert.Contains("last 90 days", page.Markup, StringComparison.Ordinal);
+        Assert.Contains(Display.Day(Fixtures.Today.AddDays(-89)), page.Markup, StringComparison.Ordinal);
+        Assert.DoesNotContain(Display.Day(Fixtures.Today.AddDays(-179)), page.Markup, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    ///   R6: <c>HasEnoughHistoryForChart</c> describes the stored history, not the chosen window.
+    ///   Selecting 30 days on 200 days of training is not an insufficient-history state, and a page
+    ///   that confused the two would replace the chart with an explanation the moment the athlete
+    ///   asked for a closer look.
+    /// </summary>
+    [Fact]
+    public void A_narrow_window_over_a_long_history_is_not_an_insufficient_history_state()
+    {
+        SeedAndRegister([.. Fixtures.ConsecutiveDays(200)]);
+
+        var page = Render<Dashboard>();
+
+        page.Find("input[name=\"window\"][value=\"30\"]").Change("30");
+
+        Assert.NotEmpty(page.FindAll("svg"));
+        Assert.DoesNotContain("Not enough data to show trends", page.Markup, StringComparison.Ordinal);
+    }
+
+    // ---- Feature 008: every state in the same visual language (US3, FR-009) ----
+
+    /// <summary>
+    ///   FR-011 and FR-017 on the redesigned page: a fresh installation is told what to do and
+    ///   given somewhere to do it, and shows no figures it does not have.
+    /// </summary>
+    [Fact]
+    public void The_unconnected_empty_state_explains_itself_and_offers_the_connect_route()
+    {
+        SeedAndRegister();
+
+        var page = Render<Dashboard>();
+        var content = page.Find("section.content");
+
+        Assert.Contains("No activities recorded", content.InnerHtml, StringComparison.Ordinal);
+        Assert.Contains("Connect your Strava account to bring your training in.", content.InnerHtml, StringComparison.Ordinal);
+        Assert.NotNull(content.QuerySelector("a[href=\"/connect\"]"));
+
+        // No figure row, so no em dashes standing in for figures nobody has yet.
+        Assert.Empty(page.FindAll(".tile-value"));
+    }
+
+    /// <summary>
+    ///   The same page with a connection already in place: a different explanation, and
+    ///   deliberately no second connect action — the rail already offers the sync that is the
+    ///   actual next step (US3 scenario 2).
+    /// </summary>
+    [Fact]
+    public void The_connected_empty_state_offers_a_sync_and_no_redundant_connect_action()
+    {
+        Connect();
+        SeedAndRegister();
+
+        var page = Render<Dashboard>();
+        var content = page.Find("section.content");
+
+        Assert.Contains("Your Strava account is connected, but nothing has been imported yet.", content.InnerHtml, StringComparison.Ordinal);
+        Assert.Null(content.QuerySelector("a[href=\"/connect\"]"));
+
+        // The rail still offers the manual sync, which is what this state is waiting for.
+        Assert.NotNull(page.Find("aside.rail").QuerySelector("button.sync"));
+        Assert.Empty(page.FindAll(".tile-value"));
+    }
+
+    /// <summary>
+    ///   C87: an unreadable store is a notice, visibly marked as different from the ordinary empty
+    ///   states — which are expected and unalarming — rather than a page of confident zeroes.
+    /// </summary>
+    [Fact]
+    public void An_unreadable_history_renders_a_distinct_notice_in_place_of_the_figures()
+    {
+        SeedAndRegister([.. Fixtures.H1]);
+        Fixture.Execute("UPDATE Activities SET Type = 'Swimming'");
+
+        var page = Render<Dashboard>();
+
+        Assert.NotNull(page.Find("section.content").QuerySelector(".state-unavailable"));
+        Assert.Contains("Data unavailable", page.Markup, StringComparison.Ordinal);
+        Assert.Empty(page.FindAll(".tile-value"));
+        Assert.Empty(page.FindAll("svg"));
+        Assert.Empty(page.FindAll("table"));
+    }
+
+    /// <summary>
+    ///   The first paint, while the history is still being read. The athlete is told something is
+    ///   happening rather than shown an empty column that looks like a finished page with no data.
+    /// </summary>
+    [Fact]
+    public void While_the_history_is_being_read_the_column_says_so()
+    {
+        var pending = new PendingContextFactory(Fixture);
+
+        SeedAndRegister([.. Fixtures.H1]);
+        Services.AddSingleton<IDbContextFactory<ImportDbContext>>(pending);
+
+        var page = Render<Dashboard>();
+
+        Assert.Contains("Reading your training history…", page.Markup, StringComparison.Ordinal);
+        Assert.Empty(page.FindAll(".tile-value"));
+
+        // The rail is not waiting on the history, so it renders through the loading state.
+        Assert.NotNull(page.Find("aside.rail").QuerySelector("button.sync"));
+
+        pending.Release();
+    }
+
+    /// <summary>
+    ///   US5 scenario 5 in the rail: a credential Strava has since rejected offers the way back,
+    ///   in SyncMessage's existing words.
+    /// </summary>
+    [Fact]
+    public void A_reconnection_required_sync_offers_the_route_back_in_its_existing_words()
+    {
+        var panel = Render<SyncPanel>(p => p.Add(c => c.Status, new SyncStatus
+        {
+            Result = new SyncResult { Outcome = SyncOutcome.ReconnectionRequired },
+        }));
+
+        Assert.Contains(SyncMessage.ConnectionRequired, panel.Markup, StringComparison.Ordinal);
+        Assert.NotNull(panel.Find("a[href=\"/connect\"]"));
+    }
+
+    /// <summary>
+    ///   005 FR-035: a rate-limited sync states when the athlete can come back, in the format it
+    ///   already used — Strava's own next window boundary, in the athlete's local time.
+    /// </summary>
+    [Fact]
+    public void A_rate_limited_sync_states_its_retry_time_in_its_existing_format()
+    {
+        var retryAfter = new DateTimeOffset(
+            Fixtures.Today.ToDateTime(new TimeOnly(7, 15)),
+            FixedLocalClock.FixtureOffset);
+
+        var panel = Render<SyncPanel>(p => p.Add(c => c.Status, new SyncStatus
+        {
+            Result = new SyncResult { Outcome = SyncOutcome.RateLimited, RetryAfter = retryAfter },
+            RetryAfterLocal = retryAfter,
+        }));
+
+        Assert.Contains("Rate limited by Strava. Available again at 07:15.", panel.Markup, StringComparison.Ordinal);
+    }
+
+    // ---- Feature 008: accessible to everyone who used it before (US5) ----
+
+    /// <summary>
+    ///   FR-019: one top-level heading, and a heading naming the rail and each content region, in
+    ///   the order they are read.
+    /// </summary>
+    /// <remarks>
+    ///   <para>
+    ///     The <c>h1</c> is the rail's nameplate, and that is a deliberate departure from
+    ///     contract §3, which specifies a styled <c>div</c> there. The rail comes first in the
+    ///     document, so with the nameplate as a <c>div</c> the page's first four headings — As of,
+    ///     Window, Strava, Max heart rate — would all precede the <c>h1</c>, which is not a
+    ///     heading structure at all. The contract's stated reason for the rule is that the page
+    ///     must carry exactly one <c>h1</c> and that <c>FocusOnNavigate Selector="h1"</c> must find
+    ///     it; both hold, and better, with the nameplate as the heading it already is.
+    ///   </para>
+    ///   <para>
+    ///     The four display figures carry no heading of their own. They are the lede, directly
+    ///     under the page's title, and their labels are data labels rather than region names —
+    ///     promoting them would name four headings where there is one region.
+    ///   </para>
+    /// </remarks>
+    [Fact]
+    public void The_headings_name_the_rail_and_each_content_region_in_reading_order()
+    {
+        SeedAndRegister([.. Fixtures.H1]);
+
+        var page = Render<Dashboard>();
+
+        Assert.Single(page.FindAll("h1"));
+
+        // The h1 comes first, or the outline below it is hanging from nothing.
+        var headings = page.FindAll("h1, h2").ToList();
+
+        Assert.Equal("h1", headings[0].TagName.ToLowerInvariant());
+        Assert.Equal("Training Load", headings[0].TextContent.Trim());
+
+        Assert.Equal(
+            ["As of", "Window", "Strava", "Max heart rate"],
+            page.Find("aside.rail").QuerySelectorAll("h2").Select(h => h.TextContent.Trim()));
+
+        var content = page.Find("section.content").QuerySelectorAll("h2")
+            .Select(h => h.TextContent.Trim())
+            .ToList();
+
+        Assert.Contains(content, h => h.StartsWith("Daily load and metrics", StringComparison.Ordinal));
+        Assert.Contains(content, h => h == "Recent activities");
+    }
+
+    /// <summary>
+    ///   FR-018 and SC-007: outside the plot, no distinction the interface draws is carried by
+    ///   colour alone.
+    /// </summary>
+    /// <remarks>
+    ///   Asserted by deleting every class attribute and checking the meaning survives — which is
+    ///   what a greyscale screen, and a screen reader, actually do to the page. Three distinctions
+    ///   are at stake and each has its own failure: a basis tag that became a coloured dot, a week
+    ///   trend that became a red or green figure, and a connection state that became an indicator
+    ///   light.
+    /// </remarks>
+    [Fact]
+    public void Every_distinction_outside_the_plot_survives_without_colour()
+    {
+        SeedAndRegister([.. Fixtures.H3f]);
+
+        var page = Render<Dashboard>();
+        var colourless = System.Text.RegularExpressions.Regex.Replace(
+            page.Markup, "(class|style)=\"[^\"]*\"", string.Empty);
+
+        // Provenance, in the recent-sessions table.
+        Assert.Contains("measured", colourless, StringComparison.Ordinal);
+        Assert.Contains("estimated", colourless, StringComparison.Ordinal);
+
+        // The week's trend, as a signed figure and a percentage rather than a direction of colour.
+        Assert.Matches(@"[+-]\d+\.\d\s*\(\s*[+-]?\d+%\s*\)", colourless);
+
+        // The Strava state in the rail, in SyncMessage's own words.
+        page.Find("button.sync").Click();
+
+        Assert.Contains(
+            SyncMessage.ConnectionRequired,
+            System.Text.RegularExpressions.Regex.Replace(page.Markup, "(class|style)=\"[^\"]*\"", string.Empty),
+            StringComparison.Ordinal);
     }
 }

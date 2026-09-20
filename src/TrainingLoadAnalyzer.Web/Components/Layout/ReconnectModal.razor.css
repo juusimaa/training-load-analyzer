@@ -1,9 +1,15 @@
 /*
-   The connection-lost notice (007 FR-015, FR-028).
+   The connection-lost notice (007 FR-015, FR-028; 008 FR-010).
 
-   Restyled onto MudBlazor's generated palette variables so it works in both schemes. It was not in
-   the plan's file list - the colour-discipline test found it, which is the point of scanning the
-   repository rather than only the files someone remembered.
+   Repointed for feature 008 off MudBlazor's generated palette variables onto the Broadsheet
+   tokens. Seven references, more than any other file in the project — which is why feature 008
+   wrote this component its first test rather than leaving the heaviest restyling in the change
+   as the one nobody verified.
+
+   It still works in both appearances for the same reason it did before: every value below is
+   redefined by the dark media query in wwwroot/Theme/broadsheet.css. The button's state ramp
+   follows .btn-primary's, including the accessibility remedy in research R4 — hover darkens to
+   -800 and press to -900, rather than the old scheme's hover-then-back-to-base.
 */
 
 .components-reconnect-first-attempt-visible,
@@ -29,13 +35,15 @@
 
 
 #components-reconnect-modal {
-    background-color: var(--mud-palette-surface);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-body);
     width: 20rem;
     margin: 20vh auto;
     padding: 2rem;
     border: 0;
-    border-radius: 0.5rem;
-    box-shadow: var(--mud-elevation-8);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
     opacity: 0;
     transition: display 0.5s allow-discrete, overlay 0.5s allow-discrete;
     animation: components-reconnect-modal-fadeOutOpacity 0.5s both;
@@ -49,7 +57,7 @@
 }
 
 #components-reconnect-modal::backdrop {
-    background-color: var(--mud-palette-overlay-dark);
+    background-color: var(--color-scrim);
     animation: components-reconnect-modal-fadeInOpacity 0.5s ease-in-out;
     opacity: 1;
 }
@@ -98,18 +106,25 @@
 
 #components-reconnect-modal button {
     border: 0;
-    background-color: var(--mud-palette-primary);
-    color: var(--mud-palette-primary-text);
-    padding: 4px 24px;
-    border-radius: 4px;
+    background-color: var(--color-accent-700);
+    color: var(--color-bg);
+    font-family: var(--font-heading);
+    font-weight: var(--font-heading-weight);
+    font-size: 14px;
+    cursor: pointer;
+
+    /* FR-017: a 48x48 target, as everywhere else. */
+    min-height: 48px;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
 }
 
     #components-reconnect-modal button:hover {
-        background-color: var(--mud-palette-primary-darken);
+        background-color: var(--color-accent-800);
     }
 
     #components-reconnect-modal button:active {
-        background-color: var(--mud-palette-primary);
+        background-color: var(--color-accent-900);
     }
 
 .components-rejoining-animation {
@@ -120,7 +135,7 @@
 
     .components-rejoining-animation div {
         position: absolute;
-        border: 3px solid var(--mud-palette-primary);
+        border: 3px solid var(--color-accent-700);
         opacity: 1;
         border-radius: 50%;
         animation: components-rejoining-animation 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;

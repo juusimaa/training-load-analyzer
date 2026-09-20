@@ -1,43 +1,52 @@
-@* The most recent sessions, newest first (FR-007, FR-008, SC-004). *@
+@* The most recent sessions, newest first (008 FR-007, FR-018).
 
-<MudPaper Class="recent" Elevation="1">
-    <MudText Typo="Typo.h6" HtmlTag="h2">Recent activities</MudText>
+   A plain table. The five values line up down the list because they are columns, which is what a
+   grid of list items was approximating before. *@
+
+<section class="recent">
+    <h2>Recent activities</h2>
 
     @if (Activities.Count == 0)
     {
-        <MudText Typo="Typo.body1" Class="recent-empty">Nothing recorded yet.</MudText>
+        <p class="recent-empty">Nothing recorded yet.</p>
     }
     else
     {
-        @* MudList, per 007 Amendment 1. Ripple and click semantics are switched off: these rows are
-           read-only content, and a row that looks pressable but does nothing is a worse lie than a
-           plain one (007 FR-003). *@
-        <MudList T="string" ReadOnly="true" Dense="true" Class="recent-list">
-            @foreach (var activity in Activities)
-            {
-                <MudListItem T="string" Ripple="false" Class="recent-item">
-                    <div class="recent-row">
-                        <span class="recent-day">@Display.Day(activity.Day)</span>
-                        <span class="recent-type">@activity.Type</span>
-                        <span class="recent-duration">@Display.Duration(activity.MovingTime)</span>
-                        <span class="recent-load">@Display.Points(activity.Load.Points)</span>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Type</th>
+                    <th>Moving time</th>
+                    <th>Basis</th>
+                    <th class="load">Load</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var activity in Activities)
+                {
+                    var measured = activity.Load.Provenance == LoadProvenance.Measured;
 
-                        @* FR-008 as content, not as styling. A difference only a stylesheet
-                           expresses is invisible to a screen reader and to anyone who cannot tell
-                           the two colours apart (C101). The chip is a container around the word,
-                           never a replacement for it. *@
-                        <MudChip T="string"
-                                 Size="Size.Small"
-                                 Variant="Variant.Text"
-                                 Class="@($"recent-basis recent-basis-{activity.Load.Provenance.ToString().ToLowerInvariant()}")">
-                            @(activity.Load.Provenance == LoadProvenance.Measured ? "measured" : "estimated")
-                        </MudChip>
-                    </div>
-                </MudListItem>
-            }
-        </MudList>
+                    <tr class="recent-row">
+                        <td class="recent-day num">@Display.Day(activity.Day)</td>
+                        <td class="recent-type">@activity.Type</td>
+                        <td class="recent-duration num">@Display.Duration(activity.MovingTime)</td>
+                        <td>
+                            @* FR-018 as content, not as styling. The tag is a container around the
+                               word, never a replacement for it: a difference only a stylesheet
+                               expresses is invisible to a screen reader and to anyone who cannot
+                               tell the two colours apart (C101). *@
+                            <span class="tag @(measured ? "tag-accent" : "tag-outline")">
+                                @(measured ? "measured" : "estimated")
+                            </span>
+                        </td>
+                        <td class="recent-load num load">@Display.Points(activity.Load.Points)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
-</MudPaper>
+</section>
 
 @code {
     /// <summary>At most seven, newest first (C84).</summary>

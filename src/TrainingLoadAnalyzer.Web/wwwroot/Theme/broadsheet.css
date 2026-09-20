@@ -1,0 +1,291 @@
+/*
+   Broadsheet — the design system's tokens and the component classes this application uses.
+
+   Vendored from docs/ui/styles.css for feature 008 (research R2). A SUBSET, deliberately: the
+   source sheet's print-treatment machinery (.halftone, .cmyk, .cmyk-num, .cmyk-head and the
+   --color-process-yellow they consume) resolves its filters against an SVG defs file this
+   application will never ship, and its .nav, .card, .dialog and .input classes have no consumer
+   here. Carried weight with no current need is a Principle III defect, and nothing about the
+   rendered look changes by leaving it out.
+
+   This file lives under a Theme path segment because it is the one place allowed to name a
+   colour; ColourDisciplineTests exempts exactly that segment, and the spelling is load-bearing.
+
+   Contrast: several values below are stepped down their ramp from what the reference page draws,
+   because the reference misses WCAG 2.1's 4.5:1 and 3:1 bars in ten places (008 research R4). Each
+   remedy is marked. PaletteContrastTests measures every pairing in both schemes, so a value nudged
+   back up here fails the suite rather than the athlete.
+*/
+
+/*
+   The webfont is requested from App.razor's <head>, not with an @import here.
+
+   An @import inside a stylesheet is discovered only after that stylesheet has been fetched and
+   parsed, so it serialises two render-blocking requests that could have run in parallel. NFR-001
+   requires this page to render no more slowly than the one it replaces, and a chained font request
+   is the one change in this feature that could have made it slower. The token below still names
+   the family, so this file remains the single definition site (NFR-002); only the fetch moved.
+
+   Still a CDN with a system fallback rather than a self-hosted binary (research R10): a blocked or
+   offline request degrades to the system serif instead of breaking the page.
+*/
+
+:root {
+  --color-bg: #f3f2f2;
+  --color-surface: #eae9e9;
+  --color-text: #201e1d;
+  --color-accent: #0088b0;
+  --color-accent-2: #d6006c;
+  --color-divider: color-mix(in srgb, #201e1d 16%, transparent);
+
+  /* The modal scrim, and the one token that does NOT invert with the scheme. Everything else
+     here is a tonal mapping of the ground, but a scrim's job is to darken what is behind it —
+     so the dark scheme takes a darker value, not a lighter one. Without its own token the
+     dialog would be veiled in ink on a light device and washed pale on a dark one. */
+  --color-scrim: color-mix(in srgb, #2d2b2b 50%, transparent);
+
+  /* Tonal ramps — generated in OKLCH on one shared lightness scale, so the
+     same step of any role matches the others in visual value. */
+  --color-neutral-100: #f8f4f4;
+  --color-neutral-200: #eae7e7;
+  --color-neutral-300: #d7d3d3;
+  --color-neutral-400: #bab6b6;
+  --color-neutral-500: #9b9797;
+  --color-neutral-600: #7d7979;
+  --color-neutral-700: #605d5d;
+  --color-neutral-800: #444141;
+  --color-neutral-900: #2d2b2b;
+
+  --color-accent-100: #e9f8ff;
+  --color-accent-200: #cbeeff;
+  --color-accent-300: #99e0ff;
+  --color-accent-400: #62c5ee;
+  --color-accent-500: #38a6cf;
+  --color-accent-600: #1186ac;
+  --color-accent-700: #006786;
+  --color-accent-800: #004961;
+  --color-accent-900: #0a303e;
+
+  --color-accent-2-100: #fff1f4;
+  --color-accent-2-200: #ffdee6;
+  --color-accent-2-300: #ffc0d0;
+  --color-accent-2-400: #ff90b1;
+  --color-accent-2-500: #ff458e;
+  --color-accent-2-600: #d82071;
+  --color-accent-2-700: #aa0b56;
+  --color-accent-2-800: #790e3d;
+  --color-accent-2-900: #4b1528;
+
+  --font-heading: "Source Serif 4", system-ui, sans-serif;
+  --font-heading-weight: 600;
+  --font-body: "Source Serif 4", system-ui, sans-serif;
+
+  --space-1: 5.0px;
+  --space-2: 10.0px;
+  --space-3: 15.0px;
+  --space-4: 20.0px;
+  --space-6: 30.0px;
+  --space-8: 40.0px;
+
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+
+  /* Elevation — derived from the ground: soft ink-tinted shadows on a
+     light theme, a hairline edge + ambient darkness on a dark one. */
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #2d2b2b 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #2d2b2b 16%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #2d2b2b 22%, transparent);
+}
+
+/*
+   The dark appearance (008 FR-020..FR-023, research R3).
+
+   Authored here, not vendored: the reference sheet ships a light palette only, so a dark scheme
+   had to be designed either way. A media query rather than the JavaScript round-trip feature 007
+   used — the platform reads the preference at load and follows a change to it without a reload,
+   which is exactly what FR-021 asks for and what MudBlazor's watcher only half did.
+
+   The ramps are INVERTED rather than re-hued: step 700 means "a strong reading contrast against
+   the ground" in both appearances, so one stylesheet rule can name --color-neutral-700 and be
+   right in either. Steps 100..300 stay near the ground in both, which is what keeps the chart's
+   load bars a backdrop in dark as in light.
+
+   Elevation follows the token block's own note: on a dark ground an ink-tinted shadow is
+   invisible, so separation comes from a hairline edge and ambient darkness beneath it.
+
+   Every pairing below is measured by PaletteContrastTests in this scheme too. Nothing here is
+   eyeballed.
+*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #191817;
+    --color-surface: #211f1e;
+    --color-text: #ece8e5;
+    --color-accent: #3fb9e0;
+    --color-accent-2: #ff5c96;
+    --color-divider: color-mix(in srgb, #ece8e5 22%, transparent);
+    --color-scrim: color-mix(in srgb, #050404 66%, transparent);
+
+    --color-neutral-100: #201f1e;
+    --color-neutral-200: #2b2928;
+    --color-neutral-300: #3a3837;
+    --color-neutral-400: #545150;
+    --color-neutral-500: #726e6c;
+    --color-neutral-600: #948f8c;
+    --color-neutral-700: #b6b1ad;
+    --color-neutral-800: #d4cfca;
+    --color-neutral-900: #ece7e2;
+
+    --color-accent-100: #08252f;
+    --color-accent-200: #0b3646;
+    --color-accent-300: #0f5169;
+    --color-accent-400: #1a7594;
+    --color-accent-500: #2f9bbf;
+    --color-accent-600: #57bcdd;
+    --color-accent-700: #8cd6f0;
+    --color-accent-800: #b9e7f8;
+    --color-accent-900: #dff5fd;
+
+    --color-accent-2-100: #33101d;
+    --color-accent-2-200: #4a142a;
+    --color-accent-2-300: #6d1a3d;
+    --color-accent-2-400: #9a2155;
+    --color-accent-2-500: #cc3f78;
+    --color-accent-2-600: #ef6f9d;
+    --color-accent-2-700: #ff9dbc;
+    --color-accent-2-800: #ffc6d8;
+    --color-accent-2-900: #ffe4ec;
+
+    --shadow-sm: 0 0 0 1px color-mix(in srgb, #ece8e5 9%, transparent);
+    --shadow-md: 0 0 0 1px color-mix(in srgb, #ece8e5 11%, transparent), 0 6px 18px color-mix(in srgb, #050404 55%, transparent);
+    --shadow-lg: 0 0 0 1px color-mix(in srgb, #ece8e5 13%, transparent), 0 18px 44px color-mix(in srgb, #050404 66%, transparent);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Base
+   ══════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 var(--space-2);
+}
+h1 { font-size: 42px; }
+h2 { font-size: 32px; }
+h3 { font-size: 25px; }
+h4 { font-size: 20px; }
+h5 { font-size: 16px; }
+h6 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
+p { margin: 0 0 var(--space-3); }
+/* R4: --color-accent measures 3.65:1 against the page, below the 4.5:1 a link needs as
+   text. One step down its own ramp measures 5.72:1 and is the same hue. */
+a { color: var(--color-accent-700); text-underline-offset: 3px; }
+img { display: block; max-width: 100%; }
+figure { margin: 0; }
+/* R4: 55% ink measures 3.66:1 against the page. 70% measures 5.79:1. */
+figcaption {
+  font-size: 11px; margin-top: var(--space-1);
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+.text-muted { color: color-mix(in srgb, var(--color-text) 70%, transparent); }
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
+
+/* — rules — */
+.hr {
+  height: 1px; border: 0; margin: var(--space-4) 0;
+  background: var(--color-divider);
+}
+
+/* — buttons — */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  cursor: pointer; text-decoration: none;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 14px; line-height: 1.2; color: var(--color-text);
+  background: transparent; border: 1px solid transparent;
+  padding: var(--space-2) calc(var(--space-3) * 1.2);
+  border-radius: var(--radius-md);
+}
+.btn svg { display: block; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+/*
+   R4, and the part of it worth reading twice. The reference draws this button on
+   --color-accent, whose label measures 3.65:1 — so the base steps down to -700 (5.72:1).
+
+   The WHOLE state ramp is re-derived, not only the base. The vendored sheet darkened by one
+   step on hover, which was right when the base was --color-accent; against a -700 base the
+   inherited -600 hover is LIGHTER than the resting value and measures 3.74:1, and the
+   inherited -700 active would be the base itself. So hover takes -800 (8.84:1) and active
+   -900 (12.49:1), preserving the darken-on-press direction the design intends. An
+   accessibility fix that introduced a new failure in the state it did not measure is exactly
+   what a resting-only audit misses.
+*/
+.btn-primary { background: var(--color-accent-700); color: var(--color-bg); }
+.btn-primary:hover { background: var(--color-accent-800); }
+.btn-primary:active { background: var(--color-accent-900); }
+.btn-secondary { border-color: var(--color-divider); }
+.btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.btn-secondary:active { background: color-mix(in srgb, var(--color-text) 14%, transparent); }
+.btn-ghost { color: var(--color-accent-700); padding-inline: var(--space-1); }  /* R4, as for links */
+.btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
+.btn-ghost:active { background: color-mix(in srgb, var(--color-accent) 18%, transparent); }
+.btn-icon { width: 36px; height: 36px; padding: 0; }
+.btn-block { width: 100%; margin-top: var(--space-2); }
+
+/* — segmented control — */
+.seg {
+  display: inline-flex; overflow: hidden;
+  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+}
+.seg-opt {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; font-size: 13px; cursor: pointer;
+}
+.seg-opt input {
+  position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;
+}
+.seg-opt + .seg-opt { border-left: 1px solid var(--color-divider); }
+.seg-opt:has(input:checked) { background: var(--color-accent); color: var(--color-bg); }
+.seg-opt:not(:has(input:checked)):hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.seg-opt:has(input:focus-visible) { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+
+/* — tags — */
+.tag {
+  display: inline-flex; align-items: center; font-size: 11px;
+  letter-spacing: 0.02em; padding: 3px 10px;
+  border-radius: calc(var(--radius-md) * 0.75);
+}
+.tag-accent { background: var(--color-accent-100); color: var(--color-accent-800); }
+.tag-accent-2 { background: var(--color-accent-2-100); color: var(--color-accent-2-800); }
+.tag-neutral { background: var(--color-neutral-100); color: var(--color-neutral-800); }
+/* R4: the border is a non-text indicator and clears 3:1 at --color-accent; the WORD inside it
+   is 11px text and does not, so only the text steps down. */
+.tag-outline { border: 1px solid var(--color-accent); color: var(--color-accent-700); }
+
+/* — tables — */
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th {
+  text-align: left; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);  /* R4: 60% measures 4.23:1 */
+  padding: var(--space-2); border-bottom: 1px solid var(--color-divider);
+}
+.table td {
+  padding: var(--space-2);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+.table tbody tr:hover { background: color-mix(in srgb, var(--color-text) 4%, transparent); }

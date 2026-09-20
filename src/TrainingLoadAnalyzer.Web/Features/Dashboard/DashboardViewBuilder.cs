@@ -1,3 +1,4 @@
+using System.Globalization;
 using TrainingLoadAnalyzer.Domain;
 
 namespace TrainingLoadAnalyzer.Web.Features.Dashboard;
@@ -30,7 +31,13 @@ public static class DashboardViewBuilder
 
         if (activities.Count == 0)
         {
-            return new DashboardView { AsOf = today, IsStravaConnected = isStravaConnected };
+            return new DashboardView
+            {
+                AsOf = today,
+                IsStravaConnected = isStravaConnected,
+                MaximumHeartRate = maximumHeartRate,
+                IsoWeek = Designation(today),
+            };
         }
 
         var days = activities.Select(DayOf).ToList();
@@ -61,11 +68,30 @@ public static class DashboardViewBuilder
         {
             AsOf = today,
             IsStravaConnected = isStravaConnected,
+            MaximumHeartRate = maximumHeartRate,
+            IsoWeek = Designation(today),
             Metrics = TrainingMetricsCalculator.Calculate(daily, new DateRange(chartStart, today)),
+            DailyLoad = [.. daily.Where(d => d.Day >= chartStart && d.Day <= today)],
             CurrentWeek = weekly.FirstOrDefault(w => w.Week == thisWeek),
             Trend = TrendFor(weekly, historyStart, today),
             Recent = RecentFrom(activities, maximumHeartRate),
         };
+    }
+
+    /// <summary>
+    ///   The ISO-8601 week designation of a day, as <c>2026-W38</c> (008 Amendment 1(a)).
+    /// </summary>
+    /// <remarks>
+    ///   Built from <see cref="IsoWeek.Year"/>, not from the calendar year of the day. The two
+    ///   differ at the boundary: ISO-8601 assigns 2027-01-01 to 2026-W53, and a designation
+    ///   composed from the calendar year would read "2027-W53" — a week that does not exist.
+    ///   Formatted invariantly for the same reason every other figure on this page is.
+    /// </remarks>
+    internal static string Designation(DateOnly day)
+    {
+        var week = IsoWeek.For(day);
+
+        return string.Create(CultureInfo.InvariantCulture, $"{week.Year}-W{week.Week:00}");
     }
 
     /// <summary>

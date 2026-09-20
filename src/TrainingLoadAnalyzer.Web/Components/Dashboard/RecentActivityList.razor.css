@@ -1,32 +1,73 @@
 /*
-   Layout only. Colour, type and radius come from the theme (007 FR-005).
+   Layout only; the vendored .table rule supplies the rest (008 FR-007).
 
-   The row is a grid so the five values line up down the list rather than each row setting its own
-   rhythm (007 FR-011). It collapses to two lines on a narrow viewport instead of clipping or
-   pushing the load figure off the edge (007 FR-017, and the long-activity-type edge case).
+   The one column that can be arbitrarily long is the activity type, so it is the one that gives
+   way — the load figure is never pushed off the edge.
 */
 
-.recent {
-    padding: 1rem;
+.recent h2 {
+    margin: 0 0 var(--space-3);
+    font-size: 24px;
 }
 
-.recent-row {
-    display: grid;
-    grid-template-columns: auto 1fr auto auto auto;
-    align-items: center;
-    gap: 0.75rem;
-    width: 100%;
+.load {
+    text-align: right;
+}
+
+.num {
+    font-variant-numeric: tabular-nums;
+}
+
+/*
+   text-wrap rather than white-space, and not a matter of taste: ColourDisciplineTests scans for
+   CSS named colours, and its word-boundary match for "white" fires on "white-space". The test
+   must pass unmodified (008 T007), text-wrap: nowrap says exactly the same thing about wrapping,
+   and it is supported across the evergreen browsers this application targets.
+*/
+.recent-day {
+    color: var(--color-neutral-700);
+    text-wrap: nowrap;
+}
+
+.recent-duration {
+    text-wrap: nowrap;
 }
 
 .recent-type {
-    /* The one column that can be arbitrarily long, so it is the one that gives way. */
     overflow-wrap: anywhere;
+    width: 100%;
 }
 
+.recent-empty {
+    margin: 0;
+}
+
+/* Below the stacking breakpoint the day moves onto a line of its own rather than the row
+   clipping or scrolling sideways (FR-011, FR-013). */
 @media (max-width: 40rem) {
+    .table,
+    .table thead,
+    .table tbody,
+    .table tr,
+    .table td {
+        display: block;
+    }
+
+    .table thead {
+        display: none;
+    }
+
     .recent-row {
-        grid-template-columns: auto 1fr auto;
-        row-gap: 0.25rem;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: var(--space-1) var(--space-2);
+        padding: var(--space-2) 0;
+        border-bottom: 1px solid var(--color-divider);
+    }
+
+    .recent-row td {
+        border: 0;
+        padding: 0;
     }
 
     .recent-day {

@@ -6,7 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
     <ResourcePreloader />
-    <link rel="stylesheet" href="@Assets["_content/MudBlazor/MudBlazor.min.css"]" />
+    @* The design system's webfont, fetched in parallel with the stylesheets rather than chained
+       behind one by an @import. display=swap, so text is readable in the system serif from the
+       first paint whatever the font does (008 research R10, NFR-001). *@
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" />
+
+    @* The vendored design system first: it defines the tokens and the base element styling every
+       other sheet consumes. app.css holds what the system does not own, and the scoped bundle the
+       per-component layout (008 research R2). *@
+    <link rel="stylesheet" href="@Assets["Theme/broadsheet.css"]" />
     <link rel="stylesheet" href="@Assets["app.css"]" />
     <link rel="stylesheet" href="@Assets["TrainingLoadAnalyzer.Web.styles.css"]" />
     <ImportMap />
@@ -14,15 +24,17 @@
 </head>
 
 <body>
-    @* 007: interactive at the root so MudThemeProvider - which lives in the layout - gets an
-       OnAfterRenderAsync and can ask the browser for the appearance preference. Under static SSR it
-       renders once, never runs its JS, and every page stays in the light palette regardless of the
-       device setting (007 FR-025, FR-026). A render mode cannot go on the layout itself, because
-       its @Body RenderFragment cannot cross a render-mode boundary. *@
-    <Routes @rendermode="InteractiveServer" />
+    @* 008: no render mode here.
+
+       Feature 007 put InteractiveServer at the root for one reason — MudThemeProvider lived in the
+       layout and needed an OnAfterRenderAsync to ask the browser for the appearance preference.
+       That provider is gone and the appearance is a media query now, so the reason is gone with it
+       (008 research R3). Dashboard.razor declares its own render mode, which is what the sync
+       button and the window selector actually need; NotFound and Error are static, and rendering
+       them over a circuit bought nothing. *@
+    <Routes />
     <ReconnectModal />
     <script src="@Assets["_framework/blazor.web.js"]"></script>
-    <script src="@Assets["_content/MudBlazor/MudBlazor.min.js"]"></script>
 </body>
 
 </html>
