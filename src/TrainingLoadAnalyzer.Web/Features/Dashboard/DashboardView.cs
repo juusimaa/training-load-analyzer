@@ -21,6 +21,29 @@ public sealed record DashboardView
     public required bool IsStravaConnected { get; init; }
 
     /// <summary>
+    ///   The maximum heart rate every measured load behind these figures was computed from
+    ///   (008 Amendment 1(a), FR-003).
+    /// </summary>
+    /// <remarks>
+    ///   Carried through from the argument the builder is given, which is the same value
+    ///   <see cref="DashboardReader"/> already reads out of configuration for the estimation
+    ///   itself. Reading it a second time at the point of display would create a second place for
+    ///   the displayed number and the computed one to disagree — and the whole reason the rail
+    ///   states it is so a wrong setting is visible rather than only implied by odd figures.
+    /// </remarks>
+    public required int MaximumHeartRate { get; init; }
+
+    /// <summary>
+    ///   The ISO-8601 week <see cref="AsOf"/> falls in, as <c>2026-W38</c> (008 Amendment 1(a),
+    ///   FR-003).
+    /// </summary>
+    /// <remarks>
+    ///   A label, derived and never stored. It is the same ISO week numbering the domain already
+    ///   uses for <see cref="WeeklyTrainingLoad"/>, and no weekly computation reads it back.
+    /// </remarks>
+    public required string IsoWeek { get; init; }
+
+    /// <summary>
     ///   The stored data could not be read. The page says so rather than crashing (C87).
     /// </summary>
     public bool IsUnavailable { get; init; }
@@ -32,6 +55,25 @@ public sealed record DashboardView
 
     /// <summary>Null when the history does not reach the previous ISO week (C82).</summary>
     public WeeklyLoadTrend? Trend { get; init; }
+
+    /// <summary>
+    ///   Each day's total load over the same range as <see cref="Metrics"/>, aligned index for
+    ///   index (008 Amendment 2, FR-006).
+    /// </summary>
+    /// <remarks>
+    ///   <para>
+    ///     The chart draws daily load as bars behind the three lines, and
+    ///     <see cref="DailyTrainingMetrics"/> carries no load — it is fitness, fatigue and their
+    ///     difference. This is the aggregation the builder already performs on its way to the
+    ///     metrics series, carried through rather than discarded: no new query, no new arithmetic.
+    ///   </para>
+    ///   <para>
+    ///     Its alignment with <see cref="Metrics"/> is the property the plot depends on. Both are
+    ///     taken over one range, so an off-by-one cannot arise from a second calculation — it
+    ///     would have to be introduced deliberately.
+    ///   </para>
+    /// </remarks>
+    public IReadOnlyList<DailyTrainingLoad> DailyLoad { get; init; } = [];
 
     public IReadOnlyList<RecentActivity> Recent { get; init; } = [];
 

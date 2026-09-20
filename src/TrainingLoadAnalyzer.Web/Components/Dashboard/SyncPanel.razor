@@ -1,18 +1,19 @@
 @using TrainingLoadAnalyzer.Web.Features.Sync
 
-@* The sync button and whatever the last attempt has to say (FR-009, FR-010). *@
+@* The sync button and whatever the last attempt has to say (FR-009, FR-010).
 
-<MudPaper Class="sync" Elevation="1">
-    @* Class="sync" survives onto the rendered <button>: MudBlazor appends it to the element's own
-       classes, which is what keeps the existing button.sync tests binding to it. *@
-    <MudButton Class="sync"
-               Variant="Variant.Filled"
-               Color="Color.Primary"
-               ButtonType="ButtonType.Button"
-               Disabled="@Status.IsRunning"
-               OnClick="OnSync">
+   008: moved into the rail and rebuilt on plain markup. Every string is unchanged — SyncMessage
+   is not modified, and its wording is pinned by SyncMessageTests (008 FR-002). *@
+
+<div class="sync-panel">
+    @* A real <button>, still carrying class="sync". Existing tests bind to button.sync and to its
+       disabled attribute, and those hooks are load-bearing rather than styling (008 research R8). *@
+    <button type="button"
+            class="btn btn-primary btn-block sync"
+            disabled="@Status.IsRunning"
+            @onclick="OnSync">
         @(Status.IsRunning ? "Syncing…" : "Sync Activities")
-    </MudButton>
+    </button>
 
     @{
         var message = SyncMessage.For(Status);
@@ -20,23 +21,20 @@
 
     @if (!string.IsNullOrEmpty(message))
     {
-        <MudText Typo="Typo.body1" Class="sync-message">@message</MudText>
+        <p class="sync-message">@message</p>
     }
 
     @if (NeedsConnection)
     {
         @* FR-017 and FR-018 lead to the same place: a route, not a dead end. *@
-        <MudButton Class="connect"
-                   Href="/connect"
-                   Variant="Variant.Filled"
-                   Color="Color.Primary">Connect Strava</MudButton>
+        <a class="btn btn-primary btn-block connect" href="/connect">Connect Strava</a>
     }
 
     @if (Status.FinishedAt is { } finishedAt && !Status.IsRunning)
     {
-        <MudText Typo="Typo.caption" Class="sync-when">Last checked @finishedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)</MudText>
+        <p class="sync-when">Last checked @finishedAt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)</p>
     }
-</MudPaper>
+</div>
 
 @code {
     [Parameter] public SyncStatus Status { get; set; } = SyncStatus.Never;

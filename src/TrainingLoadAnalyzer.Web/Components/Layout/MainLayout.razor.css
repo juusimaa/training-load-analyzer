@@ -1,33 +1,37 @@
 /*
-   The unhandled-error notice (007 FR-015).
+   The unhandled-error notice (007 FR-015, 008 FR-010).
 
-   Every colour comes from MudBlazor's generated palette variables, which are the theme in CSS form
-   and are re-emitted when the scheme changes. That is what lets this work in both schemes - it
-   previously pinned itself to light with `color-scheme: light only` and a lightyellow background,
-   which is exactly the kind of surface FR-028 is about.
+   Repointed off MudBlazor's generated palette variables onto the Broadsheet tokens, which are
+   redefined by the dark media query — so this keeps working in both appearances for the same
+   reason it did before, by a different mechanism.
+
+   The second accent is the alert ink here. The vendored token set has no error slot, and rather
+   than invent one for a single surface this takes the ramp step that is already measured against
+   the page in both schemes.
 */
 
 #blazor-error-ui {
-    background: var(--mud-palette-error);
-    color: var(--mud-palette-error-text);
+    background: var(--color-accent-2-700);
+    color: var(--color-bg);
     bottom: 0;
-    box-shadow: var(--mud-elevation-8);
+    box-shadow: var(--shadow-md);
     box-sizing: border-box;
     display: none;
+    font-family: var(--font-body);
     left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    padding: var(--space-2) var(--space-4);
     position: fixed;
     width: 100%;
     z-index: 2000;
 }
 
     #blazor-error-ui .reload {
-        color: var(--mud-palette-error-text);
+        color: var(--color-bg);
     }
 
     #blazor-error-ui .dismiss {
         cursor: pointer;
         position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
+        right: var(--space-3);
+        top: var(--space-2);
     }

@@ -1,0 +1,66 @@
+/*
+   Layout and type only, except the two series colours — which are here because they are the same
+   fact as the chart's two lines and have to stay the same fact (008 FR-004).
+*/
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+    align-items: start;
+}
+
+.kicker {
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-neutral-700);
+}
+
+.tile-value {
+    font-family: var(--font-heading);
+    font-weight: var(--font-heading-weight);
+    font-size: 72px;
+    line-height: 0.95;
+    font-variant-numeric: tabular-nums;
+
+    /* FR-008 and the alignment edge case: an em dash occupies the position a figure would have,
+       so a row with one missing value keeps the other three where they were. */
+    min-height: 1em;
+}
+
+.series-fitness {
+    color: var(--color-accent-700);
+}
+
+.series-fatigue {
+    color: var(--color-accent-2-700);
+}
+
+.notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+
+    /* Reserves the row whether or not a qualifier is present, so the four figures stay aligned
+       when only one of them is still settling (007 edge case). */
+    min-height: 1.75rem;
+}
+
+.note {
+    font-size: 16px;
+    font-style: italic;
+    color: var(--color-neutral-700);
+}
+
+@media (max-width: 60rem) {
+    .metrics {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+    }
+
+    .tile-value {
+        font-size: 56px;
+    }
+}

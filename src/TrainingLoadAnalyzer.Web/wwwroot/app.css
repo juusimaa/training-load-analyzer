@@ -1,7 +1,6 @@
 /*
-   Feature 007. MudBlazor's theme owns colour, type, spacing and shape; see
-   src/TrainingLoadAnalyzer.Web/Theme/TrainingLoadTheme.cs, which is the single definition site
-   (007 NFR-002). What is left here is what the library does not own.
+   Feature 008. wwwroot/Theme/broadsheet.css owns colour, type, spacing and shape and is the single
+   definition site (NFR-002). What is left here is what the design system does not own.
 
    The rules this file used to hold were deleted rather than restyled: .valid/.invalid/
    .validation-message target EditForm markup this application never renders, .blazor-error-boundary
@@ -14,9 +13,9 @@ h1:focus {
     outline: none;
 }
 
-/* 007 FR-024. MudBlazor animates ripples and state layers and does not suppress them on its own,
-   so the escape hatch has to be ours. One rule, globally, rather than a per-component discipline
-   that will be forgotten. */
+/* 007 FR-024, retained. MudBlazor's ripples were the original reason, and they are gone — but the
+   reconnect dialog still animates, and a global rule is still better than a per-component
+   discipline that will be forgotten. */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -28,36 +27,3 @@ h1:focus {
     }
 }
 
-/* 007 FR-018. MudBlazor 9 has no container component, so the reading width is set here. Layout
-   only - no colour, which is why this may live outside Theme/. */
-.page {
-    max-width: 70rem;
-    margin-inline: auto;
-    padding: 1.5rem 1rem 3rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-/* The empty, loading and unavailable surfaces (007 FR-014). */
-.state {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 1.5rem;
-}
-
-/* 007 FR-021: a 48x48 touch target. MudBlazor's own button is padding: 6px 16px, which computes to
-   roughly 36px tall - comfortable with a mouse and too small to hit reliably with a thumb. Measured
-   against the library's stylesheet rather than assumed, because the requirement is specific and the
-   default is close enough to look fine on a laptop. */
-.mud-button-root {
-    min-height: 48px;
-}
-
-/* The same floor for the anchor-style buttons, which take the same class but can collapse when
-   their content is short. */
-.mud-button-root.connect {
-    min-width: 48px;
-}

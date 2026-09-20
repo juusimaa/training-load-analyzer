@@ -3,10 +3,13 @@
 
 <PageTitle>Not found</PageTitle>
 
-<div class="page">
-    <MudText Typo="Typo.h4" HtmlTag="h1">Not Found</MudText>
+@* 008 FR-010: the same visual language as everything else, so a wrong address does not land the
+   athlete on a page that looks like it belongs to a different application. *@
 
-    <MudPaper Class="state" Elevation="1">
-        <MudText Typo="Typo.body1">Sorry, the content you are looking for does not exist.</MudText>
-    </MudPaper>
-</div>
+<main class="page">
+    <h1>Not Found</h1>
+
+    <div class="state">
+        <p>Sorry, the content you are looking for does not exist.</p>
+    </div>
+</main>

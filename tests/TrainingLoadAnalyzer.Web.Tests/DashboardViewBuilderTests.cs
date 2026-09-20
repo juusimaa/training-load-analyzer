@@ -109,4 +109,82 @@ public class DashboardViewBuilderTests
         Assert.Equal(45, view.Metrics.Count);
         Assert.Equal(Fixtures.Today.AddDays(-44), view.Metrics[0].Day);
     }
+
+    // ---- Feature 008: the rail's two new members, and the chart's load bars ----
+
+    /// <summary>
+    ///   008 Amendment 1(a). The rail states the maximum heart rate the figures were computed
+    ///   from, so a wrong configuration is visible on the page rather than only in the arithmetic.
+    /// </summary>
+    /// <remarks>
+    ///   Carried through from the argument the builder already takes. Reading configuration a
+    ///   second time would be a second place for the two to disagree.
+    /// </remarks>
+    [Fact]
+    public void The_view_carries_the_maximum_heart_rate_it_was_built_with()
+    {
+        Assert.Equal(190, Build(Fixtures.H1).MaximumHeartRate);
+        Assert.Equal(190, Build([]).MaximumHeartRate);
+    }
+
+    /// <summary>008 Amendment 1(a): the rail names the ISO week the as-of date falls in.</summary>
+    [Fact]
+    public void The_view_names_the_iso_week_of_its_as_of_date()
+    {
+        Assert.Equal("2026-W38", Build(Fixtures.H1).IsoWeek);
+    }
+
+    /// <summary>
+    ///   The January edge, which is the only reason this is derived rather than formatted from the
+    ///   calendar year. ISO-8601 assigns 2027-01-01 to 2026-W53 — 2026 is a 53-week ISO year — so a
+    ///   designation built from <c>AsOf.Year</c> would read "2027-W53" and name a week that does
+    ///   not exist.
+    /// </summary>
+    [Fact]
+    public void The_iso_week_designation_follows_iso_numbering_across_the_year_boundary()
+    {
+        var view = DashboardViewBuilder.Build(
+            Fixtures.H1,
+            new DateOnly(2027, 1, 1),
+            Fixtures.MaximumHeartRate,
+            true);
+
+        Assert.Equal("2026-W53", view.IsoWeek);
+    }
+
+    /// <summary>
+    ///   008 Amendment 2, FR-006: the chart draws daily load as bars, and the load is not on
+    ///   <c>DailyTrainingMetrics</c>. The builder already aggregates it; this carries it through.
+    /// </summary>
+    [Fact]
+    public void The_view_carries_the_daily_load_the_chart_draws_its_bars_from()
+    {
+        var view = Build(Fixtures.ConsecutiveDays(45));
+
+        Assert.Equal(45, view.DailyLoad.Count);
+        Assert.All(view.DailyLoad, day => Assert.Equal(120m, day.Points));
+    }
+
+    /// <summary>
+    ///   The alignment the chart relies on. The bars and the lines are drawn on one x-axis, so an
+    ///   off-by-one between the two series would put every bar under the wrong day — silently, and
+    ///   visibly wrong only to someone who already knew the answer.
+    /// </summary>
+    [Fact]
+    public void The_daily_load_lines_up_with_the_metrics_day_for_day()
+    {
+        var view = Build(Fixtures.ConsecutiveDays(200));
+
+        Assert.Equal(view.Metrics.Count, view.DailyLoad.Count);
+        Assert.Equal(
+            view.Metrics.Select(m => m.Day),
+            view.DailyLoad.Select(d => d.Day));
+    }
+
+    /// <summary>An empty history has no bars to draw, and says so with an empty list.</summary>
+    [Fact]
+    public void An_empty_history_carries_no_daily_load()
+    {
+        Assert.Empty(Build([]).DailyLoad);
+    }
 }

@@ -1,73 +1,18 @@
 @inherits LayoutComponentBase
 
-@* Feature 007. The theme provider, and the Material shell every page sits inside.
+@* Feature 008. A plain shell.
 
-   Only MudThemeProvider is registered - not the popover, dialog or snackbar providers. Nothing in
-   this application uses those features, and adding them because the documentation's example does
-   is the speculative surface Principle III exists to prevent. *@
+   Everything that used to be here is gone rather than restyled: the theme provider, the Material
+   layout, the app bar and its title span, and the IsDarkMode cascade the chart read its palette
+   from. The appearance now follows prefers-color-scheme in wwwroot/Theme/broadsheet.css, so there
+   is no scheme for C# to know about and nothing to cascade (008 research R3).
 
-<MudThemeProvider @ref="themeProvider" Theme="TrainingLoadTheme.Instance" @bind-IsDarkMode="isDarkMode" />
+   Each page owns its own frame, because the rail is part of the page rather than chrome around it. *@
 
-<MudLayout>
-    <MudAppBar Elevation="0">
-        @* A span, deliberately, not a heading. Routes.razor focuses "h1" after navigation, so the
-           page's own <h1> has to stay the only one - a second heading here would take that focus
-           and leave the page heading unannounced (007 research R10). Typo.h6 is Material's title
-           styling; HtmlTag detaches it from the document outline. *@
-        <MudText Typo="Typo.h6" HtmlTag="span">Training Load</MudText>
-    </MudAppBar>
-
-    <MudMainContent>
-        @* The chart picks its series colours from this. It is the only consumer: MudBlazor's own
-           components read the palette from the provider, but MudChart takes a palette as a
-           parameter, and this is the one component that knows which scheme is active (007 R5). *@
-        <CascadingValue Value="isDarkMode" Name="IsDarkMode">
-            @Body
-        </CascadingValue>
-    </MudMainContent>
-</MudLayout>
+@Body
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
-
-@code {
-    private MudThemeProvider themeProvider = null!;
-
-    /// <summary>
-    ///   Which scheme is showing (007 FR-025). Never set by a control: there is no toggle, and
-    ///   FR-027 says there must not be one.
-    /// </summary>
-    private bool isDarkMode;
-
-    /// <summary>
-    ///   Asks the browser once, on the first interactive render, which appearance the device is
-    ///   set to.
-    /// </summary>
-    /// <remarks>
-    ///   <para>
-    ///     This call is <em>not</em> redundant with <c>ObserveSystemDarkModeChange</c>, which is
-    ///     true by default. That flag covers only half of what its name suggests: MudBlazor's
-    ///     <c>watchDarkMode</c> does
-    ///     <c>matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ...)</c> and
-    ///     nothing else. It reacts to the preference <em>changing</em> and never reads what it
-    ///     already is, so a device that was already dark when the page loaded stays light until
-    ///     someone toggles the setting twice.
-    ///   </para>
-    ///   <para>
-    ///     Verified by reading the library's own JavaScript after the page rendered light under an
-    ///     emulated dark preference. FR-026 needs both halves: this call for the state at load, the
-    ///     watcher for changes afterwards.
-    ///   </para>
-    /// </remarks>
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            isDarkMode = await themeProvider.GetSystemDarkModeAsync();
-            StateHasChanged();
-        }
-    }
-}

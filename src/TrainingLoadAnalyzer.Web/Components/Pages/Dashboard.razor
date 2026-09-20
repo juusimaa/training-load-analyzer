@@ -5,99 +5,149 @@
 
 <PageTitle>Training Load</PageTitle>
 
-<div class="page">
-    @* The page's only h1. Routes.razor focuses it after navigation, and the app bar's title is
-       deliberately a span so this stays unique (007 FR-023, research R10). *@
-    <MudText Typo="Typo.h4" HtmlTag="h1">Training Load</MudText>
+<main class="page">
+    @* ---- The rail. Every control lives here (008 FR-003). ---- *@
+    <aside class="rail">
+        @* The nameplate, and the page's one h1.
 
-    <SyncPanel Status="syncStatus" OnSync="RunSyncAsync" />
+           Contract §3 specifies a styled div here, following the reference mock — which carries no
+           h1 at all and so has no outline to get right. The rail comes first in the document, so a
+           div nameplate would put four h2s (As of, Window, Strava, Max heart rate) ahead of the
+           page's only h1, which is not a heading structure (FR-019). The contract's own reason for
+           the rule — exactly one h1, and one that FocusOnNavigate Selector="h1" finds — is better
+           served this way, and focus lands at the top of the page rather than part-way down it. *@
+        <h1 class="masthead">
+            <span class="rule"></span>
+            <span class="wordmark">Training Load</span>
+        </h1>
 
-    @if (view is null)
-    {
-        <MudPaper Class="state" Elevation="1">
-            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small" />
-            <MudText Typo="Typo.body1">Reading your training history…</MudText>
-        </MudPaper>
-    }
-    else if (view.IsUnavailable)
-    {
-        @* The edge case: the stored data could not be read. The athlete is told, rather than shown a
-           stack trace or a page of zeroes (C87). *@
-        <MudPaper Class="state state-unavailable" Elevation="1">
-            <MudText Typo="Typo.h6" HtmlTag="h2">Data unavailable</MudText>
-            <MudText Typo="Typo.body1">
-                Your stored training history could not be read. Nothing has been lost — try again, and
-                if it persists, the application log says why.
-            </MudText>
-        </MudPaper>
-    }
-    else if (!view.HasActivities)
-    {
-        <MudPaper Class="state" Elevation="1">
-            <MudText Typo="Typo.h6" HtmlTag="h2">No activities recorded</MudText>
-
-            @if (view.IsStravaConnected)
-            {
-                <MudText Typo="Typo.body1">
-                    Your Strava account is connected, but nothing has been imported yet.
-                    Sync to bring your training in.
-                </MudText>
-            }
-            else
-            {
-                <MudText Typo="Typo.body1">Connect your Strava account to bring your training in.</MudText>
-                <MudButton Class="connect"
-                           Href="/connect"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary">Connect Strava</MudButton>
-            }
-        </MudPaper>
-    }
-    else
-    {
-        @* Three peers on a wide viewport, one column on a phone - xs="12" sm="4" is the whole of
-           007 FR-016 for this row, with no breakpoint list to maintain. *@
-        <MudGrid Spacing="3" Class="status">
-            <MudItem xs="12" sm="4">
-                <MetricTile Label="Fitness"
-                            Value="view.Current?.Fitness"
-                            Basis="view.Current?.FitnessBasis ?? LoadBasis.None"
-                            IsReliable="view.Current?.IsReliable ?? false" />
-            </MudItem>
-            <MudItem xs="12" sm="4">
-                <MetricTile Label="Fatigue"
-                            Value="view.Current?.Fatigue"
-                            Basis="view.Current?.FatigueBasis ?? LoadBasis.None"
-                            IsReliable="view.Current?.IsReliable ?? false" />
-            </MudItem>
-            <MudItem xs="12" sm="4">
-                <MetricTile Label="Form"
-                            Value="view.Current?.Form"
-                            Basis="view.Current?.FormBasis ?? LoadBasis.None"
-                            IsReliable="view.Current?.IsReliable ?? false" />
-            </MudItem>
-        </MudGrid>
-
-        <div class="week">
-            <WeeklyLoadPanel Week="view.CurrentWeek" Trend="view.Trend" />
+        <div class="rail-block">
+            @* The kickers are the rail's region names, so they are the headings FR-019 asks for.
+               No string is added or changed to make them so. *@
+            <h2 class="kicker">As of</h2>
+            <div class="rail-value">@Display.Day(AsOf)</div>
+            <div class="rail-note">ISO week @IsoWeek</div>
         </div>
 
-        <div class="trends">
-            <MetricsChartView Metrics="view.Metrics" HasEnoughHistory="view.HasEnoughHistoryForChart" />
+        <div class="rail-block">
+            <h2 class="kicker">Window</h2>
+            <div class="seg" role="radiogroup" aria-label="Chart window">
+                @foreach (var days in Windows)
+                {
+                    <label class="seg-opt">
+                        <input type="radio"
+                               name="window"
+                               value="@days"
+                               checked="@(windowDays == days)"
+                               @onchange="() => windowDays = days" />
+                        @days days
+                    </label>
+                }
+            </div>
         </div>
 
-        <div class="activities">
-            <RecentActivityList Activities="view.Recent" />
+        <div class="rail-block">
+            <h2 class="kicker">Strava</h2>
+            <SyncPanel Status="syncStatus" OnSync="RunSyncAsync" />
         </div>
-    }
-</div>
+
+        <div class="rail-block">
+            <h2 class="kicker">Max heart rate</h2>
+            <div class="rail-value">@MaximumHeartRate bpm</div>
+            <div class="rail-note">from configuration</div>
+        </div>
+    </aside>
+
+    @* ---- The content column. ---- *@
+    <section class="content">
+        @if (view is null)
+        {
+            <div class="state">
+                <p>Reading your training history…</p>
+            </div>
+        }
+        else if (view.IsUnavailable)
+        {
+            @* The edge case: the stored data could not be read. The athlete is told, rather than
+               shown a stack trace or a page of zeroes (C87). *@
+            <div class="state state-unavailable">
+                <h2>Data unavailable</h2>
+                <p>
+                    Your stored training history could not be read. Nothing has been lost — try again, and
+                    if it persists, the application log says why.
+                </p>
+            </div>
+        }
+        else if (!view.HasActivities)
+        {
+            <div class="state">
+                <h2>No activities recorded</h2>
+
+                @if (view.IsStravaConnected)
+                {
+                    <p>
+                        Your Strava account is connected, but nothing has been imported yet.
+                        Sync to bring your training in.
+                    </p>
+                }
+                else
+                {
+                    <p>Connect your Strava account to bring your training in.</p>
+                    <a class="btn btn-primary connect" href="/connect">Connect Strava</a>
+                }
+            </div>
+        }
+        else
+        {
+            <MetricRow Current="view.Current" Week="view.CurrentWeek" Trend="view.Trend" />
+
+            <div class="block">
+                <MetricsChartView Metrics="Windowed(view.Metrics)"
+                                  DailyLoad="Windowed(view.DailyLoad)"
+                                  HasEnoughHistory="view.HasEnoughHistoryForChart"
+                                  WindowDays="windowDays" />
+            </div>
+
+            <div class="block">
+                <RecentActivityList Activities="view.Recent" />
+            </div>
+        }
+    </section>
+</main>
 
 @code {
+    /// <summary>
+    ///   The windows the athlete can choose between, widest last and the default (008 FR-005).
+    /// </summary>
+    private static readonly int[] Windows = [30, 90, 180];
+
     private DashboardView? view;
+
+    /// <summary>
+    ///   The selected chart window, in days. Component state: the view already holds every day the
+    ///   widest window can show, so a selection is a slice of data that is already loaded — no new
+    ///   query and no round-trip to storage (008 research R6).
+    /// </summary>
+    private int windowDays = 180;
 
     // Read from the singleton rather than held here. A reload is a new circuit, so a sync started
     // before it is still running afterwards and the page must be able to say so (FR-012, C93).
     private SyncStatus syncStatus = SyncStatus.Never;
+
+    /// <summary>
+    ///   The rail renders before the history has been read, so its two figures come from the view
+    ///   when there is one and from the same places the view would have taken them when there is
+    ///   not. They do not depend on the history.
+    /// </summary>
+    private DateOnly AsOf => view?.AsOf ?? DateOnly.FromDateTime(DateTime.Now);
+
+    private string IsoWeek => view?.IsoWeek ?? DashboardViewBuilder.Designation(AsOf);
+
+    private int MaximumHeartRate => view?.MaximumHeartRate ?? 0;
+
+    /// <summary>The trailing slice the selected window asks for (008 research R6).</summary>
+    private IReadOnlyList<T> Windowed<T>(IReadOnlyList<T> series) =>
+        series.Count <= windowDays ? series : [.. series.Skip(series.Count - windowDays)];
 
     protected override async Task OnInitializedAsync()
     {
@@ -107,7 +157,7 @@
 
     /// <summary>
     ///   FR-009 and US5 scenario 2. The view is re-read rather than patched: it is derived, and
-    ///   applying a delta to it by hand is how the tiles and the chart start to disagree (C80).
+    ///   applying a delta to it by hand is how the figures and the chart start to disagree (C80).
     /// </summary>
     private async Task RunSyncAsync()
     {
