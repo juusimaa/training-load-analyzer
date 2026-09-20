@@ -265,3 +265,39 @@ moving average (`load = fatigue(t−1) + (fatigue(t) − fatigue(t−1)) / α`).
 in principle, but it adds arithmetic to the presentation layer that FR-001 forbids, it is
 numerically noisy, and it has no answer for the first day of the window — where there is no prior
 value to invert from.
+
+### Amendment 3 — the trend chart gains a hover readout (2026-09-20)
+
+**Requested by**: the developer, on reviewing the running redesign.
+
+**What changes**: FR-006 is extended. Pointing at the chart identifies one day and reports it: the
+day's load bar is emphasised, a point is marked on each of the three metric lines at that day's
+value, and a readout states the date and all four figures — Fitness, Fatigue, Form and the day's
+load — as text.
+
+**Why this is an addition and not a restoration.** Feature 006 deliberately chose a legend
+*instead of* a tooltip, and feature 007's Amendment 1 recorded losing `MudChart`'s hover tooltip as
+an accepted cost rather than a regression. R1 of this feature repeated that reasoning: returning to
+a hand-drawn plot "returns the chart to its originally specified behaviour rather than removing
+something specified". So this is new athlete-facing behaviour, admitted here rather than taken
+silently in code (Principle VII), and it is the fourth such addition alongside Amendment 1(a)'s
+three and Amendment 2's read-model member.
+
+**What it must not cost**:
+
+- **No JavaScript.** The design's stated intent is "plain CSS on plain HTML: no JavaScript, no
+  build step", and R3 and R5 removed the last of this application's client script. A hover handled
+  over the Blazor circuit would be worse still — a server round-trip per mouse movement.
+- **No new data.** Every value in the readout is already on `DashboardView`; the readout formats
+  what the figures above it and the table below it already show, through the same `Display.*`
+  helpers.
+- **NFR-001.** The readout adds markup to every render, and the payload cost is measured rather
+  than assumed in the completion review.
+- **FR-015 and FR-018.** The readout is text on a surface and meets 4.5:1 in both appearances,
+  measured by `PaletteContrastTests` like every other pairing. Each figure is labelled by name, so
+  the readout carries no distinction by colour alone.
+
+**Consequence for the legend**: unchanged. The legend remains the primary answer to "which line is
+which" (FR-006), and SC-007's dash patterns remain the non-colour answer. The readout is an
+addition to both, not a replacement for either — a hover is not available to a keyboard or a touch
+user, which is exactly why feature 006 declined to rely on one.

@@ -323,6 +323,21 @@ states still carry the old styling.
 
 ---
 
+## Phase 9: The chart's hover readout (Amendment 3, added after review)
+
+**Goal**: Pointing at the chart identifies one day — its bar emphasised, a point on each line, and
+a readout naming every figure. Pure CSS over pre-rendered markup: no JavaScript, and no Blazor
+event handler that would cost a server round-trip per mouse movement.
+
+- [X] T070 RED: Add `MetricsChartTests` cases — given a metrics series and its daily load, when `HoverSlots` is called, then one slot per day is returned; each marks a point on every line **at the y `Plot` computed for that day**, reports the date and all four figures through `Display.*`, and carries an emphasis band only for days that recorded load. Every position is invariantly formatted. Fails: the function does not exist.
+- [X] T071 GREEN: Implement `HoverSlot`, `SlotPoint` and `MetricsChart.HoverSlots`. Positions are percentages, not view-box units — the readout is HTML over the plot, because `preserveAspectRatio="none"` stretches anything drawn inside the SVG and would distort text at every width but one.
+- [X] T072 RED: Add `DashboardComponentTests` cases — given a populated chart, then the hover layer holds one slot per day with a guide, three points and a readout naming and stating every figure; a rest day carries no emphasis band; the insufficient-history branch renders neither plot nor readout; and no position reaches the markup with a decimal comma.
+- [X] T073 GREEN: Render the hover layer in `MetricsChartView.razor` and style it in the scoped stylesheet. Every slot is in the document and revealed by `:hover`. The emphasis band is ink at 18% rather than an opaque fill, so the three lines still cross the column being read.
+- [X] T074 GREEN: Assert in `PaletteContrastTests` that the readout sits on `--color-bg` — the ground this audit already measures — so moving it to the surface tone cannot quietly remove four pairings from the audit.
+- [X] T075 VERIFY: Full suite, compliance sweep, and measure the payload cost against the pre-readout build. Recorded in [compliance-review.md](./compliance-review.md): time to first byte unchanged, document 31 KB → 220 KB.
+
+---
+
 ## What is not done, and why
 
 Everything above that is still `[ ]` needs a person in front of a browser. They are listed together
@@ -339,5 +354,7 @@ here so the gap is visible rather than inferred from unticked boxes, and each is
 | T068 | The human-review items in quickstart.md, including SC-008's five-second test |
 | T068a | The browser network-panel measurement on a populated history. The server-side half **was** measured and is recorded in the completion review: no regression in time to first byte, and a 90% smaller first-paint payload |
 
-Everything a test or a script can settle is settled: 501 tests pass across the solution,
+| T075 | The readout at 30 / 90 / 180 days: where it lands, when it flips, and whether the emphasis band reads at 180 days where a bar is two pixels wide |
+
+Everything a test or a script can settle is settled: 516 tests pass across the solution,
 `scripts/compliance-008.sh` is clean, and `dotnet build` carries no MudBlazor reference.

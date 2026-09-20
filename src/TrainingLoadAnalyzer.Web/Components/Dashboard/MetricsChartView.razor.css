@@ -108,3 +108,137 @@
     border-top: 1px solid var(--color-divider);
     border-bottom: 1px solid var(--color-divider);
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The hover readout (008 Amendment 3)
+
+   Pure CSS over pre-rendered markup. Every day's slot is in the document and hidden; :hover
+   reveals one. No script, and no Blazor event handler — on this circuit the latter would mean a
+   server round-trip per mouse movement.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.plot-frame {
+    position: relative;
+}
+
+.hover-layer {
+    position: absolute;
+    inset: 0;
+}
+
+/* Centred on the day it reports, so the guide and the points sit on the data rather than in the
+   middle of an arbitrary band. The slots at the two ends are therefore half-width, which is
+   correct: there is no half-day beyond them to point at. */
+.day {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-50%);
+}
+
+.day > * {
+    opacity: 0;
+}
+
+.day:hover > * {
+    opacity: 1;
+}
+
+/* The emphasis band. Ink at 18% rather than an opaque fill: it reads as the bar darkening, and
+   the three lines still cross it — an opaque band would cut them at the one column the reader is
+   looking at. */
+.bar-focus {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: color-mix(in srgb, var(--color-text) 18%, transparent);
+}
+
+.guide {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: var(--color-neutral-600);
+}
+
+.point {
+    position: absolute;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    margin: -5px 0 0 -5px;
+    border-radius: 50%;
+    border: 1px solid var(--color-bg);
+}
+
+/* The same tokens the lines take, so a dot and the line it marks cannot drift into different
+   colours. Background rather than stroke, because these are HTML. */
+.point.series-fitness {
+    background: var(--color-accent);
+}
+
+.point.series-fatigue {
+    background: var(--color-accent-2);
+}
+
+.point.series-form {
+    background: var(--color-neutral-600);
+}
+
+/*
+   The readout sits on the page's own ground, not on the surface tone. That is a contrast decision
+   rather than a visual one: every pairing inside it — ordinary ink and the three accented labels —
+   is already measured against --color-bg by PaletteContrastTests, in both appearances.
+*/
+.readout {
+    position: absolute;
+    top: var(--space-2);
+    left: calc(50% + var(--space-2));
+    z-index: 1;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 2px var(--space-3);
+    width: max-content;
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-bg);
+    border: 1px solid var(--color-divider);
+    box-shadow: var(--shadow-md);
+    font-size: 13px;
+    line-height: 1.35;
+    pointer-events: none;
+}
+
+.readout.opens-left {
+    left: auto;
+    right: calc(50% + var(--space-2));
+}
+
+.readout-day {
+    grid-column: 1 / -1;
+    margin-bottom: var(--space-1);
+    padding-bottom: var(--space-1);
+    border-bottom: 1px solid var(--color-divider);
+    font-variant-numeric: tabular-nums;
+}
+
+.readout-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    align-self: center;
+}
+
+.readout-value {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* A coarse pointer has no hover to speak of, and a tap would leave a readout stuck open over the
+   plot. The figures are all published as text elsewhere on the page, so nothing is lost. */
+@media (hover: none), (pointer: coarse) {
+    .hover-layer {
+        display: none;
+    }
+}

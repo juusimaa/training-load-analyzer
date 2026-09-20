@@ -12,9 +12,9 @@ II and III, and SC-002 requires any weakened or removed assertion to be named he
 | Web tests before the feature | 126 |
 | **Removed** | **0** |
 | Repointed onto replacement markup | 9 |
-| Added by this feature | 65 |
-| **Web tests now** | **191** |
-| Whole solution | **501, all passing** |
+| Added by this feature | 80 |
+| **Web tests now** | **206** |
+| Whole solution | **516, all passing** |
 
 Feature 007's review had to name seven tests it deleted, six of them the chart's. This feature
 deletes none — it **restores** four of those seven. `MetricsChartTests` came back from `b1e8726^`
@@ -199,6 +199,56 @@ Two wordings from the reference design were **not** adopted, because FR-002 outr
 figure is labelled "This week", not "Week load", and the sessions table is headed "Recent
 activities", not "Recent sessions".
 
+## Amendment 3 — the chart's hover readout
+
+Added after the developer reviewed the running redesign. Recorded in `spec.md` before it was built,
+because it is new athlete-facing behaviour: feature 006 chose a legend *instead of* a tooltip, and
+R1 of this feature treated losing `MudChart`'s tooltip as accepted rather than regrettable.
+
+**How it works, and what it deliberately does not use.** Every day's slot — an emphasis band over
+its bar, a guide, a point on each line and a readout naming all four figures — is rendered once and
+revealed by CSS `:hover`. No JavaScript, which the design's own "no JavaScript, no build step"
+intent and R3/R5 both rule out; and no Blazor event handler, which on this Interactive Server
+circuit would mean a server round-trip per mouse movement.
+
+**Why the readout is HTML rather than SVG.** The plot is stretched with
+`preserveAspectRatio="none"` so it fills its column, which stretches anything drawn inside it. Text
+in SVG would render horizontally distorted at every width but one. The readout is therefore HTML
+positioned over the plot in percentages — which map exactly onto the same box.
+
+**Correctness guards.** `HoverSlots` places each point by asserting against `Plot`'s own output
+rather than recomputing it, so a dot cannot drift off the line it marks. Every position goes
+through the same invariant formatter as the SVG geometry — here the stakes are slightly worse than
+in an SVG attribute, because `left:12,34%` is not a parse error but a declaration the browser drops
+silently, and every slot would stack at the left edge. Fifteen tests cover it.
+
+**A pre-existing guard caught a false positive**, recorded because the fix was to the comment and
+not to the guard: `No_threshold_number_lives_in_the_web_project` scans `src/` for feature 004's
+threshold numbers, and an example percentage ending in `5%` inside a doc comment matched it. The
+comment was reworded; the guard is untouched.
+
+### The cost, measured
+
+| | Before the readout | With it |
+|---|---|---|
+| Server time to first byte for `/` (median of 12, warm) | 113.2 ms | 113.2 ms |
+| Document size, 180-day window | 31,123 bytes | 220,197 bytes |
+
+**Time to first byte did not move.** The document is 7× larger, which is the honest cost of
+rendering 180 slots rather than computing one in script. On the loopback interface this application
+runs over, 190 KB is on the order of a millisecond, so **NFR-001 still holds** — but it is the one
+number in this feature that moved materially, and it is the developer's call whether to spend it:
+
+- **Leave it.** The application is local-only by design; the transfer is not observable.
+- **Compress dynamic responses.** One line of middleware; this markup is extremely repetitive and
+  would fall by roughly an order of magnitude. It would benefit every response, not just this one.
+- **Trim the markup.** Moving the labels into CSS `content` and the values into data attributes
+  would roughly halve it — but it would put the readout's words out of reach of
+  `Each_readout_names_and_states_every_figure`, and weakening an assertion to save bytes is the
+  wrong trade to make silently.
+
+Nothing was chosen here. The measurement is the deliverable.
+
 ## Still outstanding — human review only
 
 `quickstart.md` lists these as settleable only by a person, and none of them is claimed here:
@@ -210,6 +260,9 @@ activities", not "Recent sessions".
       cover its content and its tokens — not whether the restyled dialog looks right.
 - [ ] Dark-scheme legibility of the three series. The ratios are measured in both schemes; whether
       the dashed Form line still reads at a glance is not.
+- [ ] The hover readout: whether it lands where the eye expects at 30, 90 and 180 days, whether the
+      flip to the left half-way across the plot happens early enough, and whether the emphasis band
+      reads as "this bar" at 180 days, where a bar is about two pixels wide.
 - [ ] Whether whitespace and hairline rules separate regions as convincingly in dark as in light.
 - [ ] **T040**: the before/after screenshot comparison on a populated history.
 - [ ] **T049**: every row of the state contract, walked in both appearances.
@@ -220,7 +273,7 @@ activities", not "Recent sessions".
 
 ## Verdict
 
-Every automated check passes: 501 tests across the solution, `scripts/compliance-008.sh` clean,
+Every automated check passes: 516 tests across the solution, `scripts/compliance-008.sh` clean,
 `dotnet build` clean with no MudBlazor reference anywhere in the repository. Principles I, II and
 III hold, with the two Principle I sequencing departures named above rather than smoothed over.
 

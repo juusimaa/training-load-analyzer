@@ -17,6 +17,35 @@ public sealed record ChartSeries(string Label, string Points, string CssClass);
 /// </remarks>
 public sealed record LoadBar(string X, string Y, string Width, string Height);
 
+/// <summary>One line's value on the day a reader is pointing at (008 Amendment 3).</summary>
+public sealed record SlotPoint(string CssClass, string Label, string Value, string Top);
+
+/// <summary>
+///   Everything the hover readout shows for one day (008 Amendment 3, FR-006).
+/// </summary>
+/// <remarks>
+///   <para>
+///     Positions are <em>percentages</em>, not view-box units, because the readout is HTML laid
+///     over the plot rather than text drawn inside it. The SVG is stretched with
+///     <c>preserveAspectRatio="none"</c> so it fills its column — which stretches any text inside
+///     it too, so an SVG readout would render horizontally distorted at every width but one.
+///     Percentages of the same box are exact, and HTML text is not stretched.
+///   </para>
+///   <para>
+///     Strings, for the reason <see cref="LoadBar"/>'s are: these land in a <c>style</c>
+///     attribute, where <c>left:12,34%</c> is not a parse error but a declaration the browser drops
+///     silently — and every slot would stack at the left edge.
+///   </para>
+/// </remarks>
+public sealed record HoverSlot(
+    string Day,
+    string Left,
+    string Width,
+    string? BarTop,
+    string? BarHeight,
+    string? Load,
+    IReadOnlyList<SlotPoint> Points);
+
 /// <summary>
 ///   Turns the metrics series into SVG geometry (FR-006, SC-003).
 /// </summary>
@@ -228,6 +257,83 @@ public static class MetricsChart
             .. Enumerable.Range(0, count).Select(tick => Display.Day(
                 metrics[(int)Math.Round((double)tick * (metrics.Count - 1) / (count - 1))].Day)),
         ];
+    }
+
+    /// <summary>
+    ///   One readout per day: where to mark each line, which bar to emphasise, and what to say
+    ///   (008 Amendment 3, FR-006).
+    /// </summary>
+    /// <remarks>
+    ///   <para>
+    ///     Geometry only, plus the figures already displayed elsewhere on the page — formatted
+    ///     through the same <see cref="Display"/> helpers, so a value in the readout cannot
+    ///     disagree with the same value in the figure row above it or the table below it.
+    ///   </para>
+    ///   <para>
+    ///     The points are placed on the shared metric scale, the same one
+    ///     <see cref="Plot"/> draws the lines on, so a dot cannot drift off the line it marks. The
+    ///     bar band is on the bars' own scale, for the same reason the bars are.
+    ///   </para>
+    ///   <para>
+    ///     No hover state is computed here and none is held anywhere. Every slot is rendered once
+    ///     and revealed by CSS, so pointing at the chart costs no JavaScript and — this being a
+    ///     Blazor Server circuit — no round-trip to the server per mouse movement.
+    ///   </para>
+    /// </remarks>
+    public static IReadOnlyList<HoverSlot> HoverSlots(
+        IReadOnlyList<DailyTrainingMetrics> metrics,
+        IReadOnlyList<DailyTrainingLoad> loads)
+    {
+        ArgumentNullException.ThrowIfNull(metrics);
+        ArgumentNullException.ThrowIfNull(loads);
+
+        if (metrics.Count == 0)
+        {
+            return [];
+        }
+
+        var (lowest, highest) = Band(metrics);
+        var range = highest - lowest;
+
+        // A single-day window puts its one slot at the left edge rather than dividing by zero.
+        var step = metrics.Count == 1 ? 0 : 100.0 / (metrics.Count - 1);
+        var slotWidth = 100.0 / metrics.Count;
+        var heaviest = loads.Count == 0 ? 0m : loads.Max(day => day.Points);
+
+        return [.. metrics.Select((metric, index) => Slot(metric, index))];
+
+        HoverSlot Slot(DailyTrainingMetrics metric, int index)
+        {
+            var load = index < loads.Count ? loads[index] : (DailyTrainingLoad?)null;
+
+            string? barTop = null;
+            string? barHeight = null;
+
+            if (heaviest > 0 && load is { Points: > 0 } day)
+            {
+                var band = (double)(day.Points / heaviest) * 100 * BarShareOfPlot;
+
+                barHeight = Number(band);
+                barTop = Number(100 - band);
+            }
+
+            // SVG's y grows downward and so does a CSS top offset, so the higher figure is the
+            // smaller number in both — the same inversion Y applies, expressed as a fraction.
+            string Top(double value) => Number((highest - value) / range * 100);
+
+            return new HoverSlot(
+                Display.Day(metric.Day),
+                Number(index * step),
+                Number(slotWidth),
+                barTop,
+                barHeight,
+                load is { } recorded ? Display.Points(recorded.Points) : null,
+                [
+                    new SlotPoint("series-fitness", "Fitness", Display.Metric(metric.Fitness), Top(metric.Fitness)),
+                    new SlotPoint("series-fatigue", "Fatigue", Display.Metric(metric.Fatigue), Top(metric.Fatigue)),
+                    new SlotPoint("series-form", "Form", Display.Metric(metric.Form), Top(metric.Form)),
+                ]);
+        }
     }
 
     /// <summary>

@@ -329,4 +329,174 @@ public class MetricsChartTests
             string.Join(' ', plotted.Select(s => s.CssClass + s.Points)),
             StringComparison.Ordinal);
     }
+
+    // ---- Feature 008 Amendment 3: the hover readout ----
+
+    /// <summary>
+    ///   One slot per day, so every day in the window can be pointed at.
+    /// </summary>
+    [Fact]
+    public void A_hover_slot_is_offered_for_every_day_in_the_window()
+    {
+        Assert.Equal(30, MetricsChart.HoverSlots(Series(30), VaryingLoads(30)).Count);
+        Assert.Empty(MetricsChart.HoverSlots([], []));
+    }
+
+    /// <summary>
+    ///   The slots are positioned as percentages, and they span the plot from edge to edge.
+    /// </summary>
+    /// <remarks>
+    ///   Percentages, not the view box's own units, because the readout is HTML laid over the
+    ///   plot rather than text inside it. The SVG is stretched with
+    ///   <c>preserveAspectRatio="none"</c> so that it fills its column, which stretches any text
+    ///   drawn inside it too — a readout in SVG would render horizontally distorted at every width
+    ///   but one. Percentages of the same box are exact, and HTML text is not stretched.
+    /// </remarks>
+    [Fact]
+    public void The_slots_span_the_plot_from_the_first_day_to_the_last()
+    {
+        var slots = MetricsChart.HoverSlots(Series(30), VaryingLoads(30));
+
+        Assert.Equal("0", slots[0].Left);
+        Assert.Equal("100", slots[^1].Left);
+    }
+
+    /// <summary>
+    ///   Each slot marks a point on each line <em>at that line's own value for the day</em>.
+    /// </summary>
+    /// <remarks>
+    ///   Asserted against <see cref="MetricsChart.Plot"/>'s own output rather than recomputed, so
+    ///   the dot cannot drift off the line it is supposed to sit on. A point at a plausible but
+    ///   independently-derived height is the failure this catches: it would look right on the
+    ///   fixture and be wrong on real data.
+    /// </remarks>
+    [Fact]
+    public void Each_slot_marks_a_point_on_every_line_at_that_days_value()
+    {
+        var series = Series(30);
+        var slots = MetricsChart.HoverSlots(series, VaryingLoads(30));
+        var plotted = MetricsChart.Plot(series, Width, Height);
+
+        foreach (var day in new[] { 0, 7, 29 })
+        {
+            var slot = slots[day];
+
+            Assert.Equal(3, slot.Points.Count);
+
+            foreach (var point in slot.Points)
+            {
+                var line = plotted.Single(s => s.CssClass == point.CssClass);
+                var y = double.Parse(
+                    line.Points.Split(' ')[day].Split(',')[1], CultureInfo.InvariantCulture);
+
+                var top = double.Parse(point.Top, CultureInfo.InvariantCulture) / 100 * Height;
+
+                Assert.Equal(y, top, 1);
+            }
+        }
+    }
+
+    /// <summary>
+    ///   Every figure the readout shows is text, formatted by the same helpers the rest of the
+    ///   page uses — so a value in the readout cannot disagree with the same value in the figure
+    ///   row above it or the table below it.
+    /// </summary>
+    [Fact]
+    public void Each_slot_reports_the_day_and_all_four_figures_as_text()
+    {
+        var series = Series(30);
+        var loads = VaryingLoads(30);
+        var slot = MetricsChart.HoverSlots(series, loads)[7];
+
+        Assert.Equal(Display.Day(series[7].Day), slot.Day);
+        Assert.Equal(Display.Points(loads[7].Points), slot.Load);
+
+        Assert.Equal(
+            ["Fitness", "Fatigue", "Form"],
+            slot.Points.Select(p => p.Label));
+
+        Assert.Equal(
+            [
+                Display.Metric(series[7].Fitness),
+                Display.Metric(series[7].Fatigue),
+                Display.Metric(series[7].Form),
+            ],
+            slot.Points.Select(p => p.Value));
+    }
+
+    /// <summary>
+    ///   A rest day has no bar, so there is no bar to emphasise — and the readout still reports the
+    ///   day, because "you did nothing on the 14th" is an answer the athlete came for.
+    /// </summary>
+    [Fact]
+    public void A_rest_day_has_no_bar_to_emphasise_but_is_still_reported()
+    {
+        var slots = MetricsChart.HoverSlots(Series(3), Loads(120, 0, 240));
+
+        Assert.Null(slots[1].BarTop);
+        Assert.Null(slots[1].BarHeight);
+        Assert.Equal("0.0", slots[1].Load);
+
+        Assert.NotNull(slots[0].BarTop);
+        Assert.NotNull(slots[0].BarHeight);
+    }
+
+    /// <summary>
+    ///   The emphasis band covers the bar it emphasises, on the bars' own scale — the heaviest day
+    ///   fills half the plot, as the bars do.
+    /// </summary>
+    [Fact]
+    public void The_emphasis_band_covers_the_bar_it_emphasises()
+    {
+        var slots = MetricsChart.HoverSlots(Series(3), Loads(120, 60, 240));
+        var bars = MetricsChart.LoadBars(Loads(120, 60, 240), Width, Height);
+
+        var heaviest = slots[2];
+        var barTop = double.Parse(heaviest.BarTop!, CultureInfo.InvariantCulture) / 100 * Height;
+        var barHeight = double.Parse(heaviest.BarHeight!, CultureInfo.InvariantCulture) / 100 * Height;
+
+        Assert.Equal(double.Parse(bars[2].Y, CultureInfo.InvariantCulture), barTop, 1);
+        Assert.Equal(double.Parse(bars[2].Height, CultureInfo.InvariantCulture), barHeight, 1);
+    }
+
+    /// <summary>
+    ///   A chart rendered without its daily load still offers the readout, minus the one figure it
+    ///   does not have. The existing component tests render it that way.
+    /// </summary>
+    [Fact]
+    public void Without_daily_load_the_readout_still_reports_the_three_metrics()
+    {
+        var slot = MetricsChart.HoverSlots(Series(30), [])[7];
+
+        Assert.Null(slot.Load);
+        Assert.Null(slot.BarTop);
+        Assert.Equal(3, slot.Points.Count);
+    }
+
+    /// <summary>
+    ///   C89 once more. These numbers land in a <c>style</c> attribute rather than an SVG
+    ///   attribute, which is if anything worse: <c>left:12,34%</c> is not a parse error, it is a
+    ///   declaration the browser drops silently, and every slot would stack at the left edge.
+    /// </summary>
+    [Fact]
+    public void Slot_geometry_is_machine_readable_whatever_the_current_culture_is()
+    {
+        InFinnish(() =>
+        {
+            foreach (var slot in MetricsChart.HoverSlots(Series(30), VaryingLoads(30)))
+            {
+                var numbers = new[] { slot.Left, slot.Width, slot.BarTop, slot.BarHeight }
+                    .Concat(slot.Points.Select(p => p.Top))
+                    .Where(value => value is not null);
+
+                foreach (var value in numbers)
+                {
+                    Assert.DoesNotContain(",", value!, StringComparison.Ordinal);
+                    Assert.True(
+                        double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out _),
+                        $"'{value}' is not an invariant-culture number.");
+                }
+            }
+        });
+    }
 }

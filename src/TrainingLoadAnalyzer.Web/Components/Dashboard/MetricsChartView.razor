@@ -29,38 +29,96 @@
     }
     else
     {
-        <svg class="plot"
-             viewBox="@MetricsChart.ViewBox(Width, Height)"
-             preserveAspectRatio="none"
-             role="img"
-             aria-label="Daily training load with fitness, fatigue and form">
-            @* Back to front: the bars are a backdrop, the rule a reference, the lines the message. *@
-            <g class="bars">
-                @foreach (var bar in MetricsChart.LoadBars(DailyLoad, Width, Height))
+        <div class="plot-frame">
+            <svg class="plot"
+                 viewBox="@MetricsChart.ViewBox(Width, Height)"
+                 preserveAspectRatio="none"
+                 role="img"
+                 aria-label="Daily training load with fitness, fatigue and form">
+                @* Back to front: the bars are a backdrop, the rule a reference, the lines the message. *@
+                <g class="bars">
+                    @foreach (var bar in MetricsChart.LoadBars(DailyLoad, Width, Height))
+                    {
+                        <rect class="load-bar" x="@bar.X" y="@bar.Y" width="@bar.Width" height="@bar.Height" />
+                    }
+                </g>
+
+                @if (MetricsChart.ZeroRule(Metrics, Width, Height) is { } zero)
                 {
-                    <rect class="load-bar" x="@bar.X" y="@bar.Y" width="@bar.Width" height="@bar.Height" />
-                }
-            </g>
-
-            @if (MetricsChart.ZeroRule(Metrics, Width, Height) is { } zero)
-            {
-                <line class="zero-rule"
-                      x1="0"
-                      y1="@zero"
-                      x2="@PlotWidth"
-                      y2="@zero"
-                      vector-effect="non-scaling-stroke" />
-            }
-
-            @* Reversed, so Fitness is painted last and sits on top of the other two. *@
-            @foreach (var series in MetricsChart.Plot(Metrics, Width, Height).Reverse())
-            {
-                <polyline class="@series.CssClass"
-                          fill="none"
-                          points="@series.Points"
+                    <line class="zero-rule"
+                          x1="0"
+                          y1="@zero"
+                          x2="@PlotWidth"
+                          y2="@zero"
                           vector-effect="non-scaling-stroke" />
-            }
-        </svg>
+                }
+
+                @* Reversed, so Fitness is painted last and sits on top of the other two. *@
+                @foreach (var series in MetricsChart.Plot(Metrics, Width, Height).Reverse())
+                {
+                    <polyline class="@series.CssClass"
+                              fill="none"
+                              points="@series.Points"
+                              vector-effect="non-scaling-stroke" />
+                }
+            </svg>
+
+            @* The hover readout (008 Amendment 3).
+
+               HTML laid over the plot, not text inside it. The svg is stretched with
+               preserveAspectRatio="none" so that it fills its column, which stretches anything drawn
+               inside it — an SVG readout would render horizontally distorted at every width but one.
+
+               Every slot is in the document from the first render and revealed by CSS on :hover. That
+               is not a shortcut: a Blazor event handler would cost a server round-trip per mouse
+               movement on this circuit, and a script would reintroduce the client JavaScript this
+               feature removed (research R3, R5). *@
+            <div class="hover-layer">
+                @{
+                    var slots = MetricsChart.HoverSlots(Metrics, DailyLoad);
+                }
+
+                @for (var index = 0; index < slots.Count; index++)
+                {
+                    var slot = slots[index];
+
+                    @* Past the middle of the plot the readout opens to the left instead, so it does
+                       not run off the edge of the column. Decided from the slot's position, because
+                       CSS cannot branch on an inline offset. *@
+                    var opensLeft = index > slots.Count * 0.55;
+
+                    <div class="day" style="left:@(slot.Left)%;width:@(slot.Width)%">
+                        @if (slot.BarTop is { } barTop)
+                        {
+                            <i class="bar-focus" style="top:@(barTop)%;height:@(slot.BarHeight)%"></i>
+                        }
+
+                        <i class="guide"></i>
+
+                        @foreach (var point in slot.Points)
+                        {
+                            <i class="point @point.CssClass" style="top:@(point.Top)%"></i>
+                        }
+
+                        <div class="readout @(opensLeft ? "opens-left" : "")">
+                            <span class="readout-day">@slot.Day</span>
+
+                            @foreach (var point in slot.Points)
+                            {
+                                <span class="readout-label legend-@(point.Label.ToLowerInvariant())">@point.Label</span>
+                                <span class="readout-value">@point.Value</span>
+                            }
+
+                            @if (slot.Load is { } load)
+                            {
+                                <span class="readout-label">Load</span>
+                                <span class="readout-value">@load</span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
 
         <div class="chart-axis">
             @foreach (var tick in MetricsChart.AxisTicks(Metrics, AxisTickCount))

@@ -148,6 +148,35 @@ public class PaletteContrastTests
     }
 
     /// <summary>
+    ///   The hover readout is measured by being put somewhere already measured.
+    /// </summary>
+    /// <remarks>
+    ///   <para>
+    ///     Its contents are ordinary ink and the three accented labels, every one of which this
+    ///     class already measures against <c>--color-bg</c>. That only holds while the readout
+    ///     actually sits on <c>--color-bg</c> — moving it to the surface tone would quietly take
+    ///     four pairings out of the audit without failing anything.
+    ///   </para>
+    ///   <para>
+    ///     So the ground is asserted rather than assumed. This is the cheap half of a decision the
+    ///     other half of which was visual: a paper-coloured box with a hairline reads as a clipping
+    ///     laid on the page, which is what the design wants anyway.
+    ///   </para>
+    /// </remarks>
+    [Theory]
+    [MemberData(nameof(Schemes))]
+    public void The_hover_readout_sits_on_ground_this_audit_already_measures(string scheme)
+    {
+        var tokens = For(scheme);
+        var ground = Rule(Stylesheet.MetricsChart, ".readout", "background");
+
+        Assert.Equal(tokens.Resolve("var(--color-bg)"), tokens.Resolve(ground));
+
+        AssertAtLeast(4.5, tokens, "--color-text", ground, "a readout figure");
+        AssertAtLeast(4.5, tokens, Rule(Stylesheet.MetricsChart, ".legend-form", "color"), ground, "a readout label");
+    }
+
+    /// <summary>
     ///   <para>
     ///     The one exclusion, named rather than omitted — Amendment 1(b) to the specification.
     ///   </para>

@@ -821,4 +821,117 @@ public class DashboardComponentTests : DashboardRenderContext
             System.Text.RegularExpressions.Regex.Replace(page.Markup, "(class|style)=\"[^\"]*\"", string.Empty),
             StringComparison.Ordinal);
     }
+
+    // ---- Feature 008 Amendment 3: the chart's hover readout ----
+
+    /// <summary>
+    ///   FR-006 as amended: pointing at the chart identifies one day and reports it.
+    /// </summary>
+    /// <remarks>
+    ///   Every slot is in the document from the first render and revealed by CSS, so there is no
+    ///   hover to simulate — which is the point. A readout built on a Blazor event handler would
+    ///   cost a server round-trip per mouse movement on this circuit, and one built on JavaScript
+    ///   would reintroduce the client script R3 and R5 removed.
+    /// </remarks>
+    [Fact]
+    public void The_chart_offers_a_readout_for_every_day_in_the_window()
+    {
+        var chart = Render<MetricsChartView>(p => p
+            .Add(c => c.Metrics, ChartSeries(60))
+            .Add(c => c.DailyLoad, Bars(60))
+            .Add(c => c.HasEnoughHistory, true));
+
+        var days = chart.FindAll(".hover-layer .day");
+
+        Assert.Equal(60, days.Count);
+        Assert.All(days, day =>
+        {
+            Assert.Equal(3, day.QuerySelectorAll(".point").Length);
+            Assert.NotNull(day.QuerySelector(".guide"));
+            Assert.NotNull(day.QuerySelector(".readout"));
+        });
+    }
+
+    /// <summary>
+    ///   The readout names every figure and states its value, so it reads without reference to the
+    ///   colours of the lines it describes (FR-018).
+    /// </summary>
+    [Fact]
+    public void Each_readout_names_and_states_every_figure()
+    {
+        var metrics = ChartSeries(60);
+        var loads = Bars(60);
+
+        var chart = Render<MetricsChartView>(p => p
+            .Add(c => c.Metrics, metrics)
+            .Add(c => c.DailyLoad, loads)
+            .Add(c => c.HasEnoughHistory, true));
+
+        var readout = chart.FindAll(".hover-layer .day")[7].QuerySelector(".readout")!.TextContent;
+
+        Assert.Contains(Display.Day(metrics[7].Day), readout, StringComparison.Ordinal);
+
+        foreach (var label in new[] { "Fitness", "Fatigue", "Form", "Load" })
+        {
+            Assert.Contains(label, readout, StringComparison.Ordinal);
+        }
+
+        Assert.Contains(Display.Metric(metrics[7].Fitness), readout, StringComparison.Ordinal);
+        Assert.Contains(Display.Metric(metrics[7].Fatigue), readout, StringComparison.Ordinal);
+        Assert.Contains(Display.Metric(metrics[7].Form), readout, StringComparison.Ordinal);
+        Assert.Contains(Display.Points(loads[7].Points), readout, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    ///   The day's bar is emphasised — and a rest day, having no bar, gets no band claiming one.
+    /// </summary>
+    [Fact]
+    public void A_days_bar_is_emphasised_and_a_rest_day_has_none()
+    {
+        var chart = Render<MetricsChartView>(p => p
+            .Add(c => c.Metrics, ChartSeries(60))
+            .Add(c => c.DailyLoad, Bars(60))
+            .Add(c => c.HasEnoughHistory, true));
+
+        var days = chart.FindAll(".hover-layer .day");
+
+        // Bars(…) rests every third day, counting back from the end of the window.
+        Assert.NotNull(days[1].QuerySelector(".bar-focus"));
+        Assert.Null(days[0].QuerySelector(".bar-focus"));
+    }
+
+    /// <summary>
+    ///   Below 30 days nothing is drawn, so there is nothing to point at either. The readout must
+    ///   not survive into a branch that renders no plot (R8).
+    /// </summary>
+    [Fact]
+    public void Without_enough_history_there_is_no_plot_and_no_readout()
+    {
+        var chart = Render<MetricsChartView>(p => p
+            .Add(c => c.Metrics, ChartSeries(12))
+            .Add(c => c.DailyLoad, Bars(12))
+            .Add(c => c.HasEnoughHistory, false));
+
+        Assert.Empty(chart.FindAll("svg"));
+        Assert.Empty(chart.FindAll(".hover-layer"));
+    }
+
+    /// <summary>
+    ///   Geometry reaches the markup as invariant numbers. A style declaration with a decimal comma
+    ///   is dropped silently rather than rejected, so every slot would stack at the left edge and
+    ///   nothing would report an error.
+    /// </summary>
+    [Fact]
+    public void Readout_positions_reach_the_markup_as_invariant_numbers()
+    {
+        var chart = Render<MetricsChartView>(p => p
+            .Add(c => c.Metrics, ChartSeries(60))
+            .Add(c => c.DailyLoad, Bars(60))
+            .Add(c => c.HasEnoughHistory, true));
+
+        foreach (var styled in chart.FindAll(".hover-layer [style]"))
+        {
+            Assert.DoesNotContain(",", styled.GetAttribute("style")!, StringComparison.Ordinal);
+        }
+    }
 }
