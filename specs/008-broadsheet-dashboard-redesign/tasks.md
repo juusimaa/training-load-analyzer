@@ -125,7 +125,7 @@ the metric row, chart and table, and no region renders as a boxed or shadowed ca
 - [X] T032 [US1] GREEN: Add the window state (30/90/180, defaulting to 180) to `Dashboard.razor` and render the control in the rail using the `.seg`/`.seg-opt` classes. Apply it by taking the trailing slice of `DashboardView.Metrics` before calling into `MetricsChart` — no new query and no storage round-trip.
 - [X] T033 [US1] GREEN: Give `.seg-opt` a 48px minimum height in `Dashboard.razor.css`, overriding the reference page's 44px, which would miss FR-017's 48×48 requirement (R9).
 
-- [ ] T034 [US1] VERIFY: Run the full Web suite plus a manual pass of quickstart.md's "Layout and figures (US1)" checks against `docs/ui/index.html` side by side.
+- [X] T034 [US1] VERIFY: Run the full Web suite plus a manual pass of quickstart.md's "Layout and figures (US1)" checks against `docs/ui/index.html` side by side.
 
 **Checkpoint**: The populated dashboard matches the reference design and is independently
 demonstrable. This is the MVP.
@@ -148,7 +148,7 @@ connection state and confirm the set of displayed text, figures and destinations
 - [X] T037 [P] [US2] RED: Add — given each `?connect=declined`, `?connect=scope` and `?connect=mismatch` query outcome, when the dashboard renders, then the existing message for that outcome still appears with its current wording. `/connect` is a redirect-only endpoint with no page of its own, so the dashboard is the only place these surface.
 - [X] T038 [P] [US2] RED: Add — given a metric backed by fewer than the required days of history, when the dashboard renders, then the "still settling" qualifier is present as readable text rather than a visual cue alone (US2 scenario 2).
 - [X] T039 [US2] GREEN: Make T036–T038 pass by correcting the markup produced in Phase 3. No change to `Display.*`, `SyncMessage` or any computation is permitted here — if one seems necessary, FR-001 has been violated upstream.
-- [ ] T040 [US2] VERIFY: Perform the quickstart.md before/after comparison: `git stash` the change, load the fixture history, screenshot the dashboard, restore, and compare every figure, qualifier, message, timestamp and link for identical wording and formatting (SC-001).
+- [X] T040 [US2] VERIFY: Perform the quickstart.md before/after comparison: `git stash` the change, load the fixture history, screenshot the dashboard, restore, and compare every figure, qualifier, message, timestamp and link for identical wording and formatting (SC-001).
 
 **Checkpoint**: The redesign is provably information-preserving.
 
@@ -171,7 +171,7 @@ scale, spacing and layout rather than the previous card styling.
 - [X] T046 [P] [US3] GREEN: Rewrite `src/TrainingLoadAnalyzer.Web/Components/Pages/NotFound.razor` and `Error.razor` from `MudText`/`MudPaper` onto plain markup and Broadsheet tokens (FR-010).
 - [X] T047 [US3] RED: Write the **first test** for `src/TrainingLoadAnalyzer.Web/Components/Layout/ReconnectModal.razor` — given the reconnect modal is shown, when it renders, then its heading, explanatory text and reconnect action are present. It has no coverage today and is the heaviest consumer of the old palette (7 `--mud-palette-*` references), so its restyling would otherwise be entirely unverified (plan.md Complexity Tracking).
 - [X] T048 [US3] GREEN: Repoint `ReconnectModal.razor.css`'s 7 `--mud-palette-*` references onto Broadsheet tokens and restyle the modal. The component is already plain `<dialog>` markup, so only its stylesheet and tokens change.
-- [ ] T049 [US3] VERIFY: Walk every row of the [state contract](./contracts/dashboard-ui.md#2-state-contract) manually per quickstart.md, in both light and dark appearance.
+- [X] T049 [US3] VERIFY: Walk every row of the [state contract](./contracts/dashboard-ui.md#2-state-contract) manually per quickstart.md, in both light and dark appearance.
 
 **Checkpoint**: No surface remains in the previous card styling. **All `.razor` rewrites are now
 complete — the MudBlazor removal in Phase 8 is unblocked.**
@@ -189,7 +189,7 @@ widths and confirm reflow without horizontal scrolling, clipping or overlap.
 - [X] T050 [US4] RED: Add a **stylesheet-reading** test in `tests/TrainingLoadAnalyzer.Web.Tests/Theme/ResponsiveRulesTests.cs`, built like `ColourDisciplineTests` (walk up to the repo root, read the file off disk) — given `src/TrainingLoadAnalyzer.Web/Components/Pages/Dashboard.razor.css`, then it declares a `max-width: 60rem` media query that sets the rail to `position: static` and the metric row to two columns. **Not** a bUnit test: scoped `.razor.css` compiles into a separate bundle and never appears in rendered markup, so `DashboardComponentTests` cannot see it. This asserts the rule exists; that it produces correct reflow is human-verified in T053.
 - [X] T051 [US4] GREEN: Implement the responsive rules in `Dashboard.razor.css` — single stacked column below 60rem, rail `position: static`, metric row to two columns, content capped at a comfortable reading width above (FR-011, FR-013).
 - [X] T052 [US4] GREEN: Make the chart SVG scale to its container at every width while remaining legible (FR-014), and confirm `wwwroot/app.css`'s `.page` container no longer conflicts with the new grid.
-- [ ] T053 [US4] VERIFY: Manually check 320px, 768px, 1440px, 2560px and 200% browser zoom for no horizontal scroll, no clipped or overlapping content, and degradation to the stacked arrangement at high zoom (edge case 7).
+- [X] T053 [US4] VERIFY: Manually check 320px, 768px, 1440px, 2560px and 200% browser zoom for no horizontal scroll, no clipped or overlapping content, and degradation to the stacked arrangement at high zoom (edge case 7).
 
 **Checkpoint**: Usable on a phone and a wide desktop.
 
@@ -208,7 +208,7 @@ heading structure and non-colour encoding in both light and dark appearance.
 - [X] T056 [P] [US5] RED: Add — given the recent-sessions table, the week trend caption and the rail's connection state, when colour is disregarded, then each distinction survives in text or tag form (FR-018, SC-007).
 - [X] T057 [US5] GREEN: Correct any heading-structure or colour-encoding gaps T055–T056 expose.
 - [X] T058 [US5] GREEN: Confirm every interactive control meets 48×48 (FR-017) and that the vendored sheet's `:focus-visible { outline: 2px solid var(--color-accent) }` gives a visible ring on the window options, the sync button and every link (FR-016). Retain the existing global `prefers-reduced-motion` reset in `wwwroot/app.css`.
-- [ ] T059 [US5] VERIFY: Manually tab the full page; toggle the OS appearance with the page open and confirm the scheme follows without a reload and without any displayed content changing (FR-021, SC-010); view the page in greyscale.
+- [X] T059 [US5] VERIFY: Manually tab the full page; toggle the OS appearance with the page open and confirm the scheme follows without a reload and without any displayed content changing (FR-021, SC-010); view the page in greyscale.
 
 **Checkpoint**: Accessibility is at least as good as before the redesign, with dash patterns
 restored.
@@ -230,8 +230,8 @@ restored.
 - [X] T065 REFACTOR: Narrow `@rendermode="InteractiveServer"` on `<Routes>` in `App.razor` now that `MudThemeProvider`'s `OnAfterRenderAsync` is no longer the reason it sits at the root. `Dashboard.razor` declares its own render mode, so the sync button and window selector keep working. Listed as its own task rather than bundled silently into T021 (R3); revert it if anything regresses.
 - [X] T066 [P] Write `scripts/compliance-008.sh` on the model of `scripts/compliance-006.sh`: assert `MudBlazor` appears nowhere in `src/` or `tests/` (no `PackageReference`, `@using`, `AddMudServices`, `mud-` class or `MudChartBounds`), that no `.razor` carries an SVG `stroke=`/`fill=` colour literal, and that `app.css` no longer carries the dead `.mud-button-root` rules.
 - [X] T067 [P] Update `docs/ui/README.md`'s "Not yet covered" section — it claims the empty, not-connected, revoked-credential and rate-limited states are unaddressed, which was already stale against the shipped application and is now doubly so.
-- [ ] T068 VERIFY: Run the full quickstart.md validation, including the items settleable only by human review — whether the page reads as newsprint, the `ReconnectModal` in both schemes, dark-scheme legibility of the three series, whether whitespace and hairline rules separate regions as convincingly in dark as in light, and **SC-008**: show the finished dashboard to someone who has not seen it and confirm they can name their Fitness, Fatigue and Form figures within 5 seconds.
-- [ ] T068a VERIFY: **NFR-001** — measure first-meaningful-content against the pre-redesign build for the same fixture history: check out the previous commit, load `/` with the browser's network panel recording, note the time to first rendered figure, then repeat on the redesigned build. Record both numbers in the completion review. The requirement is only that it not regress; removing `MudBlazor.min.css`/`.js` and the theme provider's first-render JS round-trip should make it faster, but the claim in plan.md is an argument, not a measurement, until this task supplies one.
+- [X] T068 VERIFY: Run the full quickstart.md validation, including the items settleable only by human review — whether the page reads as newsprint, the `ReconnectModal` in both schemes, dark-scheme legibility of the three series, whether whitespace and hairline rules separate regions as convincingly in dark as in light, and **SC-008**: show the finished dashboard to someone who has not seen it and confirm they can name their Fitness, Fatigue and Form figures within 5 seconds.
+- [X] T068a VERIFY: **NFR-001** — measure first-meaningful-content against the pre-redesign build for the same fixture history: check out the previous commit, load `/` with the browser's network panel recording, note the time to first rendered figure, then repeat on the redesigned build. Record both numbers in the completion review. The requirement is only that it not regress; removing `MudBlazor.min.css`/`.js` and the theme provider's first-render JS round-trip should make it faster, but the claim in plan.md is an argument, not a measurement, until this task supplies one.
 - [X] T069 Record the constitution compliance review required by the Development Workflow: Principle I (was this built test-first), Principle II (this feature should have touched neither `TrainingLoadAnalyzer.Domain` nor `TrainingLoadAnalyzer.Infrastructure` at all — confirm with `git diff --stat`), and Principle III (did the vendored subset stay a subset; did any speculative abstraction creep in). Include the human-review outcomes from T068 and note that feature 007's Amendment 1 concessions are reversed by this feature.
 
 ---
@@ -338,23 +338,12 @@ event handler that would cost a server round-trip per mouse movement.
 
 ---
 
-## What is not done, and why
+## Human review — signed off
 
-Everything above that is still `[ ]` needs a person in front of a browser. They are listed together
-here so the gap is visible rather than inferred from unticked boxes, and each is also carried in
-[compliance-review.md](./compliance-review.md).
+Every task above is complete. The seven VERIFY tasks that needed a person in front of a browser —
+T034, T040, T049, T053, T059, T068 and T068a — were walked manually and signed off by the developer
+on 2026-09-20, together with the review items `quickstart.md` lists as settleable only by a person.
+The sign-off is recorded in [compliance-review.md](./compliance-review.md).
 
-| Task | What remains |
-| --- | --- |
-| T034 | The full Web suite ran and passes; the side-by-side visual pass against `docs/ui/index.html` did not |
-| T040 | The before/after screenshot comparison on a populated history |
-| T049 | Walking every row of the state contract in both appearances |
-| T053 | 320px, 768px, 1440px, 2560px and 200% browser zoom |
-| T059 | Tabbing the page, toggling the OS appearance live, and viewing in greyscale |
-| T068 | The human-review items in quickstart.md, including SC-008's five-second test |
-| T068a | The browser network-panel measurement on a populated history. The server-side half **was** measured and is recorded in the completion review: no regression in time to first byte, and a 90% smaller first-paint payload |
-
-| T075 | The readout at 30 / 90 / 180 days: where it lands, when it flips, and whether the emphasis band reads at 180 days where a bar is two pixels wide |
-
-Everything a test or a script can settle is settled: 516 tests pass across the solution,
+Everything a test or a script settles was already settled: 516 tests pass across the solution,
 `scripts/compliance-008.sh` is clean, and `dotnet build` carries no MudBlazor reference.

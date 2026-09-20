@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-19
 
-**Status**: Draft (Amendment 1 applied 2026-09-19 — see [Amendments](#amendments))
+**Status**: Complete — implemented and signed off 2026-09-20 (Amendments 1–3 applied; see [Amendments](#amendments), and the [completion review](./compliance-review.md))
 
 **Input**: User description: "I added UI design docs (static web page and readme) to \"/docs/ui\" folder. Specify a new feature 008 from these design docs."
 

@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-17
 
-**Status**: Draft
+**Status**: Complete — implemented and signed off 2026-09-20
 
 **Input**: User description: "Feature 3 — Fitness / Fatigue / Form. From the daily training-load series produced by Feature 2, compute the three standard training-stress metrics over a date range: Fitness (CTL, chronic training load), Fatigue (ATL, acute training load), and Form (TSB, training stress balance). The result is a day-by-day historical series so the evolution of the three metrics over time can be displayed, not just today's values. Pure domain logic in TrainingLoadAnalyzer.Domain, built on the existing DailyTrainingLoad / TrainingLoadAggregator / DateRange types; no Strava, no persistence, no UI. The exponentially-weighted formulas, the time constants, the seeding/warm-up behaviour at the start of the series and how rest days and days with no data are treated must all be pinned down in the spec before any implementation, and the LoadBasis (measured/estimated/mixed) provenance already carried by daily totals must be carried through into the resulting metrics. Scope excludes trend/spike detection, which is Feature 4."
 

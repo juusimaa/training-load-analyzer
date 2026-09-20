@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-16
 
-**Status**: Draft
+**Status**: Complete — implemented and signed off 2026-09-20
 
 **Input**: User description: "Training Activity Domain: the core domain model for a single training activity. A TrainingActivity has an external identifier, a start time with timezone offset, a duration, an activity type (running or cycling), and optional heart-rate data. It exposes a training-load value computed from a single clearly-defined method (the specific method is NOT yet decided and must be marked as an open question rather than invented). Invalid activities (non-positive duration, unsupported activity type, missing start time) must be rejected at construction. The domain must not reference Strava or any other external activity provider. Out of scope: fetching activities from any external source, persistence, aggregation across multiple activities, and CTL/ATL/TSB calculations."
 

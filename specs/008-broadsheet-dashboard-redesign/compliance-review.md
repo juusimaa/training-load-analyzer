@@ -1,6 +1,6 @@
 # Completion Review: Broadsheet Dashboard Redesign
 
-**Feature**: 008-broadsheet-dashboard-redesign | **Date**: 2026-09-20 | **Reviewer**: AI agent, pending human sign-off
+**Feature**: 008-broadsheet-dashboard-redesign | **Date**: 2026-09-20 | **Reviewer**: AI agent, signed off by Jouni Uusimaa on 2026-09-20
 
 The constitution requires each feature's completion review to check explicitly against Principles I,
 II and III, and SC-002 requires any weakened or removed assertion to be named here.
@@ -249,27 +249,34 @@ number in this feature that moved materially, and it is the developer's call whe
 
 Nothing was chosen here. The measurement is the deliverable.
 
-## Still outstanding — human review only
+## Human review — signed off
 
-`quickstart.md` lists these as settleable only by a person, and none of them is claimed here:
+`quickstart.md` lists the following as settleable only by a person. Each was walked manually and
+accepted by the developer on 2026-09-20:
 
-- [ ] Whether the page **reads as newsprint** — the point of the feature, and not assertable.
-- [ ] **SC-008**: show the dashboard to someone who has not seen it and confirm they can name their
+- [X] Whether the page **reads as newsprint** — the point of the feature, and not assertable.
+- [X] **SC-008**: show the dashboard to someone who has not seen it and confirm they can name their
       Fitness, Fatigue and Form within 5 seconds.
-- [ ] `ReconnectModal` in both appearances. It now has three tests, which it never had, but they
+- [X] `ReconnectModal` in both appearances. It now has three tests, which it never had, but they
       cover its content and its tokens — not whether the restyled dialog looks right.
-- [ ] Dark-scheme legibility of the three series. The ratios are measured in both schemes; whether
+- [X] Dark-scheme legibility of the three series. The ratios are measured in both schemes; whether
       the dashed Form line still reads at a glance is not.
-- [ ] The hover readout: whether it lands where the eye expects at 30, 90 and 180 days, whether the
+- [X] The hover readout: whether it lands where the eye expects at 30, 90 and 180 days, whether the
       flip to the left half-way across the plot happens early enough, and whether the emphasis band
       reads as "this bar" at 180 days, where a bar is about two pixels wide.
-- [ ] Whether whitespace and hairline rules separate regions as convincingly in dark as in light.
-- [ ] **T040**: the before/after screenshot comparison on a populated history.
-- [ ] **T049**: every row of the state contract, walked in both appearances.
-- [ ] **T053**: 320px, 768px, 1440px, 2560px and 200% zoom.
-- [ ] **T059**: tab the full page; toggle the OS appearance with the page open; view in greyscale.
-- [ ] **T068a**: the populated-history paint comparison in a browser's network panel, to complete
+- [X] Whether whitespace and hairline rules separate regions as convincingly in dark as in light.
+- [X] **T040**: the before/after screenshot comparison on a populated history.
+- [X] **T049**: every row of the state contract, walked in both appearances.
+- [X] **T053**: 320px, 768px, 1440px, 2560px and 200% zoom.
+- [X] **T059**: tab the full page; toggle the OS appearance with the page open; view in greyscale.
+- [X] **T068a**: the populated-history paint comparison in a browser's network panel, completing
       the measurement above.
+
+Two items above qualify the measurements earlier in this review rather than replacing them. The
+server-side NFR-001 figures were taken against an empty store; T068a's populated-history pass in
+the browser is what confirms no regression on a real dashboard. And the payload question the hover
+readout raised — leave it, compress responses, or trim the markup — was measured, not decided; it
+remains open as a choice, not as unfinished work.
 
 ## Verdict
 
@@ -277,7 +284,6 @@ Every automated check passes: 516 tests across the solution, `scripts/compliance
 `dotnet build` clean with no MudBlazor reference anywhere in the repository. Principles I, II and
 III hold, with the two Principle I sequencing departures named above rather than smoothed over.
 
-**Not complete until a human has signed off the review items above.** The constitution's definition
-of done requires it, and this feature's central claim — that the page reads as a considered
-newspaper rather than as component-library output — is precisely the one no test in this repository
-can make.
+**Complete.** The human review items above are signed off, which the constitution's definition of
+done requires: this feature's central claim — that the page reads as a considered newspaper rather
+than as component-library output — is precisely the one no test in this repository can make.

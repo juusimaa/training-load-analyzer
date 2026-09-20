@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-17
 
-**Status**: Draft
+**Status**: Complete — implemented and signed off 2026-09-20
 
 **Input**: User description: "Strava Import: the user connects their Strava account and the analyzer keeps a local copy of their running and cycling activities in sync. Covers Strava OAuth authorization and token handling (including refresh), retrieving activities from the Strava API with pagination and rate-limit handling, mapping Strava activity DTOs into the existing TrainingActivity domain model without letting Strava types leak into the domain, persisting activities locally (EF Core / SQLite), and incremental synchronization so a later sync fetches only new or changed activities rather than the full history. The domain layer must stay independent of Strava; the integration lives in a new TrainingLoadAnalyzer.Infrastructure project tested at its own boundary. Out of scope: editing or pushing activities back to Strava, other providers (Garmin, Intervals.icu, TrainingPeaks), multi-user SaaS, the dashboard UI."
 

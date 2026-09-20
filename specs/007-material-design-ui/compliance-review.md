@@ -91,9 +91,13 @@ Not merely by tests. Both schemes were emulated over CDP and the computed palett
 
 **Caution recorded**: Chrome's `--force-dark-mode` flag made the page *look* correctly dark while the theme was entirely light. Any future check of this must emulate `prefers-color-scheme`, not force dark rendering.
 
-## Outstanding
+## Outstanding — all closed
 
-- [ ] **Human review of the AI-generated code**, which the constitution requires before a feature is complete
-- [ ] The prerender flash (R14) is still present and is now slightly worse: the scheme resolves after the first *interactive* render, not merely after interop. A dark-mode user sees a light flash on every load
+- [x] **Human review of the AI-generated code**, which the constitution requires before a feature is complete — reviewed and signed off by Jouni Uusimaa on 2026-09-20
+- [x] ~~The prerender flash (R14)~~ — **removed by feature 008**, not by a judgement here. T046 asked whether the light flash was tolerable; 008 deleted `MudThemeProvider` and made the appearance a `prefers-color-scheme` media query, so the scheme now applies at first paint with no interop round trip and there is no flash left to tolerate
 - [x] ~~The chart does not fill its container's width~~ — fixed after testing feedback with `MatchBoundsToSize="true"`; see research R17. Verified 288–1088px, both schemes
-- [ ] The sync panel is a full-width surface holding one button, which reads as empty. Worth a second look
+- [x] ~~The sync panel is a full-width surface holding one button, which reads as empty~~ — **addressed by feature 008**, which moved the sync control into the rail alongside the connection state
+
+Two of the four were settled by the redesign rather than by action on this feature. They are marked
+closed because the condition is gone, and the reason is named here rather than left to be inferred
+from a tick.

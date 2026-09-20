@@ -154,10 +154,10 @@ description: "Task list for 007-material-design-ui"
 
 - [X] T044 Walk the 8 × 2 surface/scheme matrix in [data-model.md](data-model.md) — every surface in both light and dark. Toggle the OS appearance with the page open and confirm it follows without a reload (FR-026, SC-011)
 - [X] T045 **Write the completion review** at `specs/007-material-design-ui/compliance-review.md`, following features 001–006. It MUST name every test removed in T029 and the rewrite in T027 — amended SC-002 permits removal only when recorded. It MUST also assess the feature against Principles I, II and III, and against the three deviations in the plan's Complexity Tracking table
-- [ ] T046 Judge the prerender flash: load the app first-time with the OS in dark mode and decide whether the light flash before interop resolves is tolerable ([research.md](research.md) R14). It is an accepted trade-off, not a bug — but it is worth a deliberate look now that it is real
+- [X] T046 Judge the prerender flash: load the app first-time with the OS in dark mode and decide whether the light flash before interop resolves is tolerable ([research.md](research.md) R14). It is an accepted trade-off, not a bug — but it is worth a deliberate look now that it is real
 - [X] T047 [P] Update `README.md` if it describes the interface or the dependency set; MudBlazor is now a runtime dependency
 - [X] T048 Run the full solution suite: `dotnet test`. Confirm Domain and Infrastructure are untouched and still green
-- [ ] T049 Work the manual checklist in [quickstart.md](quickstart.md) end to end
+- [X] T049 Work the manual checklist in [quickstart.md](quickstart.md) end to end
 
 ---
 

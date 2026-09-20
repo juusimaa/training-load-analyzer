@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-17
 
-**Status**: Draft
+**Status**: Complete — implemented and signed off 2026-09-20 (see the [completion review](./compliance-review.md))
 
 **Input**: User description: "Feature 6 — Dashboard. The athlete views a dashboard showing current fitness (CTL), fatigue (ATL), form (TSB), weekly training load, load trend indicators, recent activities, and a time-series chart of metrics evolution over time. Built with Blazor Interactive Server."
 

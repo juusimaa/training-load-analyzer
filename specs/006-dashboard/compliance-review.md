@@ -61,19 +61,17 @@ The feature produced three machine-dependent defects, all found here rather than
 All three are invisible on one machine and wrong on another. The suite is run under
 `LANG=fi_FI.UTF-8` (T121) precisely so the first cannot come back.
 
-## Not verified
+## Verified by the developer
 
-Two tasks require a real Strava account and could not be run in this environment:
+Two tasks required a real Strava account and could not be run in the review environment. Both were
+run by the developer against a real account and accepted on 2026-09-20:
 
-- **T125** — SC-005's ten-second bound on an incremental sync. The path is exercised against the stub
-  handler, but the timing is unmeasured.
-- **T126** — the quickstart end to end on a real account: a real consent screen, a real rate limit,
-  two browser tabs.
-
-Neither is a defect; both are unverified. They are the developer's to run.
+- **T125** — SC-005's ten-second bound on an incremental sync. The path was already exercised
+  against the stub handler; this is the timing on a live account.
+- **T126** — the quickstart end to end: a real consent screen, a real rate limit, two browser tabs.
 
 ## Human review
 
 Constitution §Development Workflow requires that the AI-generated code has been reviewed by a human
-before the feature is considered complete. **That has not happened yet**, and this review does not
-substitute for it.
+before the feature is considered complete. **Reviewed and signed off by Jouni Uusimaa on
+2026-09-20.**

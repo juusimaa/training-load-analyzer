@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-18
 
-**Status**: Draft (Amendment 1 applied 2026-09-18 — see [Amendments](#amendments))
+**Status**: Complete — implemented and signed off 2026-09-20 (Amendment 1 applied 2026-09-18; see [Amendments](#amendments) and the [completion review](./compliance-review.md)). Superseded in presentation by [008](../008-broadsheet-dashboard-redesign/spec.md), which replaced the Material visual system and removed the MudBlazor dependency.
 
 **Input**: User description: "Current implmentation is not visually very pleasing and that has to change. Do not change functionalities, only UI should changes. Mateial Design principles and looks."
 
