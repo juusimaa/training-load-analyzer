@@ -79,4 +79,35 @@ _Filled in by T108._
 
 ## Measurements
 
-_Filled in by T110._
+Measured on 2026-09-23 on the developer's machine (Apple silicon, macOS), both stacks on the same
+machine. Browser figures come from real headless Google Chrome, driven over the DevTools Protocol
+by a throwaway script (session scratchpad, `measure.mjs`), with the cache disabled on each cold
+load. Both apps read the same `consecutive-200` history, each from its own SQLite file. The
+reference runs as a Release build (`dotnet run -c Release`), the new implementation in run mode
+(built SPA served by Uvicorn, one worker).
+
+| Measure | Reference (.NET) | New (Python + React) | Command / method | Result |
+| --- | --- | --- | --- | --- |
+| Suite wall time | 5.27 s (516 tests) | 3.65 s (660 backend + 558 frontend tests) | `time dotnet test`; `time (uv run pytest && npm test)` | — (comparison) |
+| Runtime dependencies, direct | 1 package (`Microsoft.EntityFrameworkCore.Sqlite`; `…Design` is build-time only) plus the ASP.NET Core shared framework | 5: backend `fastapi`, `uvicorn`, `httpx`; frontend `react`, `react-dom` | csproj `PackageReference`s; `pyproject.toml` + `package.json` `dependencies` | — |
+| Runtime dependencies, resolved | 13 transitive NuGet packages (`dotnet list src/TrainingLoadAnalyzer.Web package --include-transitive`) | backend 16 (`uv tree --no-dev`: fastapi, starlette, pydantic, pydantic-core, annotated-types, annotated-doc, typing-extensions, typing-inspection, anyio, idna, uvicorn, click, h11, httpx, httpcore, certifi); frontend 3 (`npm ls --omit=dev --all`: react, react-dom, scheduler) | as stated | — |
+| Bytes before first paint, `/`, cold | 346–397 kB total, of which 325 kB same-origin (median of 3) | 232–251 kB total, of which 231–249 kB same-origin | DevTools Protocol `encodedDataLength` of every response finished before the `firstPaint` lifecycle event | new is about 30% smaller |
+| SC-004 first meaningful content (first `.metrics .tile-value` in the DOM, ms after navigation start), 3 cold loads | 27, 16, 12 → **median 16 ms** | 417, 354, 351 → **median 354 ms** | `performance.now()` when the element appears (MutationObserver) | **FAIL**: within 2 s (PASS), but slower than the reference's median (FAIL) |
+| SC-005 incremental sync | not measured | 3.1, 2.4, 2.2 ms | the recorded `incremental-lookback` scenario through `ActivitySync.run()`; **not** against the live account | PASS (≤ 10 s), on recorded responses only |
+| Pointer movement and window switching | 0 HTTP requests | 0 HTTP requests | after load, pointer events fired on every `.hover-layer .day`, then the 30-day radio clicked; heading read "· last 30 days", 25 bars | PASS (009 FR-015) |
+
+**On the SC-004 FAIL.** The reference prerenders the dashboard, figures included, into the first
+HTML response. The React page has to download its script, then its route chunk, then request
+`/api/dashboard` before any figure exists. An earlier trial, before the route components were
+lazy-loaded, measured 122 ms. Lazy-loading was added so that each page's copied stylesheet (they
+share class names like `.page` and `.state`) cannot leak onto the others; it adds one request to
+that chain. Both figures are far inside the 2 s bound, but the "no slower than the reference"
+clause cannot be met by a client-rendered page without server rendering, which research R11
+rejected. Options for the developer, none taken:
+- accept and record it;
+- start the `/api/dashboard` request in parallel from `index.html` (a `<link rel="preload" as="fetch">`);
+- drop lazy loading and scope the colliding stylesheets another way;
+- amend SC-004.
+
+**SC-005** was not measured against a live Strava account. That needs the developer's credentials
+and a real history (quickstart §5, journey 6).

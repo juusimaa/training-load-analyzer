@@ -614,7 +614,7 @@ These apply to every task below. They are listed once rather than repeated.
   - R17 (non-whole-minute offsets).
 
   Each row names the test that pins it.
-- [ ] T110 [P] [US5] Measure and record SC-008 in `specs/009-python-react-stack/parity-report.md` § "Measurements", for both stacks on the same machine, with the command used for each:
+- [X] T110 [P] [US5] Measure and record SC-008 in `specs/009-python-react-stack/parity-report.md` § "Measurements", for both stacks on the same machine, with the command used for each:
   - suite wall time: `time dotnet test` against `time (uv run pytest && npm test)`;
   - runtime dependency counts: the reference's `PackageReference`s in `src/**/*.csproj` against `pyproject.toml` `dependencies` + `package.json` `dependencies`, both direct and resolved (`uv tree`, `npm ls --omit=dev --all`);
   - bytes downloaded before first paint, cold load from devtools with the cache disabled, `/` on each app;
