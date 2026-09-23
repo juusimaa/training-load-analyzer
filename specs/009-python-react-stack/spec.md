@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-23
 
-**Status**: Draft
+**Status**: Draft (Amendment 1 applied 2026-09-23; see [Amendments](#amendments))
 
 ## Clarifications
 
@@ -180,7 +180,7 @@ Stories 1–4 exist.
 #### Computation parity (features 001–004)
 
 - **FR-005**: The new implementation MUST compute session load (Edwards TRIMP, or moving minutes × 2 when there is no heart-rate data), daily and ISO-weekly totals, Fitness/Fatigue/Form (42- and 7-day constants, true exponential smoothing, zero seed, 42-day warm-up), and weekly trends (0.15 relative and 50-point absolute thresholds, partial weeks indeterminate) exactly as features 001–004 specify.
-- **FR-006**: Results MUST match the existing implementation for the same inputs: exactly for loads, totals and absolute changes, and to within 0.0001 points for Fitness, Fatigue and Form.
+- **FR-006**: Results MUST match the existing implementation for the same inputs: to within 1e-20 points for loads, totals and absolute changes, and to within 0.0001 points for Fitness, Fatigue and Form (as amended by [Amendment 1(a)](#amendment-1--precision-reference-deviations-and-stack-specific-surfaces-2026-09-23)).
 - **FR-007**: The new implementation MUST refuse the same invalid inputs as the existing implementation, and each refusal MUST name the rule that was violated.
 - **FR-008**: The calculation rules MUST NOT depend on storage, the network, the current time, or any Strava concept, as features 001–004 require.
 
@@ -250,5 +250,72 @@ boundary:
 
 ## Dependencies
 
-- **Constitution amendment (blocking for `/speckit-plan`)**: the constitution's Technology Constraints section (v1.0.0) requires C#/.NET, ASP.NET Core, Entity Framework Core, Blazor and xUnit, and says a different frontend technology "MUST NOT be introduced without a documented reason". Under its Governance section, the constitution overrides any conflicting specification or plan. It therefore has to be amended, via `/speckit-constitution`, before planning, for example to allow this alternative stack on this experimental branch. Principles I–VII are unaffected and apply unchanged.
+- **Constitution amendment — satisfied by constitution v1.1.0 (2026-09-23)**, which adds the "Alternative-stack experiment (feature 009)" constraints. Originally recorded as: the constitution's Technology Constraints section (v1.0.0) requires C#/.NET, ASP.NET Core, Entity Framework Core, Blazor and xUnit, and says a different frontend technology "MUST NOT be introduced without a documented reason". Under its Governance section, the constitution overrides any conflicting specification or plan. It therefore has to be amended, via `/speckit-constitution`, before planning, for example to allow this alternative stack on this experimental branch. Principles I–VII are unaffected and apply unchanged.
 - The Strava API application settings already configured for the existing implementation (client ID, client secret, callback domain `localhost`).
+
+## Amendments
+
+### Amendment 1 — precision, reference deviations and stack-specific surfaces (2026-09-23)
+
+**Raised by**: planning, from reading the existing implementation's code and probing its
+arithmetic and formatting on this machine ([research.md](./research.md) R1–R4).
+**Approved by**: the developer, 2026-09-23.
+
+#### (a) Load precision
+
+FR-006's "exactly" for loads, totals and absolute changes becomes **"to within 1e-20 points"**.
+
+The existing implementation computes loads in .NET `decimal`. That type rounds division to fit a
+96-bit coefficient: `1m/60m = 0.0166666666666666666666666667`. It also drops digits when an
+addition overflows: `(1m/60m) × 3600m = 60.000000000000000000000000120`. No Python decimal
+precision rounds in the same places, so a one-second heart-rate gap produces values that differ
+around the 27th significant digit. Copying .NET's arithmetic would make the domain describe
+another runtime rather than features 001 and 002.
+
+The difference is about 18 orders of magnitude below display resolution, and below double
+precision. Fitness, Fatigue and Form are therefore unaffected. A displayed figure may differ only
+at an exact rounding tie that the two stacks' arithmetic places on opposite sides. Any such case
+found is listed in the parity report.
+
+Display formatting itself is **not** relaxed. FR-002 and SC-002 still require identical strings.
+The new implementation reproduces .NET's formatting rules (research R2).
+
+#### (b) Where the existing implementation departs from features 001–008
+
+The Overview already says parity is with features 001–008 *as specified*. This amendment says how
+that applies to three places where the existing implementation does not do what its specification
+says. The rule: **the specification wins where meeting it needs no new athlete-facing wording.**
+Where meeting it would need wording the existing implementation never defined, the existing
+behaviour stands.
+
+1. **Token renewal (005 FR-004).** The existing sync never renews an expired access token, so a
+   sync more than six hours after connecting ends reconnection-required. The new implementation
+   renews before syncing. **Specification followed.**
+2. **In-flight sync state in the tab that started it (006 US5 scenario 1, FR-010; this spec US3
+   scenario 4).** The existing page shows "Syncing…" only in tabs opened after the sync began. The
+   new implementation shows the existing "Syncing…" / "Syncing activities…" state, with a disabled
+   button, in the tab that started it. **Specification followed.**
+3. **Connect outcomes (005 FR-002a).** The callback redirects to `/?connect=declined|scope|mismatch`
+   and nothing explains the outcome. Explaining it would need new wording.
+   **Existing behaviour kept.** The gap stays recorded, as feature 008 recorded it.
+
+Items 1 and 2 are defects in the existing implementation, to be assessed separately against
+`main`. Every deviation is listed in the parity report. The parity golden for an expired-token
+sync records the existing outcome, and the new implementation's test asserts the specified one.
+
+#### (c) Surfaces that exist only because of the existing stack
+
+FR-001 and FR-002 are narrowed for these surfaces only:
+
+- **Circuit-reconnect dialog** ("Rejoining the server…" and its variants): **not ported.** There
+  is no server circuit. A failed request is covered by FR-016's unavailable notice.
+- **Unhandled-error notice** ("An unhandled error has occurred." · "Reload" · "🗙"): **ported with
+  the same wording.**
+- **`/Error` page**: "Error.", "An error occurred while processing your request." and "Request ID"
+  are **ported with the same wording**. The "Development Mode" paragraph, which names
+  `ASPNETCORE_ENVIRONMENT`, is **not ported**, and no replacement text is added.
+- **Rail maximum heart rate while the history loads**: shows **`—`** instead of `0 bpm`, as feature
+  008's edge cases ask ("a placeholder rather than an empty line or a zero"). A client that fetches
+  its data shows the loading state long enough for the `0` to be seen.
+
+Nothing else is added or removed.
