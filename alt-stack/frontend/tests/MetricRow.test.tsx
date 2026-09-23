@@ -46,7 +46,7 @@ describe("MetricRow", () => {
       form: { value: "2.8", qualifiers: ["partly estimated"] },
     };
     const { container } = render(<MetricRow current={current} week={h3f.week} />);
-    const tags = [...container.querySelectorAll(".notes .tag.tag-neutral")].map((t) => t.textContent);
+    const tags = [...container.querySelectorAll(".figure:not(:last-child) .notes .tag.tag-neutral")].map((t) => t.textContent);
 
     expect(tags).toEqual(["still settling", "estimated", "partly estimated"]);
   });

@@ -33,9 +33,9 @@ describe("RecentActivities", () => {
 
     expect(rows).toHaveLength(7);
     for (const row of rows) expect(row.querySelectorAll("td")).toHaveLength(5);
-    expect(rows.map((r) => r.querySelector(".recent-day")?.textContent)).toEqual(h3f.recent.map((r) => r.day));
-    expect(rows[0]!.querySelector(".recent-type")?.textContent).toBe("Cycling");
-    expect(rows[0]!.querySelector(".recent-duration")?.textContent).toBe("45m");
+    expect(rows.map((r) => r.querySelector(".recent-day")?.textContent?.trim())).toEqual(h3f.recent.map((r) => r.day));
+    expect(rows[0]!.querySelector(".recent-type")?.textContent?.trim()).toBe("Cycling");
+    expect(rows[0]!.querySelector(".recent-duration")?.textContent?.trim()).toBe("45m");
     expect(rows[0]!.querySelector(".recent-load")?.textContent).toBe("177.0");
   });
 
