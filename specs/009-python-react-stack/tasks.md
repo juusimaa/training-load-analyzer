@@ -130,20 +130,20 @@ These apply to every task below. They are listed once rather than repeated.
 
 ### Activity, heart rate and load (001)
 
-- [ ] T022 [P] [US1] RED: port every case of `HeartRateSeriesTests.cs` into `alt-stack/backend/tests/domain/test_heart_rate.py`. Given an empty sample list, then non-ascending times, then a sample of 19 or 251 bpm, when a `HeartRateSeries` is built, then a `ValueError` is raised whose message names the rule and the offending index/value, worded as the reference's (001 FR-021, FR-022). Given samples 20 and 250 bpm, then the series is accepted. Given a list mutated after construction, then the series is unchanged
-- [ ] T023 [P] [US1] RED: port `TrainingActivityCreationTests.cs` and `TrainingActivityValidationTests.cs` into `alt-stack/backend/tests/domain/test_activity.py`. Given a blank or whitespace id, a naive `datetime`, `None` start, moving time of 0 or negative, or a type that is not `ActivityType`, when a `TrainingActivity` is built, then each raises a `ValueError` with its own reference message (001 FR-017 – FR-024). Given valid inputs, then all fields read back and the object is frozen (assigning raises). Given `ActivityType`, then only `RUNNING` and `CYCLING` exist, displayed as `Running`/`Cycling`
-- [ ] T024 [P] [US1] RED: port `HeartRateZoneTests.cs`, `MeasuredTrainingLoadTests.cs` and `EstimatedTrainingLoadTests.cs` into `alt-stack/backend/tests/domain/test_training_load.py`. Given each zone boundary (50/60/70/80/90 % of max HR, compared as `bpm * 100 >= pct * max_hr`), then the Edwards weight is 1–5, and 0 below 50 %. Given samples 60 s apart, then TRIMP equals the hand-computed value from the reference test **exactly** (`Decimal` equality). Given no series and 45 min moving, then points are `Decimal("90")` with provenance `ESTIMATED`. Given a series, then provenance is `MEASURED`. Given a `TrainingLoad`, then there is no accessor for points without provenance (001 SC-007)
-- [ ] T025 [US1] GREEN: implement the minimum to pass T022–T024:
+- [X] T022 [P] [US1] RED: port every case of `HeartRateSeriesTests.cs` into `alt-stack/backend/tests/domain/test_heart_rate.py`. Given an empty sample list, then non-ascending times, then a sample of 19 or 251 bpm, when a `HeartRateSeries` is built, then a `ValueError` is raised whose message names the rule and the offending index/value, worded as the reference's (001 FR-021, FR-022). Given samples 20 and 250 bpm, then the series is accepted. Given a list mutated after construction, then the series is unchanged
+- [X] T023 [P] [US1] RED: port `TrainingActivityCreationTests.cs` and `TrainingActivityValidationTests.cs` into `alt-stack/backend/tests/domain/test_activity.py`. Given a blank or whitespace id, a naive `datetime`, `None` start, moving time of 0 or negative, or a type that is not `ActivityType`, when a `TrainingActivity` is built, then each raises a `ValueError` with its own reference message (001 FR-017 – FR-024). Given valid inputs, then all fields read back and the object is frozen (assigning raises). Given `ActivityType`, then only `RUNNING` and `CYCLING` exist, displayed as `Running`/`Cycling`
+- [X] T024 [P] [US1] RED: port `HeartRateZoneTests.cs`, `MeasuredTrainingLoadTests.cs` and `EstimatedTrainingLoadTests.cs` into `alt-stack/backend/tests/domain/test_training_load.py`. Given each zone boundary (50/60/70/80/90 % of max HR, compared as `bpm * 100 >= pct * max_hr`), then the Edwards weight is 1–5, and 0 below 50 %. Given samples 60 s apart, then TRIMP equals the hand-computed value from the reference test **exactly** (`Decimal` equality). Given no series and 45 min moving, then points are `Decimal("90")` with provenance `ESTIMATED`. Given a series, then provenance is `MEASURED`. Given a `TrainingLoad`, then there is no accessor for points without provenance (001 SC-007)
+- [X] T025 [US1] GREEN: implement the minimum to pass T022–T024:
   - `alt-stack/backend/src/tla/domain/heart_rate.py`: `HeartRateSample`, `HeartRateSeries` (a copy to tuple), `heart_rate_zone_weight`;
   - `alt-stack/backend/src/tla/domain/activity.py`: `ActivityType`, `LoadProvenance`, `TrainingLoad`, `TrainingActivity`, `training_load(activity, max_hr)`;
   - `alt-stack/backend/src/tla/domain/_decimal.py`: the one module-level `decimal.Context(prec=34, rounding=ROUND_HALF_EVEN)`, and `minutes(td) = Decimal(td // timedelta(microseconds=1)) / Decimal(60_000_000)` under that context (research R1).
 
   All are `@dataclass(frozen=True, slots=True)`.
-- [ ] T026 [US1] REFACTOR: align names with data-model.md §1, and remove any duplication between the measured and estimated paths in `alt-stack/backend/src/tla/domain/activity.py` without changing behaviour. Run `uv run pytest tests/domain`
+- [X] T026 [US1] REFACTOR: align names with data-model.md §1, and remove any duplication between the measured and estimated paths in `alt-stack/backend/src/tla/domain/activity.py` without changing behaviour. Run `uv run pytest tests/domain`
 
 ### Ranges, ISO weeks and aggregation (002)
 
-- [ ] T027 [P] [US1] RED: port `DateRangeTests.cs` and `IsoWeekTests.cs` into `alt-stack/backend/tests/domain/test_date_range.py` and `alt-stack/backend/tests/domain/test_iso_week.py`:
+- [X] T027 [P] [US1] RED: port `DateRangeTests.cs` and `IsoWeekTests.cs` into `alt-stack/backend/tests/domain/test_date_range.py` and `alt-stack/backend/tests/domain/test_iso_week.py`:
   - given a `None` start *and* an end before any start, then the "missing bound" error wins; the order is load-bearing (002 FR-021);
   - given end < start, then a `ValueError` names the rule with dates as `YYYY-MM-DD`;
   - given 2026-12-31, then `IsoWeek` is 2026-W53 with Monday 2026-12-28;
@@ -151,37 +151,37 @@ These apply to every task below. They are listed once rather than repeated.
   - given 2021-01-03, then it is 2020-W53;
   - weeks are ordered by `monday`, never by `(year, week)` (004 research R9);
   - the designation format is `2026-W38`.
-- [ ] T028 [P] [US1] RED: port `DailyAggregationTests.cs`, `WeeklyAggregationTests.cs` and `LoadBasisTests.cs` into `alt-stack/backend/tests/domain/test_aggregation.py`:
+- [X] T028 [P] [US1] RED: port `DailyAggregationTests.cs`, `WeeklyAggregationTests.cs` and `LoadBasisTests.cs` into `alt-stack/backend/tests/domain/test_aggregation.py`:
   - given sessions at +05:30 and +05:45 near local midnight, then each lands on its **local** calendar day (the `fix/strava-utc-offset-decimal` case);
   - given a range with empty days, then each empty day has points `0`, count 0 and basis `NONE`;
   - given a range starting mid-week, then weekly output extends to whole ISO weeks (002 FR-013, FR-017);
   - given measured plus estimated sessions on a day, then the basis is `MIXED` (the `combine(any_measured, any_estimated)` rule, 002 FR-014);
   - given a session outside the range, then it is excluded.
-- [ ] T029 [US1] GREEN: implement:
+- [X] T029 [US1] GREEN: implement:
   - `alt-stack/backend/src/tla/domain/date_range.py` (`DateRange` with `days()`);
   - `alt-stack/backend/src/tla/domain/iso_week.py` (`IsoWeek` from `date.isocalendar()`, a `sunday` property, a `designation` property);
   - `alt-stack/backend/src/tla/domain/aggregation.py` (`LoadBasis`, `DailyTrainingLoad`, `WeeklyTrainingLoad`, `aggregate_daily(activities, range, max_hr)`, `aggregate_weekly(…)`, which chunks the extended daily series into sevens).
 
   Keep a local `combine` helper in this module; do not extract it (004 research R12, plan Constitution Check III).
-- [ ] T030 [US1] REFACTOR `alt-stack/backend/src/tla/domain/aggregation.py`, and run `uv run pytest tests/domain`
+- [X] T030 [US1] REFACTOR `alt-stack/backend/src/tla/domain/aggregation.py`, and run `uv run pytest tests/domain`
 
 ### Fitness, Fatigue and Form (003)
 
-- [ ] T031 [P] [US1] RED: port `TrainingMetricsTests.cs`, `MetricsSeriesTests.cs`, `MetricsBasisTests.cs` and `MetricsInputTests.cs` into `alt-stack/backend/tests/domain/test_metrics.py`:
+- [X] T031 [P] [US1] RED: port `TrainingMetricsTests.cs`, `MetricsSeriesTests.cs`, `MetricsBasisTests.cs` and `MetricsInputTests.cs` into `alt-stack/backend/tests/domain/test_metrics.py`:
   - given a constant daily load, then Fitness and Fatigue follow `x += (load − x) × (1 − exp(−1/k))` with k = 42 and 7, seeded at 0, to within 1e-4 of the reference's hand-computed values;
   - `form == fitness − fatigue` is a property, never stored (003 FR-003);
   - `is_reliable` is false for the first 42 days and true from day 43 (003 warm-up);
   - `form_basis == fitness_basis` (003 FR-019b);
   - given a history with a gap, or one not covering the range, then the refusal names the rule with `YYYY-MM-DD` dates, as the reference does.
-- [ ] T032 [US1] GREEN: implement `alt-stack/backend/src/tla/domain/metrics.py`:
+- [X] T032 [US1] GREEN: implement `alt-stack/backend/src/tla/domain/metrics.py`:
   - `DailyTrainingMetrics`, with `form` and `form_basis` as properties;
   - `calculate_metrics(history, range)`, with smoothing factors `1 - math.exp(-1 / 42)` and `1 - math.exp(-1 / 7)` as doubles, and the daily load entering as `float(points)` (data-model.md §1 "Arithmetic");
   - its own local basis `combine` helper.
-- [ ] T033 [US1] REFACTOR `alt-stack/backend/src/tla/domain/metrics.py`, and run `uv run pytest tests/domain`
+- [X] T033 [US1] REFACTOR `alt-stack/backend/src/tla/domain/metrics.py`, and run `uv run pytest tests/domain`
 
 ### Weekly trends (004)
 
-- [ ] T034 [P] [US1] RED: port `WeeklyLoadTrendTests.cs`, `TrendClassificationTests.cs`, `TrendInputTests.cs` and `TrendReliabilityTests.cs` into `alt-stack/backend/tests/domain/test_trends.py`:
+- [X] T034 [P] [US1] RED: port `WeeklyLoadTrendTests.cs`, `TrendClassificationTests.cs`, `TrendInputTests.cs` and `TrendReliabilityTests.cs` into `alt-stack/backend/tests/domain/test_trends.py`:
   - given an incomplete (in-progress) week, then the classification is `INDETERMINATE` whatever the change; completeness is read first;
   - given |absolute change| < `Decimal("50")`, then it is `STEADY`, whatever the relative change (the floor is read second);
   - given a change ≥ 50 and relative ≥ `Decimal("0.15")`, then it is `SIGNIFICANT_INCREASE`, and symmetrically `SIGNIFICANT_DECREASE`;
@@ -189,24 +189,24 @@ These apply to every task below. They are listed once rather than repeated.
   - `absolute_change`, `relative_change` and `classification` are properties (004 FR-007 – FR-019);
   - the basis combines this week's and the previous week's;
   - refusals match the reference's rules and wording.
-- [ ] T035 [US1] GREEN: implement `alt-stack/backend/src/tla/domain/trends.py`: `TrendClassification`, `WeeklyLoadTrend`, the private constants `_ABSOLUTE_FLOOR = Decimal("50")` and `_RELATIVE_THRESHOLD = Decimal("0.15")`, `calculate_trends(history, range)` and a local basis `combine`
-- [ ] T036 [US1] REFACTOR `alt-stack/backend/src/tla/domain/trends.py`, and run `uv run pytest tests/domain`
+- [X] T035 [US1] GREEN: implement `alt-stack/backend/src/tla/domain/trends.py`: `TrendClassification`, `WeeklyLoadTrend`, the private constants `_ABSOLUTE_FLOOR = Decimal("50")` and `_RELATIVE_THRESHOLD = Decimal("0.15")`, `calculate_trends(history, range)` and a local basis `combine`
+- [X] T036 [US1] REFACTOR `alt-stack/backend/src/tla/domain/trends.py`, and run `uv run pytest tests/domain`
 
 ### Independence and parity against the goldens
 
-- [ ] T037 [P] [US1] RED→GREEN: write `alt-stack/backend/tests/domain/test_independence.py`. Given every module under `tla/domain/`, when its imports are walked with `ast`, then none imports `tla.*` outside `tla.domain`, nor `httpx`, `sqlite3`, `fastapi`, `json`, `os` or `time`; the only stdlib imports are `decimal`, `datetime`, `math`, `enum`, `dataclasses`, `typing` and `collections.abc`; and no identifier or string contains `strava` in any casing (Principle II, 009 FR-008, FR-020). It should pass immediately. If it does not, fix the domain, not the test
-- [ ] T038 [P] [US1] RED: write `alt-stack/backend/tests/parity/test_history_domain.py`, parametrized over every `parity/golden/histories/*.json`. Given the fixture, when `training_load`, `aggregate_daily`, `aggregate_weekly`, `calculate_metrics` and `calculate_trends` run, then:
+- [X] T037 [P] [US1] RED→GREEN: write `alt-stack/backend/tests/domain/test_independence.py`. Given every module under `tla/domain/`, when its imports are walked with `ast`, then none imports `tla.*` outside `tla.domain`, nor `httpx`, `sqlite3`, `fastapi`, `json`, `os` or `time`; the only stdlib imports are `decimal`, `datetime`, `math`, `enum`, `dataclasses`, `typing` and `collections.abc`; and no identifier or string contains `strava` in any casing (Principle II, 009 FR-008, FR-020). It should pass immediately. If it does not, fix the domain, not the test
+- [X] T038 [P] [US1] RED: write `alt-stack/backend/tests/parity/test_history_domain.py`, parametrized over every `parity/golden/histories/*.json`. Given the fixture, when `training_load`, `aggregate_daily`, `aggregate_weekly`, `calculate_metrics` and `calculate_trends` run, then:
   - `loads`, `daily` and `weekly` points and the trend's `absoluteChange` match within 1e-20;
   - counts, bases, provenance, ISO year/week/Monday, completeness and classification match exactly;
   - Fitness and Fatigue match within 1e-4;
   - `relativeChange` matches its `null`-ness exactly and its value within 1e-20.
 
   Cover `one-second-hr` explicitly (research R1), and SC-001. Also add `alt-stack/backend/tests/parity/test_refusals.py`: given each invalid input from 009 US1 scenario 6 (end before start, a 19 bpm sample, a history with a gap), then a `ValueError` is raised whose message equals the reference's message (copy the literal from the reference test).
-- [ ] T039 [US1] GREEN: fix whatever the parity tests in T038 expose, in the owning `alt-stack/backend/src/tla/domain/*.py` module. Each fix must be justified by a spec rule or a golden, never by "matching the numbers". If a golden disagrees with the 001–004 specification, stop and raise a spec amendment (Principle VII); do not special-case it
+- [X] T039 [US1] GREEN: fix whatever the parity tests in T038 expose, in the owning `alt-stack/backend/src/tla/domain/*.py` module. Each fix must be justified by a spec rule or a golden, never by "matching the numbers". If a golden disagrees with the 001–004 specification, stop and raise a spec amendment (Principle VII); do not special-case it
 
 ### Display formatting (research R2; needed by US3, pure and domain-adjacent)
 
-- [ ] T040 [P] [US1] RED: port `tests/TrainingLoadAnalyzer.Web.Tests/DisplayFormatTests.cs` into `alt-stack/backend/tests/dashboard/test_display.py`, and parametrize over `parity/golden/probes/display.json`:
+- [X] T040 [P] [US1] RED: port `tests/TrainingLoadAnalyzer.Web.Tests/DisplayFormatTests.cs` into `alt-stack/backend/tests/dashboard/test_display.py`, and parametrize over `parity/golden/probes/display.json`:
   - given 45.25, 0.15, 12.349999999999999, −0.25 and −13.25, then `metric()` returns `45.3`, `0.2`, `12.4`, `-0.3`, `-13.3`;
   - `metric(-0.04)` is `-0.0` (the double keeps its sign);
   - `points(Decimal("-0.04"))` is `0.0` (the decimal drops the sign of zero);
@@ -216,7 +216,7 @@ These apply to every task below. They are listed once rather than repeated.
   - the week-change caption for `Decimal("-0.04")` is `0.0` with no sign.
 
   Also write `alt-stack/backend/tests/dashboard/test_display_locale.py` (SC-007). A fixture calls `locale.setlocale(locale.LC_ALL, "fi_FI.UTF-8")` and restores the previous locale afterwards; the test is skipped, with the reason given, if that locale is not installed. Given the Finnish locale, every probe's output is unchanged. (US3's T071 extends this file to `to_json(view)` for H3f.) Setting `LC_ALL` in the environment alone proves nothing, because Python ignores it until `setlocale` is called.
-- [ ] T041 [US1] GREEN: implement `alt-stack/backend/src/tla/dashboard/display.py`:
+- [X] T041 [US1] GREEN: implement `alt-stack/backend/src/tla/dashboard/display.py`:
   - `metric(x: float | None)`: `format(x, ".15g")`, then `Decimal.quantize(Decimal("0.1"), ROUND_HALF_UP)`, keeping the sign;
   - `points(d: Decimal | None)`: `quantize(Decimal("0.1"), ROUND_HALF_UP)`, dropping the sign of a zero result;
   - `percent(fraction: Decimal | None)`: ×100, `quantize(Decimal("1"), ROUND_HALF_UP)`, `+` when > 0, then `%`, and `—` when `None`;
@@ -224,7 +224,7 @@ These apply to every task below. They are listed once rather than repeated.
   - `week_change(d)`.
 
   No `locale`, no f-string float formatting.
-- [ ] T042 [US1] VERIFY: `uv run pytest` (whole backend) green under the default locale and under `LANG=fi_FI.UTF-8 LC_ALL=fi_FI.UTF-8`. `git diff --stat src tests` is empty (009 FR-003). Record in `specs/009-python-react-stack/parity-report.md` (create it with the headings "Tolerances", "Deviations", "Display ties found", "Requirement map", "Measurements") any display tie found by `display-ties` (Amendment 1(a))
+- [X] T042 [US1] VERIFY: `uv run pytest` (whole backend) green under the default locale and under `LANG=fi_FI.UTF-8 LC_ALL=fi_FI.UTF-8`. `git diff --stat src tests` is empty (009 FR-003). Record in `specs/009-python-react-stack/parity-report.md` (create it with the headings "Tolerances", "Deviations", "Display ties found", "Requirement map", "Measurements") any display tie found by `display-ties` (Amendment 1(a))
 
 **Checkpoint**: US1 is complete. The domain and the formatter are proven against the reference with no UI, network or storage.
 
