@@ -10,7 +10,8 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "test": "vitest run",
-    "test:tz": "TZ=Pacific/Kiritimati vitest run tests/isoWeek.test.ts && TZ=America/Adak vitest run tests/isoWeek.test.ts"
+    "test:tz": "TZ=Pacific/Kiritimati vitest run tests/isoWeek.test.ts && TZ=America/Adak vitest run tests/isoWeek.test.ts",
+    "test:fi": "LANG=fi_FI.UTF-8 LC_ALL=fi_FI.UTF-8 vitest run"
   },
   "dependencies": {
     "react": "^19",
