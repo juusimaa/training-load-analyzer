@@ -1,9 +1,13 @@
 // Readers for the parity goldens (parity.md §3) and the geometry tolerance (research R8).
 import { readdirSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { expect } from "vitest";
 import type { DashboardView } from "../src/types";
 
-const golden = new URL("../../../parity/golden/", import.meta.url);
+// A path rather than `new URL("…", import.meta.url)`: Vite rewrites that pattern as an asset
+// reference, which under the jsdom environment resolves against http://localhost:3000.
+const golden = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "parity", "golden");
 
 export interface GoldenSlot {
   day: string;
@@ -41,18 +45,18 @@ export interface SurfacesGolden {
 }
 
 export function historyNames(): string[] {
-  return readdirSync(new URL("histories/", golden))
+  return readdirSync(join(golden, "histories"))
     .filter((f) => f.endsWith(".json"))
     .map((f) => f.slice(0, -".json".length))
     .sort();
 }
 
 export function loadHistory(name: string): HistoryGolden {
-  return JSON.parse(readFileSync(new URL(`histories/${name}.json`, golden), "utf-8")) as HistoryGolden;
+  return JSON.parse(readFileSync(join(golden, "histories", `${name}.json`), "utf-8")) as HistoryGolden;
 }
 
 export function loadSurfaces(): SurfacesGolden {
-  return JSON.parse(readFileSync(new URL("probes/surfaces.json", golden), "utf-8")) as SurfacesGolden;
+  return JSON.parse(readFileSync(join(golden, "probes", "surfaces.json"), "utf-8")) as SurfacesGolden;
 }
 
 /** Whitespace-normalised text, the reduction the golden's renderedText was made with. */
