@@ -62,7 +62,10 @@ export function Dashboard({ api }: DashboardProps) {
     try {
       finished = await api.postSync();
     } catch {
+      // A failed request is the unavailable notice, never stale figures (009 FR-016). The panel
+      // returns to what it said before: there are no words for a failed sync request.
       setSyncStatus(before);
+      setFailed(true);
       return;
     }
     setSyncStatus(finished);
