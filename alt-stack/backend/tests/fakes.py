@@ -29,9 +29,8 @@ class FixedClock:
     def now_local(self) -> datetime:
         return self._now.astimezone(self._zone)
 
-    @property
-    def zone(self) -> timezone:
-        return self._zone
+    def to_local(self, instant: datetime) -> datetime:
+        return instant.astimezone(self._zone)
 
     def set(self, now_utc: datetime) -> None:
         self._now = now_utc
