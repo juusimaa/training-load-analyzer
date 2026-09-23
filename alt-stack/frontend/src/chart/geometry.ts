@@ -2,7 +2,7 @@
 // Amendments 2 and 3). Input is the windowed day list; output is strings, already rounded.
 //
 // Every number that reaches the markup goes through `num`: rounded to two places with
-// Math.round and printed with String(), never toFixed or toLocaleString, so no locale can turn
+// Math.round and printed with String(), never a locale-aware formatter, so no locale can turn
 // a decimal point into a comma (research R2, R8). The reference rounds half to even, this rounds
 // half up, so a coordinate may differ from the golden by 0.01 view-box units (parity.md §5).
 import type { Day } from "../types";

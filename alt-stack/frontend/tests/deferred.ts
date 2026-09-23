@@ -1,5 +1,5 @@
 // A promise the test settles by hand, and a DashboardApi built from them as a plain object that
-// counts its calls: no vi.fn, no vi.mock (constitution Principle IV as amended, research R12).
+// counts its calls: no mock functions or module mocks (constitution Principle IV as amended, research R12).
 import type { DashboardApi, DashboardView, SyncStatusView } from "../src/types";
 
 export interface Deferred<T> {
