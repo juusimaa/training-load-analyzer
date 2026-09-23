@@ -517,13 +517,31 @@ and `domain/trends.py` (004 research R12). Nothing was removed.
   Measurements, checked two things. Pointer events over every chart slot, then switching to the
   30-day window, issued no HTTP request in either app, and the heading and bars updated. Run mode
   and development mode both served the page and the API.
-- **Not done: needs the developer, a browser and, for some journeys, the live Strava account.**
-  - Quickstart §5, journeys 1–11: connect, consent with a scope unticked, a live first import to
-    the rate limit, the second tab mid-sync, renewal after six hours, and stopping the backend.
-  - The whole §6 visual pass: 320/768/1280/2560 px, 200 % zoom, live light/dark switching, tab
-    focus, and 48 × 48 targets on screen.
+- **Automated visual and journey pass, 2026-09-23.** Real headless Chrome over the DevTools
+  Protocol, run mode, one scratch database per state (script `vp/visual.mjs` in the session
+  scratchpad). Six surfaces: populated, connected-empty, unconnected-empty, `/nowhere`, `/Error`,
+  unavailable. Results: 81 PASS, 1 FAIL (since fixed), 19 N/A.
 
-  T097 and T107 stay open until that pass is done.
+  | Check | Result |
+  | --- | --- |
+  | No horizontal scroll at 320, 768, 1280, 2560 px and 200 % (640 CSS px at DSF 2) | 30/30 PASS: `scrollWidth` equal to `clientWidth` everywhere |
+  | Rail stacks above the content below the breakpoint, beside it above; content capped | 20/20 PASS: stacked at 320, 640, 768; beside at 1280, 2560; page capped at 1240 px |
+  | Light and dark switched live, no reload | 6/6 PASS: body colours match the broadsheet tokens; same text in both |
+  | Visible keyboard focus | 8/8 PASS: `solid 2px` outline on each radio, Sync and Connect, matching `:focus-visible` |
+  | 48 × 48 targets | 8/8 PASS: radio labels 76–85 × 48, Sync 250–280 × 48, Connect 139.5 × 48 |
+  | Hover readout | PASS: shows the day, Fitness, Fatigue, Form and Load; one readout at a time; 0 requests while hovering and on switching to 30/90/180 |
+  | Journeys 1, 8, 9, 11, the connected-empty text, `/Error`, unavailable | PASS; unavailable shows "Data unavailable", no digit, `—` for the heart rate |
+  | Journey 10 by pressing Sync with the backend stopped | **FAIL**: the stale figures stayed. Fixed test-first: `DashboardStates.test.tsx › a sync request that fails (backend stopped) shows the notice, not the stale figures (009 FR-016, journey 10)` |
+
+  Screenshots of the populated page at 320 and 1280 px, light and dark, were reviewed for clipping
+  and overflow (none found). They are in the session scratchpad, not the repository.
+- **Still needs the developer.** These keep T097 and T107 open:
+  - the live Strava journeys 2, 3, 4, 6 and 7 (consent, a withheld scope, a first import to the
+    rate limit, the up-to-date sync, renewal after six hours);
+  - journey 5 and the second tab mid-sync, which need a slow live sync;
+  - the error boundary's Reload and 🗙 in a real browser;
+  - a touch device;
+  - real browser zoom rather than an emulated 200 %.
 
 ## Constitution completion review
 
