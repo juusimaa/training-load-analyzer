@@ -84,7 +84,318 @@ No tie has been found where the two stacks' doubles differ.
 
 ## Requirement map
 
-_Filled in by T108._
+Every functional requirement in the specs of features 001–008 (250 FR ids, amendments included),
+mapped to the new implementation's tests. Paths are relative to `alt-stack/`: pytest nodes as
+`backend/tests/…::name`, and Vitest tests as `frontend/tests/<file>` › test name.
+
+The map was built with a scratchpad script that extracts every `**FR-…**` from the eight spec
+files. The script checks that each id appears exactly once, that each cited pytest node is
+collected by `pytest --collect-only`, and that each cited Vitest name appears in its file.
+
+| Result | Count |
+| --- | --- |
+| Mapped to passing tests | 224 |
+| Superseded by a feature-008 requirement, named in the row | 19 |
+| Excluded: names the reference's stack (009 FR-001) or a surface removed by Amendment 1(c) | 4 |
+| **GAP**: no covering test | 3 |
+
+**GAPs, for the developer.** 005 FR-007 (disconnect), FR-032 (full resynchronization) and, through
+FR-032, FR-031b. The reference implements `DisconnectAsync` and `FullResyncAsync` and tests them,
+but no route or control calls either, so an athlete cannot reach them. They were not ported. The
+tasks did not include them, and porting unreachable code would add an entry point no specification
+asks for. Either the specs stand and both stacks need a route (a reference defect too), or the
+requirements are amended to "the integration offers", as the reference effectively reads them.
+
+### 001 Training activity domain
+
+| FR | Summary | New implementation's test(s), or exclusion |
+| --- | --- | --- |
+| FR-001 | A session is a self-contained record | `backend/tests/domain/test_activity.py::test_a_recorded_run_reads_back_every_detail_unchanged` |
+| FR-002 | External id opaque, stored verbatim | `backend/tests/domain/test_activity.py::test_an_external_identifier_round_trips_byte_for_byte_including_whitespace` |
+| FR-003 | Start kept with its UTC offset | `backend/tests/domain/test_activity.py::test_both_the_utc_instant_and_the_athletes_local_start_time_are_recoverable`<br>`backend/tests/domain/test_activity.py::test_the_same_wall_clock_time_at_two_offsets_stays_two_instants_on_one_local_day` |
+| FR-004 | Duration is moving time | `backend/tests/domain/test_activity.py::test_a_recorded_run_reads_back_every_detail_unchanged`<br>`backend/tests/strava/test_mapper.py::test_moving_time_is_used_and_elapsed_time_is_not` |
+| FR-005 | Running or cycling only | `backend/tests/domain/test_activity.py::test_only_running_and_cycling_exist_displayed_as_the_reference_prints_them` |
+| FR-006 | Heart rate optional, absence distinguishable | `backend/tests/domain/test_activity.py::test_an_activity_recorded_without_heart_rate_data_has_no_series_at_all` |
+| FR-007 | Heart rate as ordered non-empty series | `backend/tests/domain/test_heart_rate.py::test_a_series_returns_its_samples_in_their_original_order_with_their_original_values` |
+| FR-008 | One non-negative TRIMP load per session | `backend/tests/domain/test_training_load.py::test_a_session_with_heart_rate_data_reports_a_measured_load_of_eighty_points`<br>`backend/tests/parity/test_history_domain.py::test_every_load_matches_the_reference` |
+| FR-009 | Edwards TRIMP over five zones | `backend/tests/domain/test_training_load.py::test_each_zone_boundary_classifies_exactly`<br>`backend/tests/domain/test_heart_rate.py::test_the_worked_example_yields_exactly_eighty_trimp_points` |
+| FR-010 | Each sample held until the next | `backend/tests/domain/test_heart_rate.py::test_a_long_gap_is_charged_to_the_sample_preceding_it`<br>`backend/tests/domain/test_heart_rate.py::test_a_single_sample_series_yields_zero_points` |
+| FR-011 | Load deterministic from session and max HR | `backend/tests/domain/test_training_load.py::test_repeated_computation_from_the_same_inputs_yields_the_same_value` |
+| FR-012 | One scale for running and cycling | `backend/tests/domain/test_training_load.py::test_a_run_and_a_ride_with_identical_series_produce_identical_loads` |
+| FR-013 | No heart rate: minutes × 2 | `backend/tests/domain/test_training_load.py::test_a_session_without_heart_rate_data_reports_an_estimated_load_from_moving_time`<br>`backend/tests/domain/test_training_load.py::test_forty_five_minutes_without_heart_rate_data_is_ninety_estimated_points` |
+| FR-014 | Every load marked measured or estimated | `backend/tests/domain/test_training_load.py::test_a_measured_and_an_estimated_load_of_the_same_value_stay_distinguishable`<br>`backend/tests/domain/test_training_load.py::test_a_training_load_offers_no_points_without_their_provenance` |
+| FR-015 | Max HR an explicit input, never stored | `backend/tests/domain/test_training_load.py::test_an_estimate_is_produced_even_when_the_maximum_heart_rate_is_not_positive`<br>`backend/tests/api/test_settings.py::test_a_valid_configuration_is_read` |
+| FR-016 | Refuse measured load with max HR ≤ 0 | `backend/tests/domain/test_training_load.py::test_a_measured_load_is_refused_when_the_maximum_heart_rate_is_not_positive` |
+| FR-017 | Refuse moving time ≤ 0 | `backend/tests/domain/test_activity.py::test_a_moving_time_of_zero_or_less_is_refused` |
+| FR-018 | Refuse other activity types | `backend/tests/domain/test_activity.py::test_an_activity_type_outside_the_defined_set_is_refused` |
+| FR-019 | Refuse a missing start | `backend/tests/domain/test_activity.py::test_a_missing_start_time_or_one_without_an_offset_is_refused` |
+| FR-020 | Refuse a missing or blank id | `backend/tests/domain/test_activity.py::test_a_missing_or_blank_external_identifier_is_refused` |
+| FR-021 | Refuse empty, unordered or implausible heart rate | `backend/tests/domain/test_heart_rate.py::test_a_null_or_empty_sample_list_is_refused`<br>`backend/tests/domain/test_heart_rate.py::test_samples_that_are_not_in_ascending_time_order_are_refused`<br>`backend/tests/domain/test_heart_rate.py::test_a_sample_outside_the_plausible_range_is_refused_and_named` |
+| FR-022 | Refusals name the rule | `backend/tests/domain/test_heart_rate.py::test_a_sample_outside_the_plausible_range_is_refused_and_named`<br>`backend/tests/parity/test_refusals.py::test_a_19_bpm_sample` |
+| FR-023 | No partial record after a refusal | `backend/tests/domain/test_activity.py::test_the_refusals_are_checked_in_the_reference_order` |
+| FR-024 | Records immutable | `backend/tests/domain/test_activity.py::test_a_training_activity_is_frozen`<br>`backend/tests/domain/test_heart_rate.py::test_mutating_the_list_a_series_was_built_from_does_not_change_the_series` |
+| FR-025 | No Strava concept in the model | `backend/tests/domain/test_independence.py::test_no_domain_module_names_strava` |
+
+### 002 Training load aggregation
+
+| FR | Summary | New implementation's test(s), or exclusion |
+| --- | --- | --- |
+| FR-001 | Total per calendar day over the range | `backend/tests/domain/test_aggregation.py::test_several_activities_on_the_same_day_are_summed_into_that_days_total` |
+| FR-002 | Total per ISO week, Monday–Sunday | `backend/tests/domain/test_aggregation.py::test_activities_in_the_same_iso_week_are_summed_into_that_week`<br>`backend/tests/domain/test_aggregation.py::test_a_sunday_and_the_monday_after_it_fall_in_different_weeks` |
+| FR-003 | A session wholly on its start day | `backend/tests/domain/test_aggregation.py::test_an_activity_is_attributed_to_its_own_offset_local_day_not_its_utc_day` |
+| FR-004 | Day from the session's own offset | `backend/tests/domain/test_aggregation.py::test_sessions_near_local_midnight_at_fractional_offsets_land_on_their_local_day`<br>`backend/tests/domain/test_aggregation.py::test_two_activities_on_the_same_local_day_at_different_offsets_both_count_to_that_day` |
+| FR-005 | An entry for every day | `backend/tests/domain/test_aggregation.py::test_every_day_in_the_range_is_reported_including_days_with_no_training` |
+| FR-006 | An entry for every week touched | `backend/tests/domain/test_aggregation.py::test_every_week_the_range_touches_is_reported_including_weeks_with_no_training` |
+| FR-007 | Zero, not absent, for empty days and weeks | `backend/tests/domain/test_aggregation.py::test_every_day_in_the_range_is_reported_including_days_with_no_training`<br>`backend/tests/domain/test_aggregation.py::test_every_week_the_range_touches_is_reported_including_weeks_with_no_training` |
+| FR-008 | Sum every session on a day | `backend/tests/domain/test_aggregation.py::test_several_activities_on_the_same_day_are_summed_into_that_days_total` |
+| FR-009 | Daily series includes only in-range days | `backend/tests/domain/test_aggregation.py::test_activities_outside_the_range_contribute_to_no_daily_total`<br>`backend/tests/domain/test_aggregation.py::test_activities_on_the_first_and_last_day_of_the_range_are_both_included` |
+| FR-010 | Ascending order | `backend/tests/domain/test_aggregation.py::test_totals_and_ordering_do_not_depend_on_the_order_activities_were_supplied`<br>`backend/tests/domain/test_date_range.py::test_every_day_is_listed_ascending_both_ends_included` |
+| FR-011 | Totals independent of input order | `backend/tests/domain/test_aggregation.py::test_totals_and_ordering_do_not_depend_on_the_order_activities_were_supplied` |
+| FR-012 | Deterministic aggregation | `backend/tests/parity/test_history_domain.py::test_every_daily_total_matches_the_reference` |
+| FR-013 | Weekly totals over whole ISO weeks | `backend/tests/domain/test_aggregation.py::test_a_weekly_total_covers_its_whole_week_including_days_outside_the_range`<br>`backend/tests/domain/test_aggregation.py::test_every_weekly_entry_covers_seven_days_monday_to_sunday` |
+| FR-014 | Basis of every total | `backend/tests/domain/test_aggregation.py::test_a_day_whose_activities_are_all_measured_reports_a_measured_total`<br>`backend/tests/domain/test_aggregation.py::test_a_day_mixing_measured_and_estimated_activities_reports_a_mixed_total` |
+| FR-015 | Any estimate among measurements is mixed | `backend/tests/domain/test_aggregation.py::test_a_week_with_one_estimated_activity_among_measured_ones_is_mixed` |
+| FR-016 | Session count per total | `backend/tests/domain/test_aggregation.py::test_a_rest_day_and_a_day_of_zero_scoring_training_are_distinguishable`<br>`backend/tests/domain/test_aggregation.py::test_a_week_reports_its_basis_and_its_session_count` |
+| FR-017 | A whole week equals its seven days | `backend/tests/parity/test_history_domain.py::test_every_weekly_total_matches_the_reference`<br>`backend/tests/domain/test_aggregation.py::test_a_weekly_total_covers_its_whole_week_including_days_outside_the_range` |
+| FR-018 | Empty input yields the full zero series | `backend/tests/domain/test_aggregation.py::test_an_empty_activity_collection_still_yields_the_full_zero_series` |
+| FR-019 | Refuse end before start | `backend/tests/domain/test_date_range.py::test_a_range_whose_end_precedes_its_start_is_refused_with_both_dates` |
+| FR-020 | Refuse a missing bound | `backend/tests/domain/test_date_range.py::test_a_range_with_a_missing_start_is_refused`<br>`backend/tests/domain/test_date_range.py::test_a_range_with_a_missing_end_is_refused_as_missing_not_as_backwards` |
+| FR-021 | Refusals name the rule | `backend/tests/domain/test_date_range.py::test_a_missing_start_wins_over_every_other_rule`<br>`backend/tests/parity/test_refusals.py::test_an_end_before_the_start` |
+| FR-022 | Exact sums, no rounding | `backend/tests/domain/test_aggregation.py::test_a_days_total_is_the_exact_sum_of_its_activities_own_load_values`<br>`backend/tests/parity/test_history_domain.py::test_every_daily_total_matches_the_reference` |
+| FR-023 | Duplicate ids both contribute | `backend/tests/domain/test_aggregation.py::test_two_activities_sharing_an_external_identifier_both_contribute` |
+| FR-024 | Pure computation | `backend/tests/domain/test_independence.py::test_a_domain_module_imports_only_the_domain_and_a_short_list_of_stdlib` |
+| FR-025 | No Strava concept | `backend/tests/domain/test_independence.py::test_no_domain_module_names_strava` |
+
+### 003 Fitness, fatigue and form
+
+| FR | Summary | New implementation's test(s), or exclusion |
+| --- | --- | --- |
+| FR-001 | Daily Fitness | `backend/tests/domain/test_metrics.py::test_the_first_day_advances_fitness_and_fatigue_from_a_seed_of_zero`<br>`backend/tests/parity/test_history_domain.py::test_every_days_metrics_match_the_reference` |
+| FR-002 | Daily Fatigue | `backend/tests/domain/test_metrics.py::test_the_first_day_advances_fitness_and_fatigue_from_a_seed_of_zero`<br>`backend/tests/parity/test_history_domain.py::test_every_days_metrics_match_the_reference` |
+| FR-003 | Form = Fitness − Fatigue, derived | `backend/tests/domain/test_metrics.py::test_form_equals_fitness_minus_fatigue_exactly_on_every_day`<br>`backend/tests/domain/test_metrics.py::test_form_and_its_basis_are_derived_and_never_stored` |
+| FR-004 | Time constants 42 and 7 | `backend/tests/domain/test_metrics.py::test_fitness_follows_the_exponential_factor_and_not_the_reciprocal_approximation`<br>`backend/tests/domain/test_metrics.py::test_a_rest_week_sheds_fatigue_faster_than_fitness_and_turns_form_positive` |
+| FR-005 | The exponential update rule | `backend/tests/domain/test_metrics.py::test_fitness_follows_the_exponential_factor_and_not_the_reciprocal_approximation`<br>`backend/tests/domain/test_metrics.py::test_sustained_unchanging_training_settles_both_metrics_at_the_daily_load` |
+| FR-006 | A day's own load enters its figures | `backend/tests/domain/test_metrics.py::test_the_first_day_advances_fitness_and_fatigue_from_a_seed_of_zero` |
+| FR-007 | Pure computation | `backend/tests/domain/test_independence.py::test_a_domain_module_imports_only_the_domain_and_a_short_list_of_stdlib` |
+| FR-008 | One entry per day, ascending | `backend/tests/domain/test_metrics.py::test_only_the_requested_range_is_returned_but_every_earlier_day_feeds_it` |
+| FR-009 | Rest days decay the metrics | `backend/tests/domain/test_metrics.py::test_a_rest_week_sheds_fatigue_faster_than_fitness_and_turns_form_positive` |
+| FR-010 | Each day from the day before | `backend/tests/domain/test_metrics.py::test_only_the_requested_range_is_returned_but_every_earlier_day_feeds_it` |
+| FR-011 | History must reach the range start | `backend/tests/domain/test_metrics.py::test_a_history_that_starts_after_the_range_is_refused` |
+| FR-012 | Seeded at 0 | `backend/tests/domain/test_metrics.py::test_the_first_day_advances_fitness_and_fatigue_from_a_seed_of_zero` |
+| FR-013 | Warm-up days marked not reliable | `backend/tests/domain/test_metrics.py::test_a_figure_is_settling_for_the_first_42_days_and_reliable_from_day_43` |
+| FR-014 | Warm-up is 42 days | `backend/tests/domain/test_metrics.py::test_a_figure_is_settling_for_the_first_42_days_and_reliable_from_day_43` |
+| FR-015 | Reliability readable on every day | `backend/tests/parity/test_history_domain.py::test_every_days_metrics_match_the_reference`<br>`backend/tests/parity/test_view_parity.py::test_every_string_and_boolean_matches_the_reference` |
+| FR-016 | Basis of each day's metrics | `backend/tests/domain/test_metrics.py::test_the_basis_of_fitness_reads_42_days_back_and_of_fatigue_7` |
+| FR-017 | Basis from contributing daily totals | `backend/tests/domain/test_metrics.py::test_the_basis_of_fitness_reads_42_days_back_and_of_fatigue_7` |
+| FR-018 | Rest days contribute no basis | `backend/tests/domain/test_metrics.py::test_a_rest_day_contributes_nothing_to_a_basis` |
+| FR-019 | Basis over a bounded window | `backend/tests/domain/test_metrics.py::test_the_basis_of_fitness_reads_42_days_back_and_of_fatigue_7` |
+| FR-019a | Form's basis combines both windows | `backend/tests/domain/test_metrics.py::test_form_and_its_basis_are_derived_and_never_stored`<br>`backend/tests/parity/test_history_domain.py::test_every_days_metrics_match_the_reference` |
+| FR-019b | Form's basis equals Fitness's | `backend/tests/domain/test_metrics.py::test_form_and_its_basis_are_derived_and_never_stored` |
+| FR-020 | Basis none when no training in window | `backend/tests/domain/test_metrics.py::test_a_rest_day_contributes_nothing_to_a_basis` |
+| FR-021 | Refuse a bad range | `backend/tests/domain/test_date_range.py::test_a_range_whose_end_precedes_its_start_is_refused_with_both_dates`<br>`backend/tests/domain/test_date_range.py::test_a_range_with_a_missing_start_is_refused` |
+| FR-022 | Refuse history starting late | `backend/tests/domain/test_metrics.py::test_a_history_that_starts_after_the_range_is_refused`<br>`backend/tests/domain/test_metrics.py::test_an_empty_history_is_refused_and_named_as_empty` |
+| FR-022a | Refuse history ending early | `backend/tests/domain/test_metrics.py::test_a_history_that_ends_before_the_range_is_refused` |
+| FR-023 | Refuse a non-continuous history | `backend/tests/domain/test_metrics.py::test_a_history_that_is_not_continuous_is_refused`<br>`backend/tests/parity/test_refusals.py::test_a_history_with_a_gap` |
+| FR-024 | Longer history accepted and used | `backend/tests/domain/test_metrics.py::test_only_the_requested_range_is_returned_but_every_earlier_day_feeds_it` |
+| FR-025 | All-zero history accepted | `backend/tests/domain/test_metrics.py::test_a_history_of_nothing_but_rest_days_is_not_a_refusal` |
+| FR-026 | Refusals name the rule | `backend/tests/domain/test_metrics.py::test_a_history_that_is_not_continuous_is_refused` |
+| FR-027 | Deterministic | `backend/tests/parity/test_history_domain.py::test_every_days_metrics_match_the_reference` |
+| FR-028 | Full precision, no intermediate rounding | `backend/tests/domain/test_metrics.py::test_sustained_unchanging_training_settles_both_metrics_at_the_daily_load`<br>`backend/tests/parity/test_history_domain.py::test_every_days_metrics_match_the_reference` |
+| FR-029 | Reproducible to 0.0001 | `backend/tests/domain/test_metrics.py::test_a_hard_block_raises_fatigue_further_than_fitness_and_turns_form_negative`<br>`backend/tests/parity/test_history_domain.py::test_every_days_metrics_match_the_reference` |
+| FR-029a | Factors at ≥ 10 significant figures | `backend/tests/domain/test_metrics.py::test_fitness_follows_the_exponential_factor_and_not_the_reciprocal_approximation` |
+| FR-030 | No Strava concept | `backend/tests/domain/test_independence.py::test_no_domain_module_names_strava` |
+
+### 004 Load trends
+
+| FR | Summary | New implementation's test(s), or exclusion |
+| --- | --- | --- |
+| FR-001 | Each week against the one before | `backend/tests/domain/test_trends.py::test_every_week_in_the_range_reports_once_in_ascending_order` |
+| FR-002 | Absolute change | `backend/tests/domain/test_trends.py::test_a_week_reports_its_move_in_points_and_as_a_proportion` |
+| FR-003 | Relative change | `backend/tests/domain/test_trends.py::test_a_week_reports_its_move_in_points_and_as_a_proportion` |
+| FR-004 | No relative change after a zero week | `backend/tests/domain/test_trends.py::test_a_week_following_an_idle_one_reports_no_proportion_at_all` |
+| FR-005 | Pure computation | `backend/tests/domain/test_independence.py::test_a_domain_module_imports_only_the_domain_and_a_short_list_of_stdlib` |
+| FR-006 | Uses the weekly totals as given | `backend/tests/domain/test_trends.py::test_the_absolute_change_is_exact` |
+| FR-007 | Four classifications | `backend/tests/domain/test_trends.py::test_the_classification_reads_the_floor_then_the_proportion` |
+| FR-008 | Significant increase and decrease | `backend/tests/domain/test_trends.py::test_the_classification_reads_the_floor_then_the_proportion` |
+| FR-009 | Otherwise steady, including zero change | `backend/tests/domain/test_trends.py::test_the_classification_reads_the_floor_then_the_proportion` |
+| FR-010 | Thresholds 0.15 and 50 points | `backend/tests/domain/test_trends.py::test_the_classification_reads_the_floor_then_the_proportion` |
+| FR-011 | Exactly at the threshold clears it | `backend/tests/domain/test_trends.py::test_the_classification_reads_the_floor_then_the_proportion` |
+| FR-012 | Thresholds on unrounded changes | `backend/tests/domain/test_trends.py::test_the_classification_reads_the_floor_then_the_proportion` |
+| FR-013 | No proportion: floor alone decides | `backend/tests/domain/test_trends.py::test_the_classification_reads_the_floor_then_the_proportion` |
+| FR-014 | After an idle week: ≥ 50 is significant | `backend/tests/domain/test_trends.py::test_the_classification_reads_the_floor_then_the_proportion` |
+| FR-015 | Complete or partial reported | `backend/tests/domain/test_trends.py::test_a_week_is_complete_only_when_the_range_covers_all_of_it` |
+| FR-016 | Complete when all seven days in range | `backend/tests/domain/test_trends.py::test_a_week_is_complete_only_when_the_range_covers_all_of_it` |
+| FR-017 | Partial weeks indeterminate | `backend/tests/domain/test_trends.py::test_an_incomplete_week_is_indeterminate_whatever_the_change` |
+| FR-018 | A partial week's change still reported | `backend/tests/domain/test_trends.py::test_an_incomplete_week_is_indeterminate_whatever_the_change`<br>`backend/tests/parity/test_view_parity.py::test_every_string_and_boolean_matches_the_reference` |
+| FR-019 | A partial week against the full previous week | `backend/tests/domain/test_trends.py::test_a_week_is_complete_only_when_the_range_covers_all_of_it`<br>`backend/tests/parity/test_history_domain.py::test_every_weekly_trend_matches_the_reference` |
+| FR-020 | Basis of each comparison | `backend/tests/domain/test_trends.py::test_the_basis_combines_this_weeks_and_the_previous_weeks` |
+| FR-021 | Basis combines both weeks | `backend/tests/domain/test_trends.py::test_the_basis_combines_this_weeks_and_the_previous_weeks` |
+| FR-022 | Refuse history lacking the week before | `backend/tests/domain/test_trends.py::test_a_history_that_does_not_reach_the_week_before_the_range_is_refused`<br>`backend/tests/domain/test_trends.py::test_an_empty_history_is_refused` |
+| FR-022b | Refuse history ending early | `backend/tests/domain/test_trends.py::test_a_history_that_ends_before_the_ranges_last_week_is_refused` |
+| FR-023 | Longer history accepted | `backend/tests/domain/test_trends.py::test_only_the_weeks_touching_the_requested_range_are_returned` |
+| FR-024 | Refuse a non-continuous history | `backend/tests/domain/test_trends.py::test_a_history_with_a_gap_is_refused` |
+| FR-025 | Idle weeks present as zero with basis none | `backend/tests/domain/test_trends.py::test_the_basis_combines_this_weeks_and_the_previous_weeks`<br>`backend/tests/domain/test_aggregation.py::test_a_week_reports_its_basis_and_its_session_count` |
+| FR-026 | Refuse a bad range | `backend/tests/domain/test_date_range.py::test_a_range_whose_end_precedes_its_start_is_refused_with_both_dates` |
+| FR-027 | Refusals name the rule | `backend/tests/domain/test_trends.py::test_a_history_with_a_gap_is_refused` |
+| FR-028 | One entry per week, ascending | `backend/tests/domain/test_trends.py::test_every_week_in_the_range_reports_once_in_ascending_order`<br>`backend/tests/domain/test_trends.py::test_weeks_are_ordered_across_an_iso_year_boundary` |
+| FR-029 | Change and classification together | `backend/tests/domain/test_trends.py::test_the_changes_and_the_classification_are_derived_and_cannot_be_set` |
+| FR-030 | Each entry self-contained | `backend/tests/parity/test_history_domain.py::test_every_weekly_trend_matches_the_reference` |
+| FR-031 | Deterministic | `backend/tests/parity/test_history_domain.py::test_every_weekly_trend_matches_the_reference` |
+| FR-032 | Full precision | `backend/tests/domain/test_trends.py::test_the_absolute_change_is_exact` |
+| FR-033 | Absolute change exactly reproducible | `backend/tests/domain/test_trends.py::test_the_absolute_change_is_exact` |
+| FR-034 | No Strava concept | `backend/tests/domain/test_independence.py::test_no_domain_module_names_strava` |
+
+### 005 Strava import
+
+| FR | Summary | New implementation's test(s), or exclusion |
+| --- | --- | --- |
+| FR-001 | Access through Strava's consent flow | `backend/tests/strava/test_oauth.py::test_the_authorize_url_carries_the_parameters_strava_requires_in_the_reference_order`<br>`backend/tests/api/test_connect_routes.py::test_connect_sets_the_state_cookie_and_redirects_to_strava` |
+| FR-002 | Read-only scopes including private | `backend/tests/strava/test_oauth.py::test_the_authorize_url_neither_takes_a_password_nor_asks_to_write` |
+| FR-002a | Refuse a grant without read_all | `backend/tests/sync/test_authorization.py::test_a_grant_without_private_activity_access_is_refused_and_nothing_is_stored`<br>`backend/tests/api/test_connect_routes.py::test_a_withheld_scope_goes_home_marked_scope` |
+| FR-003 | Credentials survive a restart | `backend/tests/persistence/test_connection_store.py::test_a_saved_connection_survives_reopening_the_database` |
+| FR-004 | Renew an expired token automatically | `backend/tests/sync/test_authorization.py::test_ensure_fresh_renews_a_token_expiring_within_sixty_seconds`<br>`backend/tests/parity/test_sync_parity.py::test_expired_token_renews_first_and_completes` |
+| FR-005 | Credentials never logged or reported | `backend/tests/sync/test_no_credentials.py::test_no_log_record_and_no_result_carries_a_token`<br>`backend/tests/persistence/test_connection_store.py::test_the_repr_of_a_connection_carries_no_token` |
+| FR-006 | A rejected credential is a distinct outcome | `backend/tests/sync/test_authorization.py::test_a_rejected_renewal_asks_for_reconnection_and_stores_nothing`<br>`backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_401_asks_for_reconnection_and_leaves_stored_activities_alone` |
+| FR-007 | Disconnect discards credentials | GAP: not ported. The reference's `DisconnectAsync` is tested but no route or control calls it ("Connect only", StravaConnectEndpoints.cs), so no athlete can reach it; the new implementation has no disconnect at all |
+| FR-008 | One athlete at a time | `backend/tests/sync/test_authorization.py::test_authorizing_a_different_athlete_is_refused_and_the_held_connection_kept`<br>`backend/tests/api/test_connect_routes.py::test_a_different_athlete_goes_home_marked_mismatch` |
+| FR-009 | Only running and cycling imported | `backend/tests/strava/test_mapper.py::test_every_sport_type_out_of_scope_is_skipped_with_its_reason`<br>`backend/tests/sync/test_activity_sync.py::test_a_first_sync_reads_until_an_empty_page_and_stores_only_running_and_cycling` |
+| FR-010 | The fixed sport-type table | `backend/tests/strava/test_mapper.py::test_every_sport_type_in_scope_maps_to_its_activity_type` |
+| FR-010a | Classify by sport_type, not type | `backend/tests/strava/test_shapes.py::test_unknown_keys_are_ignored_and_start_date_local_and_type_are_never_read` |
+| FR-010b | Indoor sessions imported alike | `backend/tests/strava/test_mapper.py::test_an_indoor_run_private_or_manual_activity_is_imported_like_any_other` |
+| FR-011 | Skip what the domain refuses, with reason | `backend/tests/strava/test_mapper.py::test_an_activity_the_domain_refuses_is_skipped_with_its_reason`<br>`backend/tests/sync/test_activity_sync.py::test_a_first_sync_reads_until_an_empty_page_and_stores_only_running_and_cycling` |
+| FR-012 | Private activities imported alike | `backend/tests/strava/test_mapper.py::test_an_indoor_run_private_or_manual_activity_is_imported_like_any_other` |
+| FR-013 | Manual activities imported alike | `backend/tests/strava/test_mapper.py::test_an_indoor_run_private_or_manual_activity_is_imported_like_any_other` |
+| FR-014 | Strava id verbatim, provider recorded | `backend/tests/strava/test_shapes.py::test_an_id_larger_than_two_to_the_53_is_kept_verbatim_as_text`<br>`backend/tests/persistence/test_activity_store.py::test_the_stored_columns_hold_utc_microseconds_and_offset_minutes` |
+| FR-015 | Start with the athlete's offset | `backend/tests/strava/test_mapper.py::test_the_start_carries_the_athletes_offset_from_utc`<br>`backend/tests/strava/test_mapper.py::test_an_offset_of_five_and_a_half_hours_is_applied` |
+| FR-016 | Moving time, never elapsed | `backend/tests/strava/test_mapper.py::test_moving_time_is_used_and_elapsed_time_is_not` |
+| FR-017 | Fetch a series only when all three hold | `backend/tests/sync/test_activity_sync.py::test_streams_are_requested_inside_the_180_day_window_and_not_before_it`<br>`backend/tests/sync/test_activity_sync.py::test_an_activity_without_heart_rate_makes_no_stream_request`<br>`backend/tests/sync/test_activity_sync.py::test_a_held_series_is_never_fetched_again` |
+| FR-017a | Measured window of 180 days | `backend/tests/sync/test_activity_sync.py::test_streams_are_requested_inside_the_180_day_window_and_not_before_it` |
+| FR-017b | A held series is never discarded | `backend/tests/persistence/test_activity_store.py::test_a_held_series_is_kept_when_the_activity_is_imported_again_without_one`<br>`backend/tests/sync/test_activity_sync.py::test_a_held_series_is_never_fetched_again` |
+| FR-017c | Full-resolution series | `backend/tests/strava/test_client.py::test_the_streams_are_requested_at_full_resolution_keyed_by_type` |
+| FR-017d | A missing series leaves it owed, activity stored | `backend/tests/sync/test_activity_sync.py::test_an_outstanding_series_inside_the_window_holds_the_resume_point_behind_itself`<br>`backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_rate_limit_on_a_stream_request_stores_the_activity_with_its_series_owed` |
+| FR-017e | An owed series holds the resume point | `backend/tests/sync/test_activity_sync.py::test_an_outstanding_series_inside_the_window_holds_the_resume_point_behind_itself`<br>`backend/tests/sync/test_activity_sync.py::test_an_outstanding_series_that_has_aged_out_of_the_window_no_longer_holds_anything_back` |
+| FR-017f | Discard implausible samples, keep the rest | `backend/tests/strava/test_mapper.py::test_implausible_samples_are_discarded_and_the_rest_of_the_series_is_kept`<br>`backend/tests/strava/test_mapper.py::test_a_series_with_fewer_than_two_surviving_samples_is_unusable` |
+| FR-017g | Report discarded samples | `backend/tests/sync/test_sync_stops_and_reconciles.py::test_discarded_samples_are_reported_per_activity` |
+| FR-018 | No Strava concept in the domain | `backend/tests/test_layering.py::test_only_the_integration_and_the_sync_import_strava`<br>`backend/tests/domain/test_independence.py::test_no_domain_module_names_strava` |
+| FR-019 | Deterministic mapping | `backend/tests/strava/test_mapper.py::test_mapping_the_same_summary_twice_produces_the_same_session` |
+| FR-020 | Unknown fields ignored | `backend/tests/strava/test_shapes.py::test_unknown_keys_are_ignored_and_start_date_local_and_type_are_never_read` |
+| FR-021 | No load stored at import | `backend/tests/persistence/test_activity_store.py::test_no_load_value_is_stored_anywhere_in_the_row` |
+| FR-022 | Sessions stored durably | `backend/tests/persistence/test_activity_store.py::test_a_session_read_back_equals_the_session_that_was_stored` |
+| FR-023 | Identity is provider + id; re-import updates | `backend/tests/persistence/test_activity_store.py::test_storing_the_same_activity_twice_updates_one_row_in_place`<br>`backend/tests/persistence/test_activity_store.py::test_two_activities_alike_in_every_value_but_their_id_are_two_rows` |
+| FR-024 | Read back equal in every respect | `backend/tests/persistence/test_activity_store.py::test_a_session_read_back_equals_the_session_that_was_stored` |
+| FR-025 | Sync state stored | `backend/tests/sync/test_activity_sync.py::test_an_empty_history_resumes_from_the_epoch_and_records_the_outcome`<br>`backend/tests/persistence/test_connection_store.py::test_the_sync_state_is_saved_and_read_back` |
+| FR-026 | A failed sync leaves the store consistent | `backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_transport_failure_after_the_retries_is_interrupted_and_changes_nothing`<br>`backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_429_on_page_two_keeps_page_one_and_reports_the_next_quarter_hour` |
+| FR-027 | Later syncs read from the resume point | `backend/tests/sync/test_activity_sync.py::test_a_later_sync_asks_only_from_the_latest_start_minus_seven_days_and_duplicates_nothing` |
+| FR-028 | Seven-day look-back | `backend/tests/sync/test_activity_sync.py::test_a_later_sync_asks_only_from_the_latest_start_minus_seven_days_and_duplicates_nothing`<br>`backend/tests/sync/test_activity_sync.py::test_an_activity_uploaded_late_is_still_picked_up` |
+| FR-029 | Resume point advances only over stored work | `backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_429_on_page_two_keeps_page_one_and_reports_the_next_quarter_hour`<br>`backend/tests/sync/test_activity_sync.py::test_the_resume_point_is_never_before_the_epoch` |
+| FR-030 | Re-reading leaves one session | `backend/tests/sync/test_activity_sync.py::test_a_later_sync_asks_only_from_the_latest_start_minus_seven_days_and_duplicates_nothing` |
+| FR-031 | Reconcile only complete spans | `backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_span_read_to_completion_removes_what_is_no_longer_there` |
+| FR-031a | Reconcile exactly the span read | `backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_session_before_the_span_is_never_a_candidate_for_removal` |
+| FR-031b | Older edits need a full resync | GAP: depends on FR-032's full resynchronization, which is not ported (see FR-032). The routine-sync half, not reconciling beyond the span, is covered by `sync/test_sync_stops_and_reconciles.py::test_a_session_before_the_span_is_never_a_candidate_for_removal` |
+| FR-031c | Never remove on a partial span | `backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_span_read_only_partially_removes_nothing`<br>`backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_rate_limit_on_a_stream_request_stores_the_activity_with_its_series_owed` |
+| FR-031d | Removals reported | `backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_span_read_to_completion_removes_what_is_no_longer_there` |
+| FR-031e | Sport changed out of scope is removed | `backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_stored_ride_whose_sport_type_changed_to_ebike_is_skipped_and_removed`<br>`backend/tests/parity/test_sync_parity.py::test_the_sync_matches_the_reference_exactly[sport-type-changed-to-ebike]` |
+| FR-032 | Full resynchronization offered | GAP: not ported. The reference's `FullResyncAsync` is tested but no route or control calls it, so the athlete cannot trigger it; the new implementation has no full resync |
+| FR-033 | Nothing new is a success | `backend/tests/parity/test_sync_parity.py::test_the_sync_matches_the_reference_exactly[incremental-lookback]`<br>`backend/tests/sync/test_sync_message.py::test_every_row_of_the_message_table_matches_the_reference` |
+| FR-034 | Stay within the rate limits | `backend/tests/strava/test_client.py::test_a_successful_page_whose_budget_is_exhausted_is_discarded_and_stops_the_sync`<br>`backend/tests/strava/test_rate_limit.py::test_a_budget_with_room_left_is_not_exhausted` |
+| FR-035 | Stop cleanly at a limit, report the retry time | `backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_429_on_page_two_keeps_page_one_and_reports_the_next_quarter_hour`<br>`backend/tests/strava/test_rate_limit.py::test_the_short_term_retry_time_is_the_next_quarter_hour_boundary`<br>`backend/tests/strava/test_rate_limit.py::test_the_daily_retry_time_is_the_next_midnight_utc` |
+| FR-036 | Resume after an early stop | `backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_429_on_page_two_keeps_page_one_and_reports_the_next_quarter_hour` |
+| FR-037 | Bounded retry of transient failures | `backend/tests/strava/test_client.py::test_a_server_error_is_retried_and_succeeds_on_the_third_attempt_with_backoff`<br>`backend/tests/strava/test_client.py::test_a_transport_error_is_retried_like_a_server_error`<br>`backend/tests/strava/test_client.py::test_a_client_error_is_not_retried` |
+| FR-038 | A summary of every sync | `backend/tests/parity/test_sync_parity.py::test_the_sync_matches_the_reference_exactly[first-import]` |
+| FR-039 | No silent failure; early stops distinguishable | `backend/tests/sync/test_sync_stops_and_reconciles.py::test_a_429_on_page_two_keeps_page_one_and_reports_the_next_quarter_hour`<br>`backend/tests/parity/test_sync_parity.py::test_a_limit_reached_on_a_stream_request_is_an_outcome_not_an_escape` |
+| FR-040 | Never two syncs at once | `backend/tests/sync/test_coordinator.py::test_a_second_run_while_one_is_in_flight_returns_the_running_status_and_one_walk_runs`<br>`backend/tests/api/test_sync_routes.py::test_a_second_sync_while_one_runs_returns_the_running_status_at_once` |
+| FR-041 | Domain behaviour unchanged | `backend/tests/parity/test_history_domain.py::test_every_load_matches_the_reference`<br>`backend/tests/test_layering.py::test_the_domain_imports_only_itself` |
+| FR-042 | Exercisable end to end without network | `backend/tests/parity/test_sync_parity.py::test_the_sync_matches_the_reference_exactly` |
+| FR-043 | Purpose-built anonymized test data | parity/README.md (fixtures purpose-built; tokens `test-access-…`); `sync/test_no_credentials.py::test_no_log_record_and_no_result_carries_a_token` |
+
+### 006 Dashboard
+
+| FR | Summary | New implementation's test(s), or exclusion |
+| --- | --- | --- |
+| FR-001 | Current Fitness | `backend/tests/parity/test_view_parity.py::test_every_string_and_boolean_matches_the_reference`<br>`frontend/tests/MetricRow.test.tsx` › shows the labels, values and qualifiers in order |
+| FR-002 | Current Fatigue | `backend/tests/parity/test_view_parity.py::test_every_string_and_boolean_matches_the_reference`<br>`frontend/tests/MetricRow.test.tsx` › shows the labels, values and qualifiers in order |
+| FR-003 | Current Form | `backend/tests/parity/test_view_parity.py::test_every_string_and_boolean_matches_the_reference`<br>`frontend/tests/MetricRow.test.tsx` › shows the labels, values and qualifiers in order |
+| FR-004 | This ISO week's load | `backend/tests/dashboard/test_view_builder.py::test_the_week_and_its_trend_against_the_week_before`<br>`frontend/tests/MetricRow.test.tsx` › captions the week with its change, percent and judgement |
+| FR-005 | Trend change and classification | `frontend/tests/MetricRow.test.tsx` › captions the week with its change, percent and judgement<br>`backend/tests/parity/test_view_parity.py::test_every_string_and_boolean_matches_the_reference` |
+| FR-005a | This week indeterminate while in progress | `backend/tests/parity/test_view_parity.py::test_every_string_and_boolean_matches_the_reference`<br>`backend/tests/dashboard/test_view_builder.py::test_the_week_and_its_trend_against_the_week_before` |
+| FR-006 | Chart of the three metrics, up to 180 days | `backend/tests/dashboard/test_view_builder.py::test_the_metrics_span_the_180_days_ending_today_gap_free_and_ascending`<br>`frontend/tests/MetricsChart.test.tsx` › draws the bars behind a zero rule and the lines, Fitness painted last |
+| FR-007 | Seven most recent, newest first | `backend/tests/dashboard/test_view_builder.py::test_the_recent_list_holds_at_most_seven_newest_first`<br>`frontend/tests/RecentActivities.test.tsx` › is a table with one row of five cells per session, newest first |
+| FR-008 | Measured or estimated marked | `frontend/tests/RecentActivities.test.tsx` › words each row's provenance in a tag, not only in its colour |
+| FR-009 | Sync Activities button | `frontend/tests/SyncPanel.test.tsx` › offers an enabled Sync Activities button when idle, and pressing it asks for a sync<br>`backend/tests/api/test_sync_routes.py::test_a_first_import_blocks_until_done_and_reports_the_count` |
+| FR-010 | Sync feedback | `frontend/tests/Dashboard.test.tsx` › shows the running state the moment Sync Activities is pressed, before the sync answers<br>`backend/tests/sync/test_sync_message.py::test_every_row_of_the_message_table_matches_the_reference` |
+| FR-011 | Empty states with guidance | `frontend/tests/DashboardStates.test.tsx` › connected with nothing imported: the column explains itself, with no redundant Connect<br>`frontend/tests/DashboardStates.test.tsx` › unconnected with nothing imported: the column offers the Connect route |
+| FR-012 | State restored on reload | `frontend/tests/Dashboard.test.tsx` › shows a sync already running on load, and does not poll<br>`backend/tests/api/test_sync_routes.py::test_a_sync_with_no_connection_asks_to_connect` |
+| FR-012a | State held by the application | `backend/tests/sync/test_coordinator.py::test_a_sync_imports_what_strava_returns_and_records_when_it_finished`<br>`backend/tests/api/test_sync_routes.py::test_a_second_sync_while_one_runs_returns_the_running_status_at_once` |
+| FR-013 | Only local data; no API call but sync | `backend/tests/api/test_dashboard_route.py::test_the_body_is_the_read_view_as_json`<br>`frontend/tests/Dashboard.test.tsx` › switches the window on the client, with no request |
+| FR-014 | Max HR from configuration | `backend/tests/api/test_settings.py::test_a_valid_configuration_is_read`<br>`frontend/tests/Rail.test.tsx` › states the as-of day, its ISO week and the maximum heart rate from configuration |
+| FR-015 | Refuse to start without a valid max HR | `backend/tests/api/test_settings.py::test_a_missing_or_blank_maximum_heart_rate_refuses_start_up`<br>`backend/tests/api/test_settings.py::test_the_server_refuses_to_start_before_binding_a_port` |
+| FR-016 | A connect flow | `backend/tests/api/test_connect_routes.py::test_connect_sets_the_state_cookie_and_redirects_to_strava`<br>`backend/tests/api/test_connect_routes.py::test_a_successful_exchange_stores_the_connection_and_goes_home` |
+| FR-017 | Unconnected empty state routes to connect | `frontend/tests/DashboardStates.test.tsx` › unconnected with nothing imported: the column offers the Connect route |
+| FR-018 | Rejected credential routes to reconnect | `frontend/tests/DashboardStates.test.tsx` › a rejected credential (unauthorized-401) says so in the rail and offers the Connect route<br>`backend/tests/api/test_sync_routes.py::test_a_rejected_credential_asks_to_connect` |
+
+### 007 Material Design visual refresh
+
+| FR | Summary | New implementation's test(s), or exclusion |
+| --- | --- | --- |
+| FR-001 | No behavioural change | superseded by 008 FR-001; the goldens pin behaviour (`tests/parity/*`) |
+| FR-002 | Every string still displayed | superseded by 008 FR-002 |
+| FR-003 | No new pages or settings | `frontend/tests/NotFoundAndErrors.test.tsx` › renders the dashboard at /, titled Training Load<br>`frontend/tests/theme/responsive.test.ts` › no source file reads or sets the appearance |
+| FR-004 | A Material visual system | excluded: names the reference's former component library (009 FR-001); superseded by 008 FR-020 |
+| FR-005 | Colours only from the scheme | `frontend/tests/theme/colourDiscipline.test.ts` › no stylesheet or component names a colour outside the theme |
+| FR-006 | Spacing from the scale | excluded: 007's Material spacing scale; superseded by 008 FR-003 – FR-010 (the copied broadsheet tokens) |
+| FR-007 | Regions as distinct surfaces | superseded by 008 FR-003, FR-004 |
+| FR-008 | Three peer metric surfaces | superseded by 008 FR-004 |
+| FR-009 | Material primary sync button | excluded: Material-specific; superseded by 008 FR-016, FR-017 |
+| FR-010 | Connect as a prominent action | `frontend/tests/DashboardStates.test.tsx` › unconnected with nothing imported: the column offers the Connect route |
+| FR-011 | Recent list as even rows | superseded by 008 FR-007 |
+| FR-012 | Qualifiers as chips supplementing text | `frontend/tests/MetricRow.test.tsx` › words every qualifier as a tag<br>`frontend/tests/RecentActivities.test.tsx` › words each row's provenance in a tag, not only in its colour |
+| FR-013 | The component library's line chart | excluded: names MudChart (009 FR-001); superseded by 008 FR-006 |
+| FR-013a | Series named in a legend | `frontend/tests/MetricsChart.test.tsx` › names each line in the legend |
+| FR-014 | Designed empty, loading and unavailable states | superseded by 008 FR-009 |
+| FR-015 | Same system on not-found, error, connection-lost | superseded by 008 FR-010; the connection-lost notice is not ported (009 Amendment 1(c)) |
+| FR-016 | Responsive reflow | superseded by 008 FR-011 |
+| FR-017 | No horizontal scroll from 320 px | superseded by 008 FR-012 |
+| FR-018 | Maximum reading width | superseded by 008 FR-013 |
+| FR-019 | Contrast 4.5:1 and 3:1 | superseded by 008 FR-015 |
+| FR-020 | Visible focus | superseded by 008 FR-016 |
+| FR-021 | 48 × 48 targets | superseded by 008 FR-017 |
+| FR-022 | Not colour alone | superseded by 008 FR-018 |
+| FR-023 | Heading structure | superseded by 008 FR-019 |
+| FR-024 | Honour reduced motion | `frontend/tests/theme/interactive.test.ts` › the reduced-motion reset is still in place |
+| FR-025 | Light and dark schemes | superseded by 008 FR-020 |
+| FR-026 | Follow the device preference | superseded by 008 FR-021 |
+| FR-027 | No in-app scheme control | `frontend/tests/theme/responsive.test.ts` › no source file reads or sets the appearance |
+| FR-028 | Identical content in both schemes | superseded by 008 FR-022 |
+| FR-029 | Chart series legible in both | superseded by 008 FR-023 |
+
+### 008 Broadsheet dashboard redesign
+
+| FR | Summary | New implementation's test(s), or exclusion |
+| --- | --- | --- |
+| FR-001 | No behavioural change | `backend/tests/parity/test_history_domain.py::test_every_load_matches_the_reference`<br>`backend/tests/parity/test_sync_parity.py::test_the_sync_matches_the_reference_exactly` |
+| FR-002 | Every string still displayed | `backend/tests/parity/test_view_parity.py::test_every_string_and_boolean_matches_the_reference`<br>`frontend/tests/MetricRow.test.tsx` › shows the labels, values and qualifiers in order<br>each component's `renderedText` golden, compared exactly in the frontend component tests |
+| FR-003 | One persistent rail | `frontend/tests/Rail.test.tsx` › is the aside that carries the page's one h1<br>`frontend/tests/Rail.test.tsx` › states the as-of day, its ISO week and the maximum heart rate from configuration |
+| FR-004 | One row of four large figures | `frontend/tests/MetricRow.test.tsx` › shows four figures as peers, colouring only Fitness and Fatigue |
+| FR-005 | 30, 90 and 180-day window | `frontend/tests/Dashboard.test.tsx` › switches the window on the client, with no request<br>`frontend/tests/Rail.test.tsx` › offers the three windows as a radio group, 180 days checked by default |
+| FR-006 | Bars, zero rule, legend, axis | `frontend/tests/MetricsChart.test.tsx` › draws the bars behind a zero rule and the lines, Fitness painted last<br>`frontend/tests/MetricsChart.test.tsx` › labels the axis with six ticks |
+| FR-007 | Recent as a table with a provenance tag | `frontend/tests/RecentActivities.test.tsx` › is headed, with the five column headings<br>`frontend/tests/RecentActivities.test.tsx` › words each row's provenance in a tag, not only in its colour |
+| FR-008 | Uncomputable figures as an em dash | `frontend/tests/MetricRow.test.tsx` › keeps four positions of em dashes when there is nothing to show<br>`backend/tests/dashboard/test_display.py::test_a_missing_figure_renders_as_a_dash` |
+| FR-009 | Every state in the design language | `frontend/tests/DashboardStates.test.tsx` › while the history is read: the column says so, the rail shows today and no heart rate<br>`frontend/tests/DashboardStates.test.tsx` › an unreadable history shows the distinct notice in place of the figures |
+| FR-010 | Same language on not-found and error | `frontend/tests/NotFoundAndErrors.test.tsx` › renders the not-found page at %s<br>`frontend/tests/NotFoundAndErrors.test.tsx` › shows the unhandled-error notice, with Reload and a dismiss control, when a child throws |
+| FR-011 | Single column when narrow | `frontend/tests/theme/responsive.test.ts` › below the breakpoint the page stacks and the rail stops sticking |
+| FR-012 | No horizontal scroll from 320 px | `frontend/tests/theme/responsive.test.ts` › no width, min-width or flex-basis is fixed wider than 320px<br>`frontend/tests/theme/responsive.test.ts` › every fixed-width grid track is released below the breakpoint |
+| FR-013 | Maximum reading width | `frontend/tests/theme/responsive.test.ts` › on a wide display the page and its prose are both capped |
+| FR-014 | Chart scales to width | `frontend/tests/theme/responsive.test.ts` › the chart scales to its container<br>`frontend/tests/MetricsChart.test.tsx` › draws an svg plot with the reference's view box and accessible name |
+| FR-015 | Contrast 4.5:1 and 3:1 | `frontend/tests/theme/palette.test.ts` › body text clears 4.5:1 on the page and on a surface<br>`frontend/tests/theme/palette.test.ts` › every chart line clears 3:1 against the plot |
+| FR-016 | Visible focus | `frontend/tests/theme/interactive.test.ts` › keyboard focus draws a visible ring |
+| FR-017 | 48 × 48 targets | `frontend/tests/theme/interactive.test.ts` › every control clears 48px: %s %s |
+| FR-018 | Not colour alone | `frontend/tests/RecentActivities.test.tsx` › words each row's provenance in a tag, not only in its colour<br>`frontend/tests/MetricRow.test.tsx` › words every qualifier as a tag |
+| FR-019 | Heading structure | `frontend/tests/Rail.test.tsx` › is the aside that carries the page's one h1<br>`frontend/tests/Rail.test.tsx` › names its regions with headings |
+| FR-020 | Light and dark appearances | `frontend/tests/theme/palette.test.ts` › the dark scheme declares every required token<br>`frontend/tests/theme/palette.test.ts` › every colour is re-decided by the dark scheme rather than inherited |
+| FR-021 | Follow the device preference, no script | `frontend/tests/theme/responsive.test.ts` › the dark palette is a prefers-color-scheme media query in the copied theme<br>`frontend/tests/theme/responsive.test.ts` › index.html has no inline script, so the right appearance applies from the first paint |
+| FR-022 | Identical content in both | `frontend/tests/theme/palette.test.ts` › the light scheme declares every required token<br>`frontend/tests/theme/palette.test.ts` › the dark scheme declares every required token |
+| FR-023 | Chart series legible in both | `frontend/tests/theme/palette.test.ts` › every chart line clears 3:1 against the plot |
+
 
 ## Measurements
 

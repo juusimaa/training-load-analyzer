@@ -602,7 +602,7 @@ These apply to every task below. They are listed once rather than repeated.
 
 **Depends on**: US1–US4.
 
-- [ ] T108 [US5] Build the requirement map in `specs/009-python-react-stack/parity-report.md` § "Requirement map": one row per functional requirement in `specs/001-*/spec.md` to `specs/008-*/spec.md`, including their amendments, with the columns FR id, one-line summary, and the new implementation's test(s) (`path::test_name`), *or* "excluded" plus the reason. Exclusions are only those in 009 FR-001 (stack-named requirements) and Amendment 1(c). Write a throwaway script in the session scratchpad that lists every `FR-\d+[a-z]?` per spec, and confirm the map has none missing
+- [X] T108 [US5] Build the requirement map in `specs/009-python-react-stack/parity-report.md` § "Requirement map": one row per functional requirement in `specs/001-*/spec.md` to `specs/008-*/spec.md`, including their amendments, with the columns FR id, one-line summary, and the new implementation's test(s) (`path::test_name`), *or* "excluded" plus the reason. Exclusions are only those in 009 FR-001 (stack-named requirements) and Amendment 1(c). Write a throwaway script in the session scratchpad that lists every `FR-\d+[a-z]?` per spec, and confirm the map has none missing
 - [X] T109 [P] [US5] Fill § "Tolerances" and § "Deviations" in `specs/009-python-react-stack/parity-report.md`:
   - the six tolerance rows of [parity.md §5](./contracts/parity.md#5-tolerances);
   - Amendment 1(a) with any display ties found (T042);
@@ -623,7 +623,7 @@ These apply to every task below. They are listed once rather than repeated.
 
   Mark each result PASS or FAIL. SC-004 passes when first meaningful content arrives in ≤ 2 s **and** no later than the reference's median of 3 cold loads (measure the new implementation the same way). SC-005 passes at ≤ 10 s. A FAIL is reported to the developer; it is not tuned away silently.
 - [X] T111 [US5] Write § "TDD assessment" in `specs/009-python-react-stack/parity-report.md`: where RED preceded GREEN and where it did not, with examples from the git history (`git log --oneline -- alt-stack`); where a golden rather than a hand-written test caught a defect; any mocking temptation and how it was avoided. This is for the developer's own judgement (SC-008); state facts, and leave the verdict to the developer
-- [ ] T112 [US5] VERIFY (009 US5 scenario 2), from clean state:
+- [X] T112 [US5] VERIFY (009 US5 scenario 2), from clean state:
   - `git clean -xdn alt-stack` reviewed;
   - `dotnet test` at the root is green (FR-003);
   - `cd alt-stack/backend && uv sync --frozen && uv run pytest` is green;
@@ -641,7 +641,7 @@ These apply to every task below. They are listed once rather than repeated.
 - [X] T113 [P] Write `alt-stack/README.md`: prerequisites, the `.env` variables from research R14 (with the note "never commit; git-ignored"), the development and run commands with `--workers 1` and why, the test and locale commands, where parity lives, and "do not point `TLA_DATABASE_PATH` at the reference's database" (009 FR-019, FR-022). Link it from the root `README.md` with one line under a heading naming feature 009. This is a documentation-only edit, and does not touch the reference's code
 - [X] T114 [P] Sweep for credentials and secrets. `git grep -nE "(access|refresh)_token\s*[:=]\s*['\"][a-f0-9]{20,}"`, `git grep -n client_secret -- alt-stack parity` (fake values only), and `git ls-files | grep -E "\.env$|\.db$"` all find nothing. Confirm no `print(` in `alt-stack/backend/src` (logging only, Principle VI)
 - [X] T115 [P] Sweep for simplicity: list every module, class and function in `alt-stack/backend/src/tla` and `alt-stack/frontend/src` that has a single caller and exists only as an abstraction (not a port of a reference unit). Remove it or justify it in plan.md Complexity Tracking (Principle III). Confirm the three basis `combine` helpers are still separate (004 R12)
-- [ ] T116 Run the quickstart end to end ([quickstart.md](./quickstart.md) §1–§8) on a clean clone. Fix any step that does not work as written, in the quickstart itself if it is the document that is wrong
+- [X] T116 Run the quickstart end to end ([quickstart.md](./quickstart.md) §1–§8) on a clean clone. Fix any step that does not work as written, in the quickstart itself if it is the document that is wrong
 - [ ] T117 Write the constitution completion review as the final section of `specs/009-python-react-stack/parity-report.md`: an explicit check of Principles I–VII and the "Alternative-stack experiment" constraints, one line each with evidence (test path or command). The checks cover in particular: strict TDD (I); domain independence (`test_independence.py`, `test_layering.py`) (II); no unnecessary abstraction (T115) (III); no mocking library (`git grep -nE "unittest\.mock|vi\.fn|vi\.mock" alt-stack` is empty) (IV); nothing merged into `main` (merge rule). List the follow-ups from research R3: run `/speckit-bug-assess` against `main` for the token renewal and the in-flight sync state
 
 ---
