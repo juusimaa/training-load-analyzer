@@ -455,13 +455,13 @@ These apply to every task below. They are listed once rather than repeated.
 
 ### Frontend contract types, API client, windowing and geometry
 
-- [ ] T082 [P] [US3] Write `alt-stack/frontend/src/types.ts`: `DashboardView`, `Day`, `Recent`, `Current`, `Week`, `Trend` and `SyncStatusView`, mirroring [http-api.md](./contracts/http-api.md) field for field; and the `DashboardApi` interface `{ fetchDashboard(): Promise<DashboardView>; fetchSyncStatus(): Promise<SyncStatusView>; postSync(): Promise<SyncStatusView> }` (data-model.md §6). This is types only, with no behaviour to test
-- [ ] T083 [P] [US3] RED: write `alt-stack/frontend/tests/api.test.ts`. Given a `fetch` function passed in as a plain async function (not `vi.fn`), when `createApi(fetchImpl)` calls `/api/dashboard`, `/api/sync/status` and `POST /api/sync`, then it returns the parsed body. Given a rejected fetch or a non-2xx response, then it throws `Unavailable`
-- [ ] T084 [P] [US3] RED: write `alt-stack/frontend/tests/window.test.ts`:
+- [X] T082 [P] [US3] Write `alt-stack/frontend/src/types.ts`: `DashboardView`, `Day`, `Recent`, `Current`, `Week`, `Trend` and `SyncStatusView`, mirroring [http-api.md](./contracts/http-api.md) field for field; and the `DashboardApi` interface `{ fetchDashboard(): Promise<DashboardView>; fetchSyncStatus(): Promise<SyncStatusView>; postSync(): Promise<SyncStatusView> }` (data-model.md §6). This is types only, with no behaviour to test
+- [X] T083 [P] [US3] RED: write `alt-stack/frontend/tests/api.test.ts`. Given a `fetch` function passed in as a plain async function (not `vi.fn`), when `createApi(fetchImpl)` calls `/api/dashboard`, `/api/sync/status` and `POST /api/sync`, then it returns the parsed body. Given a rejected fetch or a non-2xx response, then it throws `Unavailable`
+- [X] T084 [P] [US3] RED: write `alt-stack/frontend/tests/window.test.ts`:
   - `WINDOWS` is `[30, 90, 180]`, with default 180;
   - given 200 days, `windowed(days, 30)` returns the trailing 30 in order;
   - given 20 days, `windowed(days, 90)` returns all 20.
-- [ ] T085 [P] [US3] RED: port `MetricsChartTests.cs` into `alt-stack/frontend/tests/geometry.test.ts`, and parametrize over every history golden's `geometry` for windows 180, 90 and 30. Given the windowed `days`, when these run:
+- [X] T085 [P] [US3] RED: port `MetricsChartTests.cs` into `alt-stack/frontend/tests/geometry.test.ts`, and parametrize over every history golden's `geometry` for windows 180, 90 and 30. Given the windowed `days`, when these run:
   - `viewBox(1000, 300)`;
   - `plot` (Fitness, Fatigue, Form polylines, with the metric band taken over the **windowed** series);
   - `loadBars`;
@@ -470,12 +470,12 @@ These apply to every task below. They are listed once rather than repeated.
   - `hoverSlots` (left, width, barTop, barHeight, load, per-series label, value and top; `opens-left` past 55 %);
 
   then each coordinate string matches within 0.01 via `expectCoordsClose`, and tick labels, counts and `null`-ness match exactly (research R8, [parity.md §5](./contracts/parity.md#5-tolerances)).
-- [ ] T086 [US3] GREEN: implement `alt-stack/frontend/src/api.ts` (`createApi(fetchImpl = fetch): DashboardApi`, `class Unavailable`), `alt-stack/frontend/src/window.ts` and `alt-stack/frontend/src/chart/geometry.ts`: a pure port of `src/TrainingLoadAnalyzer.Web/Features/Dashboard/MetricsChart.cs`, rounding with `Math.round(v * 100) / 100` and printing with `String()`. It must not use `toFixed` or `toLocaleString`
-- [ ] T087 [US3] REFACTOR `alt-stack/frontend/src/chart/geometry.ts`, and run `npm test`
+- [X] T086 [US3] GREEN: implement `alt-stack/frontend/src/api.ts` (`createApi(fetchImpl = fetch): DashboardApi`, `class Unavailable`), `alt-stack/frontend/src/window.ts` and `alt-stack/frontend/src/chart/geometry.ts`: a pure port of `src/TrainingLoadAnalyzer.Web/Features/Dashboard/MetricsChart.cs`, rounding with `Math.round(v * 100) / 100` and printing with `String()`. It must not use `toFixed` or `toLocaleString`
+- [X] T087 [US3] REFACTOR `alt-stack/frontend/src/chart/geometry.ts`, and run `npm test`
 
 ### Theme and components
 
-- [ ] T088 [US3] Copy `src/TrainingLoadAnalyzer.Web/wwwroot/Theme/broadsheet.css` to `alt-stack/frontend/src/theme/broadsheet.css` byte for byte. Prepend a provenance comment naming the source path, the commit `git rev-parse HEAD`, and "copied, not referenced (009 FR-004); edit only by re-copying". Copy each `.razor.css` from `src/TrainingLoadAnalyzer.Web/Components/`, each with the same header:
+- [X] T088 [US3] Copy `src/TrainingLoadAnalyzer.Web/wwwroot/Theme/broadsheet.css` to `alt-stack/frontend/src/theme/broadsheet.css` byte for byte. Prepend a provenance comment naming the source path, the commit `git rev-parse HEAD`, and "copied, not referenced (009 FR-004); edit only by re-copying". Copy each `.razor.css` from `src/TrainingLoadAnalyzer.Web/Components/`, each with the same header:
   - `Pages/Dashboard.razor.css` → `alt-stack/frontend/src/components/Dashboard.css`. It holds the rail and the page frame (the rail is `<aside class="rail">` in `Pages/Dashboard.razor`), and is imported by `Dashboard.tsx` and `Rail.tsx`;
   - `Layout/MainLayout.razor.css` → `alt-stack/frontend/src/theme/layout.css`, imported once by `main.tsx`;
   - `Dashboard/MetricRow.razor.css` → `components/MetricRow.css`;
@@ -487,17 +487,17 @@ These apply to every task below. They are listed once rather than repeated.
   - `Layout/ReconnectModal.razor.css` is **not** copied (Amendment 1(c)).
 
   In every copied file, replace Blazor's `::deep` with the plain descendant combinator only; change nothing else. Also copy the global rules from `wwwroot/app.css` that the page depends on (focus ring, `#blazor-error-ui` → `.error-ui`) into `alt-stack/frontend/src/theme/app.css`, with the same header
-- [ ] T089 [P] [US3] RED: port the `MetricRow` cases of `DashboardComponentTests.cs` into `alt-stack/frontend/tests/MetricRow.test.tsx`:
+- [X] T089 [P] [US3] RED: port the `MetricRow` cases of `DashboardComponentTests.cs` into `alt-stack/frontend/tests/MetricRow.test.tsx`:
   - given `current` and `week` from the H3f golden `view`, when `<MetricRow>` renders, then the labels "Fitness", "Fatigue", "Form", "This week", the values and the qualifiers ("still settling", "estimated", "partly estimated") appear in order;
   - the week caption reads `{change} ({percent})` and the judgement;
   - given `trend: null`, then `—`;
   - the element's whitespace-normalised `textContent` equals the golden's `renderedText.metricRow`.
-- [ ] T090 [P] [US3] RED: port `RecentActivitiesTests.cs` into `alt-stack/frontend/tests/RecentActivities.test.tsx`:
+- [X] T090 [P] [US3] RED: port `RecentActivitiesTests.cs` into `alt-stack/frontend/tests/RecentActivities.test.tsx`:
   - the heading is "Recent activities", with the column headings "Day", "Type", "Moving time", "Basis", "Load";
   - each row's `provenance` renders as the text tag "measured"/"estimated", not colour only (008 non-colour rule);
   - given `[]`, then "Nothing recorded yet.";
   - `textContent` equals the golden's `renderedText.recent`.
-- [ ] T091 [P] [US3] RED: port the chart cases of `DashboardComponentTests.cs` and `InformationPreservationTests.cs` into `alt-stack/frontend/tests/MetricsChart.test.tsx`:
+- [X] T091 [P] [US3] RED: port the chart cases of `DashboardComponentTests.cs` and `InformationPreservationTests.cs` into `alt-stack/frontend/tests/MetricsChart.test.tsx`:
   - given the 180-day H3f days and window 30, when `<MetricsChart>` renders, then the heading is "Daily load and metrics · last 30 days";
   - `svg.plot` has `viewBox="0 0 1000 300"`, `preserveAspectRatio="none"` and `aria-label="Daily training load with fitness, fatigue and form"`;
   - there are `g.bars > rect.load-bar`, and the polylines appear in DOM order Form, Fatigue, Fitness, with the reference's classes;
@@ -506,7 +506,7 @@ These apply to every task below. They are listed once rather than repeated.
   - given the chart rendered inside `Dashboard` with a `DashboardApi` whose calls are counted (a plain object, not `vi.fn`), when `pointermove`, `mouseover` and `mouseenter` are fired on every `.day` slot, then the call count and `container.innerHTML` are unchanged: no state change and no request per pointer movement (009 FR-015). jsdom does not evaluate `:hover`, so the readout's visibility itself is checked in T097's manual pass;
   - given `hasEnoughHistoryForChart` false, then "Not enough data to show trends (30+ days required)";
   - `textContent` equals the golden's `renderedText.chart30`, `chart90` and `chart180` for the respective windows.
-- [ ] T092 [P] [US3] RED: port the rail and `SyncPanel` cases of `DashboardComponentTests.cs` into `alt-stack/frontend/tests/Rail.test.tsx` and `alt-stack/frontend/tests/SyncPanel.test.tsx`:
+- [X] T092 [P] [US3] RED: port the rail and `SyncPanel` cases of `DashboardComponentTests.cs` into `alt-stack/frontend/tests/Rail.test.tsx` and `alt-stack/frontend/tests/SyncPanel.test.tsx`:
   - the rail has the one `h1` "Training Load"; the region headings "As of", "Window", "Strava", "Max heart rate"; "ISO week 2026-W38"; "190 bpm"; and "from configuration";
   - the window control is `role="radiogroup"` `aria-label="Chart window"`, with three radios labelled "30 days", "90 days", "180 days" and 180 checked by default;
   - `SyncPanel`, given `isRunning: false`, shows an enabled "Sync Activities" button;
@@ -514,19 +514,19 @@ These apply to every task below. They are listed once rather than repeated.
   - given `needsConnection`, it shows a "Connect Strava" `<a href="/connect">`;
   - given `lastChecked`, it shows "Last checked 2026-09-18 07:15";
   - the rail's whitespace-normalised `textContent` equals the golden's `renderedText.rail`, and each `SyncPanel` state equals `parity/golden/probes/surfaces.json` `syncPanel.<row>` (009 SC-002).
-- [ ] T093 [US3] GREEN: implement `alt-stack/frontend/src/components/{MetricRow,RecentActivities,MetricsChart,Rail,SyncPanel}.tsx`, each a pure function of its props, with markup and classes ported from the matching `.razor` file so the copied CSS applies unchanged ([dashboard-ui.md §4](./contracts/dashboard-ui.md#4-chart), §6). The only inline `style`s carry the hover slots' `left`/`width`/`top` percentages. Each component imports its own `.css`
+- [X] T093 [US3] GREEN: implement `alt-stack/frontend/src/components/{MetricRow,RecentActivities,MetricsChart,Rail,SyncPanel}.tsx`, each a pure function of its props, with markup and classes ported from the matching `.razor` file so the copied CSS applies unchanged ([dashboard-ui.md §4](./contracts/dashboard-ui.md#4-chart), §6). The only inline `style`s carry the hover slots' `left`/`width`/`top` percentages. Each component imports its own `.css`
 
 ### Dashboard container, window switching and sync interaction
 
-- [ ] T094 [P] [US3] RED: write `alt-stack/frontend/tests/Dashboard.test.tsx`, passing a plain-object `DashboardApi` whose methods return promises the test resolves by hand (a deferred helper in `alt-stack/frontend/tests/deferred.ts`, not `vi.fn`):
+- [X] T094 [P] [US3] RED: write `alt-stack/frontend/tests/Dashboard.test.tsx`, passing a plain-object `DashboardApi` whose methods return promises the test resolves by hand (a deferred helper in `alt-stack/frontend/tests/deferred.ts`, not `vi.fn`):
   - given `fetchDashboard` resolves with the H3f golden `view`, then the metric row, chart and recent list render;
   - when the athlete clicks "30 days", then the heading changes to "· last 30 days", the bar count equals 30, and the API received **no** further call (count calls in the plain object) (009 US3 scenarios 2–3);
   - when "Sync Activities" is clicked, then **before** `postSync` resolves, the button is disabled and reads "Syncing…" and the message is "Syncing activities…" (Amendment 1(b)2);
   - when `postSync` resolves, then the panel renders the returned status and `fetchDashboard` is called exactly once more, with its result replacing the view;
   - given `fetchSyncStatus` returns `isRunning: true` on load, then the running state shows and no polling call follows (research R9);
   - `document.title` is "Training Load".
-- [ ] T095 [US3] GREEN: implement `alt-stack/frontend/src/components/Dashboard.tsx` (it owns the fetch lifecycle, the chosen window and the sync-in-flight flag; data-model.md §6), `alt-stack/frontend/src/App.tsx` (routing by `location.pathname`: `/` → `Dashboard`, anything else → the not-found placeholder filled in US4) and `alt-stack/frontend/src/main.tsx` (mounts `<App api={createApi()} />` and imports `theme/broadsheet.css` and `theme/app.css`)
-- [ ] T096 [US3] REFACTOR `alt-stack/frontend/src/components/`, and run `npm test` and `npm run build`
+- [X] T095 [US3] GREEN: implement `alt-stack/frontend/src/components/Dashboard.tsx` (it owns the fetch lifecycle, the chosen window and the sync-in-flight flag; data-model.md §6), `alt-stack/frontend/src/App.tsx` (routing by `location.pathname`: `/` → `Dashboard`, anything else → the not-found placeholder filled in US4) and `alt-stack/frontend/src/main.tsx` (mounts `<App api={createApi()} />` and imports `theme/broadsheet.css` and `theme/app.css`)
+- [X] T096 [US3] REFACTOR `alt-stack/frontend/src/components/`, and run `npm test` and `npm run build`
 - [ ] T097 [US3] VERIFY:
   - `uv run pytest` and `npm test` are green;
   - run mode (`npm run build`, then Uvicorn serving `dist`) and development mode (quickstart §4) both load;

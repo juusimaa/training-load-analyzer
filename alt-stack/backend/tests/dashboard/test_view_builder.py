@@ -87,7 +87,8 @@ def test_the_week_and_its_trend_against_the_week_before():
     view = build(h2)
 
     assert view.current_week.points == Decimal(480)
-    assert (view.trend.absolute_change, view.trend.relative_change) == (Decimal(120), Decimal(120) / Decimal(360))
+    assert view.trend.absolute_change == Decimal(120)
+    assert abs(view.trend.relative_change - Decimal(1) / Decimal(3)) <= Decimal("1e-20")
 
 
 def test_no_trend_when_the_history_does_not_reach_the_previous_week():

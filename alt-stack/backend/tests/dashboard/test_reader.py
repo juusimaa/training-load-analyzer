@@ -45,7 +45,7 @@ def test_a_held_connection_is_reported(tmp_path):
     ("column", "value", "failure"),
     [("heart_rate_json", "[[0,300],[60000000,150]]", "ValueError"),
      ("heart_rate_json", "not json", "JSONDecodeError"),
-     ("started_at_utc_us", 2**62, "OverflowError")],
+     ("heart_rate_json", "[[1e30,150],[2e30,150]]", "OverflowError")],
 )
 def test_a_corrupt_row_makes_the_view_unavailable_and_logs_why(tmp_path, caplog, column, value, failure):
     conn, _ = seed(tmp_path / "t.db", 18, connected=True)
