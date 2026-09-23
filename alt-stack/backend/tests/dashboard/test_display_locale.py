@@ -40,3 +40,18 @@ def test_every_probe_is_unchanged_under_a_comma_decimal_locale(finnish):
     assert [display.week_change(Decimal(p["input"])) for p in PROBES["weekChange"]] == [p["output"] for p in PROBES["weekChange"]]
     assert [display.duration(timedelta(seconds=p["seconds"])) for p in PROBES["duration"]] == [p["output"] for p in PROBES["duration"]]
     assert [display.day(date.fromisoformat(p["input"])) for p in PROBES["day"]] == [p["output"] for p in PROBES["day"]]
+
+
+def test_the_whole_dashboard_body_for_h3f_is_unchanged_under_a_comma_decimal_locale(finnish):
+    from datetime import date
+
+    from tests.golden import history_fixture, load_history
+    from tests.parity.histories import activities
+    from tla.dashboard.view_builder import build_dashboard_view
+    from tla.dashboard.view_json import to_json
+
+    fixture = history_fixture("H3f")
+    body = to_json(build_dashboard_view(activities(fixture), date.fromisoformat(fixture["today"]), 190, True))
+
+    assert {k: v for k, v in body.items() if k != "days"} == {k: v for k, v in load_history("H3f")["view"].items() if k != "days"}
+    assert [d["display"] for d in body["days"]] == [d["display"] for d in load_history("H3f")["view"]["days"]]
