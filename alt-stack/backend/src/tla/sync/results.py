@@ -1,9 +1,16 @@
+"""What one sync did (005 FR-038). Returned to the caller, never stored, carrying no credential."""
+
 import enum
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from datetime import datetime
+
+from tla.strava.mapper import SkippedActivity
 
 
 class SyncOutcome(enum.Enum):
-    COMPLETED = "Completed"
+    """How a sync ended. Never an escaping exception, never a silent empty result (005 FR-039)."""
+
+    COMPLETED = "Completed"  # the only outcome under which reconciliation may remove anything
     RATE_LIMITED = "RateLimited"
     INTERRUPTED = "Interrupted"
     RECONNECTION_REQUIRED = "ReconnectionRequired"
@@ -25,3 +32,15 @@ class RemovedActivity:
 class DiscardedSamples:
     external_id: str
     count: int
+
+
+@dataclass(frozen=True, slots=True)
+class SyncResult:
+    imported: int = 0
+    updated: int = 0
+    skipped: list[SkippedActivity] = field(default_factory=list)
+    removed: list[RemovedActivity] = field(default_factory=list)
+    series_outstanding: int = 0
+    discarded: list[DiscardedSamples] = field(default_factory=list)
+    outcome: SyncOutcome = SyncOutcome.COMPLETED
+    retry_after: datetime | None = None

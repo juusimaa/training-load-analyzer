@@ -105,9 +105,12 @@ def test_an_outstanding_series_that_has_aged_out_of_the_window_no_longer_holds_a
     h.sync([page(activity("owed", "2026-03-22T10:00:00Z", hr=True), activity("later", "2026-09-12T05:00:00Z")), empty_page(),
             ("GET", "activities/owed/streams", 404, {}, ROOM)])
     h.clock.set(h.clock.now_utc() + timedelta(days=10))
+    renewed = {"access_token": "test-access-2", "refresh_token": "test-refresh-2", "expires_at": int((h.clock.now_utc() + timedelta(hours=6)).timestamp())}
 
-    h.sync([page(activity("later", "2026-09-12T05:00:00Z")), empty_page()])
+    # Ten days on, the token has expired, so the sync renews it before its first request (research R10).
+    _, urls = h.sync([("POST", "oauth/token", 200, renewed, None), page(activity("later", "2026-09-12T05:00:00Z")), empty_page()])
 
+    assert urls[0] == "https://www.strava.com/oauth/token"
     assert h.state().resume_point == datetime(2026, 9, 5, 5, tzinfo=UTC)
 
 
