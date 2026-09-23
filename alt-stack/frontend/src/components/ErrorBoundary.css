@@ -1,0 +1,10 @@
+/*
+   Not a copy. The one rule the React port adds to the reference's styling: blazor.web.js reveals
+   #blazor-error-ui by setting style.display = "block" on an unhandled error, and the copied
+   .error-ui rule (theme/layout.css) keeps display:none. This class does that reveal, so the copied
+   stylesheet stays byte for byte and no inline style is needed. No colour here.
+*/
+
+.error-ui.error-ui-shown {
+    display: block;
+}

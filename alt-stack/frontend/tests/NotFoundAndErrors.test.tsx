@@ -1,6 +1,6 @@
 // T100: ReconnectModalTests.cs ported as an exclusion (Amendment 1(c)), plus the not-found page,
 // the /Error page and the error boundary that stands in for #blazor-error-ui (research R4).
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { App } from "../src/App";
 import { ErrorBoundary } from "../src/components/ErrorBoundary";
@@ -20,7 +20,8 @@ async function at(path: string) {
   window.history.replaceState(null, "", path);
   const c = controlledApi();
   const rendered = render(<App api={c.api} />);
-  // The routes are code-split, so let the lazy chunk resolve.
+  // The routes are code-split, so wait for the lazy chunk to render, then let its effects run.
+  await waitFor(() => expect(rendered.container.firstChild).not.toBeNull());
   await act(async () => {
     for (let i = 0; i < 5; i += 1) await new Promise((r) => setTimeout(r, 0));
   });
