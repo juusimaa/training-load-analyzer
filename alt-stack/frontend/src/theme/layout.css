@@ -1,0 +1,43 @@
+/*
+   Source: src/TrainingLoadAnalyzer.Web/Components/Layout/MainLayout.razor.css
+   Commit: 33d07227356fd9576ccd0c1e619626995265da11
+   Copied, not referenced (009 FR-004); edit only by re-copying.
+   Blazor's ::deep replaced by the descendant combinator, and #blazor-error-ui renamed to .error-ui (the React error boundary's notice, research R4); nothing else changed.
+*/
+/*
+   The unhandled-error notice (007 FR-015, 008 FR-010).
+
+   Repointed off MudBlazor's generated palette variables onto the Broadsheet tokens, which are
+   redefined by the dark media query — so this keeps working in both appearances for the same
+   reason it did before, by a different mechanism.
+
+   The second accent is the alert ink here. The vendored token set has no error slot, and rather
+   than invent one for a single surface this takes the ramp step that is already measured against
+   the page in both schemes.
+*/
+
+.error-ui {
+    background: var(--color-accent-2-700);
+    color: var(--color-bg);
+    bottom: 0;
+    box-shadow: var(--shadow-md);
+    box-sizing: border-box;
+    display: none;
+    font-family: var(--font-body);
+    left: 0;
+    padding: var(--space-2) var(--space-4);
+    position: fixed;
+    width: 100%;
+    z-index: 2000;
+}
+
+    .error-ui .reload {
+        color: var(--color-bg);
+    }
+
+    .error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: var(--space-3);
+        top: var(--space-2);
+    }

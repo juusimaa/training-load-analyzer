@@ -1,0 +1,32 @@
+/*
+   Source: src/TrainingLoadAnalyzer.Web/Components/Dashboard/SyncPanel.razor.css
+   Commit: 33d07227356fd9576ccd0c1e619626995265da11
+   Copied, not referenced (009 FR-004); edit only by re-copying.
+   Blazor's ::deep replaced by the descendant combinator; nothing else changed.
+*/
+/* Layout only; the vendored tokens supply the rest. */
+
+.sync-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+}
+
+/* FR-017: a 48x48 touch target. The vendored .btn computes to about 38px tall, which is
+   comfortable with a mouse and too small to hit reliably with a thumb. */
+.sync-panel .btn {
+    min-height: 48px;
+}
+
+.sync-message {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+.sync-when {
+    margin: 0;
+    font-size: 13px;
+    color: color-mix(in srgb, var(--color-text) 70%, transparent);
+}

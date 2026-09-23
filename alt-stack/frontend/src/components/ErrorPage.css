@@ -1,0 +1,61 @@
+/*
+   Source: src/TrainingLoadAnalyzer.Web/Components/Pages/Error.razor.css
+   Commit: 33d07227356fd9576ccd0c1e619626995265da11
+   Copied, not referenced (009 FR-004); edit only by re-copying.
+   Blazor's ::deep replaced by the descendant combinator; nothing else changed.
+*/
+/*
+   Layout and one accent (008 FR-010).
+
+   The second accent is the alarm ink, as in MainLayout's error notice: the vendored token set has
+   no error slot, and taking a ramp step that is already measured against the page in both schemes
+   is better than inventing one for two surfaces.
+*/
+
+.page {
+    max-width: 44rem;
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-4) 60px;
+}
+
+.page h1 {
+    font-size: 42px;
+}
+
+.alarm {
+    color: var(--color-accent-2-700);
+}
+
+.state {
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--color-divider);
+}
+
+.state:last-child {
+    border-bottom: 1px solid var(--color-divider);
+}
+
+.state h2 {
+    margin: 0 0 var(--space-3);
+    font-size: 25px;
+}
+
+.state h3 {
+    margin: 0 0 var(--space-3);
+    font-size: 20px;
+}
+
+.state p {
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+.state p:last-child {
+    margin-bottom: 0;
+}
+
+/* The trace identifier is a machine string, so it is set as one rather than in the serif. */
+code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92em;
+}

@@ -1,0 +1,29 @@
+/*
+   Source: src/TrainingLoadAnalyzer.Web/Components/Pages/NotFound.razor.css
+   Commit: 33d07227356fd9576ccd0c1e619626995265da11
+   Copied, not referenced (009 FR-004); edit only by re-copying.
+   Blazor's ::deep replaced by the descendant combinator; nothing else changed.
+*/
+/* Layout only; the vendored tokens supply the rest (008 FR-010). */
+
+.page {
+    max-width: 44rem;
+    margin-inline: auto;
+    padding: var(--space-8) var(--space-4) 60px;
+}
+
+.page h1 {
+    font-size: 42px;
+}
+
+.state {
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
+}
+
+.state p {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+}

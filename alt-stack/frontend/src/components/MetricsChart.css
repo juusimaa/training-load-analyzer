@@ -1,0 +1,250 @@
+/*
+   Source: src/TrainingLoadAnalyzer.Web/Components/Dashboard/MetricsChartView.razor.css
+   Commit: 33d07227356fd9576ccd0c1e619626995265da11
+   Copied, not referenced (009 FR-004); edit only by re-copying.
+   Blazor's ::deep replaced by the descendant combinator; nothing else changed.
+*/
+/*
+   The plot's ink (008 FR-006, FR-015, research R4 and R5).
+
+   Colour lives here rather than on the SVG elements for two reasons, and the second is the one
+   that matters: a presentation attribute would fail ColourDisciplineTests, and — worse — it could
+   not respond to prefers-color-scheme, leaving the chart as the single region of the page that
+   ignores a dark device.
+
+   Every value below is measured by PaletteContrastTests against the page background in both
+   schemes. The one exclusion, the load bars, is named there rather than left out.
+*/
+
+.chart-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.chart-head h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.legend {
+    display: flex;
+    gap: var(--space-4);
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.legend-fitness {
+    color: var(--color-accent-700);
+}
+
+.legend-fatigue {
+    color: var(--color-accent-2-700);
+}
+
+/* R4: the swatch for a neutral series is still a word, and at 14px it needs 4.5:1 — which
+   --color-neutral-600 (3.85:1) misses and --color-neutral-700 (5.83:1) clears. The LINE keeps
+   -600, because a line is a non-text indicator and 3:1 is its bar. */
+.legend-form {
+    color: var(--color-neutral-700);
+}
+
+.plot {
+    display: block;
+    width: 100%;
+    height: 300px;
+    margin-top: var(--space-3);
+}
+
+/*
+   The daily-load backdrop, exempt from the 3:1 bar by Amendment 1(b).
+
+   It measures 1.33:1 against the page. The lightest step of the neutral ramp that would comply is
+   --color-neutral-600, which is the Form line's own value — so complying would give the backdrop
+   the weight of a data line and collapse the figure-and-ground separation the design is built on.
+   The exemption is asserted by name in PaletteContrastTests so it stays a decision with a reason.
+*/
+.load-bar {
+    fill: var(--color-neutral-300);
+}
+
+/* Not exempt, and darkened from the reference's neutral-400 (1.80:1) to clear 3:1. It is a
+   genuine reference indicator and costs nothing visually. */
+.zero-rule {
+    stroke: var(--color-neutral-600);
+    stroke-width: 1;
+}
+
+.series-fitness {
+    stroke: var(--color-accent);
+    stroke-width: 2.5;
+}
+
+.series-fatigue {
+    stroke: var(--color-accent-2);
+    stroke-width: 2;
+}
+
+/* SC-007 as amended (008 Amendment 1(c)): the pattern, not only the colour, tells this line from
+   the other two — restoring what feature 007's Amendment 1 recorded losing. */
+.series-form {
+    stroke: var(--color-neutral-600);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 4;
+}
+
+/* R4: the axis is 14px text, so 4.5:1, not the 3:1 the reference's neutral-600 clears. */
+.chart-axis {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-neutral-700);
+}
+
+.chart-empty {
+    margin: var(--space-4) 0 0;
+    padding: var(--space-8) var(--space-3);
+    text-align: center;
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The hover readout (008 Amendment 3)
+
+   Pure CSS over pre-rendered markup. Every day's slot is in the document and hidden; :hover
+   reveals one. No script, and no Blazor event handler — on this circuit the latter would mean a
+   server round-trip per mouse movement.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.plot-frame {
+    position: relative;
+}
+
+.hover-layer {
+    position: absolute;
+    inset: 0;
+}
+
+/* Centred on the day it reports, so the guide and the points sit on the data rather than in the
+   middle of an arbitrary band. The slots at the two ends are therefore half-width, which is
+   correct: there is no half-day beyond them to point at. */
+.day {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-50%);
+}
+
+.day > * {
+    opacity: 0;
+}
+
+.day:hover > * {
+    opacity: 1;
+}
+
+/* The emphasis band. Ink at 18% rather than an opaque fill: it reads as the bar darkening, and
+   the three lines still cross it — an opaque band would cut them at the one column the reader is
+   looking at. */
+.bar-focus {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: color-mix(in srgb, var(--color-text) 18%, transparent);
+}
+
+.guide {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: var(--color-neutral-600);
+}
+
+.point {
+    position: absolute;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    margin: -5px 0 0 -5px;
+    border-radius: 50%;
+    border: 1px solid var(--color-bg);
+}
+
+/* The same tokens the lines take, so a dot and the line it marks cannot drift into different
+   colours. Background rather than stroke, because these are HTML. */
+.point.series-fitness {
+    background: var(--color-accent);
+}
+
+.point.series-fatigue {
+    background: var(--color-accent-2);
+}
+
+.point.series-form {
+    background: var(--color-neutral-600);
+}
+
+/*
+   The readout sits on the page's own ground, not on the surface tone. That is a contrast decision
+   rather than a visual one: every pairing inside it — ordinary ink and the three accented labels —
+   is already measured against --color-bg by PaletteContrastTests, in both appearances.
+*/
+.readout {
+    position: absolute;
+    top: var(--space-2);
+    left: calc(50% + var(--space-2));
+    z-index: 1;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 2px var(--space-3);
+    width: max-content;
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-bg);
+    border: 1px solid var(--color-divider);
+    box-shadow: var(--shadow-md);
+    font-size: 13px;
+    line-height: 1.35;
+    pointer-events: none;
+}
+
+.readout.opens-left {
+    left: auto;
+    right: calc(50% + var(--space-2));
+}
+
+.readout-day {
+    grid-column: 1 / -1;
+    margin-bottom: var(--space-1);
+    padding-bottom: var(--space-1);
+    border-bottom: 1px solid var(--color-divider);
+    font-variant-numeric: tabular-nums;
+}
+
+.readout-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    align-self: center;
+}
+
+.readout-value {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* A coarse pointer has no hover to speak of, and a tap would leave a readout stuck open over the
+   plot. The figures are all published as text elsewhere on the page, so nothing is lost. */
+@media (hover: none), (pointer: coarse) {
+    .hover-layer {
+        display: none;
+    }
+}

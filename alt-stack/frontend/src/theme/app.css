@@ -1,0 +1,35 @@
+/*
+   Source: src/TrainingLoadAnalyzer.Web/wwwroot/app.css
+   Commit: 33d07227356fd9576ccd0c1e619626995265da11
+   Copied, not referenced (009 FR-004); edit only by re-copying.
+   Blazor's ::deep replaced by the descendant combinator; nothing else changed.
+*/
+/*
+   Feature 008. wwwroot/Theme/broadsheet.css owns colour, type, spacing and shape and is the single
+   definition site (NFR-002). What is left here is what the design system does not own.
+
+   The rules this file used to hold were deleted rather than restyled: .valid/.invalid/
+   .validation-message target EditForm markup this application never renders, .blazor-error-boundary
+   targets an ErrorBoundary it does not use, and .darker-border-checkbox/.form-floating are Bootstrap
+   classes in a project with no Bootstrap - two of them referencing --bs-* variables defined nowhere.
+   All four were inert (007 research R11).
+*/
+
+h1:focus {
+    outline: none;
+}
+
+/* 007 FR-024, retained. MudBlazor's ripples were the original reason, and they are gone — but the
+   reconnect dialog still animates, and a global rule is still better than a per-component
+   discipline that will be forgotten. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
