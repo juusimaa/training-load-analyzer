@@ -19,7 +19,23 @@ _Filled in by T109._
 
 ## Deviations
 
-_Filled in by T067 and T109._
+Every place where the new implementation deliberately does not match a golden, each pinned by a
+test. T109 completes the list with the stack-specific surfaces.
+
+| # | Where | Reference (golden) | New implementation | Authority | Pinned by |
+| --- | --- | --- | --- | --- | --- |
+| D1 | `sync/expired-token` | Sends the expired access token; Strava answers 401; the sync ends `ReconnectionRequired` and the athlete is told to reconnect | Renews the token first (one `POST /oauth/token`), stores both rotated tokens, then syncs and completes | Amendment 1(b)1; 005 FR-004; research R3(1), R10 | `tests/parity/test_sync_parity.py::test_expired_token_renews_first_and_completes` |
+| D2 | `sync/rate-limited-on-streams` | Stores the activities walked so far, then lets `StravaRateLimitedException` escape `SyncAsync`: no outcome, no sync state, the remaining activities never stored. In the running app `SyncCoordinator` catches only `InvalidOperationException`, so the error reaches the page and the status stays `IsRunning` | Stores every activity, leaves each unfetched series owed, makes no further stream request, skips reconciliation, and ends `RateLimited` with the next window as the retry time ("Rate limited by Strava. Available again at 13:15.") | Amendment 1(b) (no new wording needed); 005 FR-017d ("a request limit is reached … MUST NOT skip the activity or fail the sync"), FR-034, FR-035, C61 | `tests/parity/test_sync_parity.py::test_a_limit_reached_on_a_stream_request_is_an_outcome_not_an_escape`; `tests/sync/test_sync_stops_and_reconciles.py::test_a_rate_limit_on_a_stream_request_stores_the_activity_with_its_series_owed` |
+
+D2 was found during implementation (T059–T065), after Amendment 1 was approved. It falls under the
+rule Amendment 1(b) states, so no new amendment was needed, but it is listed here for the
+developer's review. Two details are derived rather than stated in 005: after the limit, no further
+stream is requested (FR-034, C68), and reconciliation is skipped because the outcome is not
+`Completed` (C61). The same rule also means a stream is never requested after the *list* has hit
+the limit. None of the goldens exercise that case (the reference would have let it escape too).
+
+Like R3(1) and R3(2), D2 is a defect in the reference, worth a `/speckit-bug-assess` against
+`main`: a first import of a multi-year history reaches the read limit on stream requests routinely.
 
 ## Display ties found
 

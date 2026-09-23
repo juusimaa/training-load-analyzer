@@ -128,10 +128,16 @@ The initial scenarios are:
 - `utc-offset-float` (`10800.0`);
 - `utc-offset-not-whole-minute` (research R17).
 
-One scenario differs by design: **`expired-token`**. The reference ends it `ReconnectionRequired`
-(research R3(1)). The new implementation must renew and complete. Its golden records the
-reference's outcome, and the Python test asserts the **specified** behaviour instead, with a
-comment naming Amendment 1(b). It is the only golden a test deliberately does not match.
+Two scenarios differ by design, each under Amendment 1(b):
+- **`expired-token`**. The reference ends it `ReconnectionRequired` (research R3(1)). The new
+  implementation must renew and complete.
+- **`rate-limited-on-streams`** (added during implementation). The reference lets a read limit
+  reached on a stream request escape the sync; its golden records that under `escaped`, with no
+  `result`. 005 FR-017d requires the activity stored with its series owed and the sync not failed.
+
+Each golden records the reference's behaviour, and the Python test asserts the **specified**
+behaviour instead, with a comment naming Amendment 1(b). They are the only goldens a test
+deliberately does not match (parity report D1, D2).
 
 The golden records:
 - the final activity rows, as domain values (id, start with offset, moving time, type,
@@ -153,4 +159,4 @@ These are the only allowed differences between the goldens and the new implement
 | Every string in `view` and `renderedText` | exact | 009 SC-002 |
 | SVG coordinates, bar and slot numbers | parsed, element-wise \|a − b\| ≤ 0.01 | research R8 |
 | Tick labels, slot counts, bar counts, `null`-ness | exact | 008 FR-006 |
-| Sync outputs | exact, except `expired-token` (above) | 009 SC-003 |
+| Sync outputs | exact, except `expired-token` and `rate-limited-on-streams` (above) | 009 SC-003 |

@@ -240,7 +240,7 @@ These apply to every task below. They are listed once rather than repeated.
 
 ### Strava shapes, rate limit and client (`tla/strava/`)
 
-- [ ] T043 [P] [US2] RED: port `StravaJsonQuirksTests.cs` into `alt-stack/backend/tests/strava/test_shapes.py`:
+- [X] T043 [P] [US2] RED: port `StravaJsonQuirksTests.cs` into `alt-stack/backend/tests/strava/test_shapes.py`:
   - given an `id` as a JSON number larger than 2^53, then `StravaActivitySummary.external_id` is its verbatim decimal string;
   - given `utc_offset` 10800 or `10800.0`, then it is accepted as 10800;
   - given missing `has_heartrate`, `manual`, `private` or `trainer`, then the reference's defaults apply;
@@ -248,11 +248,11 @@ These apply to every task below. They are listed once rather than repeated.
   - `start_date_local` and `type` are never read: a body lacking them parses, and changing them changes nothing;
   - given a stream body without `heartrate`, then `StravaStreamSet.heartrate is None`;
   - `StravaTokens` parses `access_token`, `refresh_token`, `expires_at`, an optional `scope` and `athlete.id`.
-- [ ] T044 [P] [US2] RED: port the header and retry-time cases of `RateLimitTests.cs` into `alt-stack/backend/tests/strava/test_rate_limit.py`:
+- [X] T044 [P] [US2] RED: port the header and retry-time cases of `RateLimitTests.cs` into `alt-stack/backend/tests/strava/test_rate_limit.py`:
   - given `x-readratelimit-limit: 100,1000` and `-usage: 100,340` in any header casing, then `is_exhausted` is true and `retry_after(now_utc)` is the next quarter hour (e.g. 07:07Z → 07:15Z; exactly 07:15Z → 07:30Z, matching the reference);
   - given daily usage at 1000, then retry is the next UTC midnight;
   - given missing or malformed headers, then the status is `None`/not exhausted, as the reference does (005 FR-034, FR-035).
-- [ ] T045 [P] [US2] RED: port the client cases from `RateLimitTests.cs`, `ImportedHistoryTests.cs` and `StravaJsonQuirksTests.cs` into `alt-stack/backend/tests/strava/test_client.py`, using `scenario_transport`:
+- [X] T045 [P] [US2] RED: port the client cases from `RateLimitTests.cs`, `ImportedHistoryTests.cs` and `StravaJsonQuirksTests.cs` into `alt-stack/backend/tests/strava/test_client.py`, using `scenario_transport`:
   - the activities list is requested with `per_page=200`, `after` and `page`;
   - given 503, 503, 200, then the call succeeds after exactly three attempts, with 10 ms and 20 ms backoff (inject a `sleep` callable and record the delays, no real sleep);
   - given 503 three times, then `StravaRequestFailed(503)`;
@@ -262,21 +262,21 @@ These apply to every task below. They are listed once rather than repeated.
   - given a 2xx, or a 404 from the streams endpoint, whose `X-ReadRateLimit-*` headers show the budget exhausted, then `StravaRateLimited(status)` is raised and **no page is returned**. The reference discards the response ("stop before the limit is exceeded, not after", `StravaApiClient.cs`);
   - given 404 on the streams endpoint, then `None`;
   - the `Authorization: Bearer …` header value never appears in any exception message.
-- [ ] T046 [P] [US2] RED: port the OAuth cases of `ConnectionTests.cs` into `alt-stack/backend/tests/strava/test_oauth.py`:
+- [X] T046 [P] [US2] RED: port the OAuth cases of `ConnectionTests.cs` into `alt-stack/backend/tests/strava/test_oauth.py`:
   - the authorize URL has `client_id`, `redirect_uri`, `response_type=code`, `scope=read,activity:read_all` and `state`, in the reference's order;
   - code exchange and refresh POST `client_id`, `client_secret`, `code`/`refresh_token` and `grant_type` as form fields;
   - given a 400/401 on refresh, then `StravaTokenRejected`;
   - no exception message or `repr` of `StravaTokens` contains the token values (005 FR-005).
-- [ ] T047 [US2] GREEN: implement:
+- [X] T047 [US2] GREEN: implement:
   - `alt-stack/backend/src/tla/strava/shapes.py` (`StravaActivitySummary.from_json`, `StravaStreamSet.from_json`, `StravaTokens.from_json`, with `repr=False` on the token fields);
   - `alt-stack/backend/src/tla/strava/errors.py` (`StravaRateLimited`, `StravaRequestFailed`, `StravaTokenRejected`, `InsufficientScope(requested, granted)`, `ReconnectionRequired(athlete_id)`, with messages copied from `src/TrainingLoadAnalyzer.Infrastructure/Strava/*Exception.cs` and `StravaRequestFailures.cs`). `StravaTokenRejected` is raised only by `oauth.py` (a rejected exchange or refresh), never by the API client;
   - `alt-stack/backend/src/tla/strava/rate_limit.py` (`RateLimitStatus`).
-- [ ] T048 [US2] GREEN: implement `alt-stack/backend/src/tla/strava/client.py` (`StravaApiClient(http: httpx.Client, sleep=time.sleep)`, with `list_activities(access_token, after, page)` and `get_streams(access_token, id)`) and `alt-stack/backend/src/tla/strava/oauth.py` (`StravaOAuthClient(http, client_id, client_secret)`, with `authorize_url`, `exchange`, `refresh`), porting `StravaApiClient.cs` and `StravaOAuthClient.cs`
-- [ ] T049 [US2] REFACTOR `alt-stack/backend/src/tla/strava/`, and run `uv run pytest tests/strava`
+- [X] T048 [US2] GREEN: implement `alt-stack/backend/src/tla/strava/client.py` (`StravaApiClient(http: httpx.Client, sleep=time.sleep)`, with `list_activities(access_token, after, page)` and `get_streams(access_token, id)`) and `alt-stack/backend/src/tla/strava/oauth.py` (`StravaOAuthClient(http, client_id, client_secret)`, with `authorize_url`, `exchange`, `refresh`), porting `StravaApiClient.cs` and `StravaOAuthClient.cs`
+- [X] T049 [US2] REFACTOR `alt-stack/backend/src/tla/strava/`, and run `uv run pytest tests/strava`
 
 ### Mapper (pure; needs US1 domain types)
 
-- [ ] T050 [P] [US2] RED: port `ActivityMappingTests.cs` into `alt-stack/backend/tests/strava/test_mapper.py`:
+- [X] T050 [P] [US2] RED: port `ActivityMappingTests.cs` into `alt-stack/backend/tests/strava/test_mapper.py`:
   - given each `sport_type` in the reference's fixed table, then the mapped `ActivityType` matches it (e.g. `Run`, `TrailRun`, `VirtualRun` → Running; `Ride`, `GravelRide`, `VirtualRide` → Cycling; copy the table from `StravaActivityMapper.cs`);
   - given `EBikeRide`, `Walk`, `Swim` or an unknown type, then `SkippedActivity(id, UNSUPPORTED_TYPE)`, with the reason named as the reference's `SkipReason`;
   - given `start_date` `…Z` with `utc_offset` 19800, then `started_at` is aware with an offset of +05:30;
@@ -284,12 +284,12 @@ These apply to every task below. They are listed once rather than repeated.
   - given `10800.0`, then it is accepted;
   - given moving time 0, then `UNUSABLE_BY_DOMAIN`;
   - `to_series`: given samples with bpm outside 20–250, or repeated time values, then they are discarded and counted, and fewer than 2 survivors return `None` (005 FR-017f, FR-017g).
-- [ ] T051 [US2] GREEN: implement `alt-stack/backend/src/tla/strava/mapper.py`: the fixed sport-type table, `SkipReason`, `MappedActivity`, `SkippedActivity`, `map_activity(summary, series)` and `to_series(streams) -> (HeartRateSeries | None, discarded_count)`, porting `StravaActivityMapper.cs` and `src/TrainingLoadAnalyzer.Infrastructure/Sync/SkippedActivity.cs`. Catch the domain's `ValueError` into `UNUSABLE_BY_DOMAIN`, as the reference catches `ArgumentException`
-- [ ] T052 [US2] REFACTOR `alt-stack/backend/src/tla/strava/mapper.py`, and run `uv run pytest tests/strava`
+- [X] T051 [US2] GREEN: implement `alt-stack/backend/src/tla/strava/mapper.py`: the fixed sport-type table, `SkipReason`, `MappedActivity`, `SkippedActivity`, `map_activity(summary, series)` and `to_series(streams) -> (HeartRateSeries | None, discarded_count)`, porting `StravaActivityMapper.cs` and `src/TrainingLoadAnalyzer.Infrastructure/Sync/SkippedActivity.cs`. Catch the domain's `ValueError` into `UNUSABLE_BY_DOMAIN`, as the reference catches `ArgumentException`
+- [X] T052 [US2] REFACTOR `alt-stack/backend/src/tla/strava/mapper.py`, and run `uv run pytest tests/strava`
 
 ### Persistence (`tla/persistence/`)
 
-- [ ] T053 [P] [US2] RED: port `PersistenceRoundTripTests.cs` into `alt-stack/backend/tests/persistence/test_activity_store.py`, using a temp-file database (`tmp_path / "t.db"`):
+- [X] T053 [P] [US2] RED: port `PersistenceRoundTripTests.cs` into `alt-stack/backend/tests/persistence/test_activity_store.py`, using a temp-file database (`tmp_path / "t.db"`):
   - given a fresh file, when `open_database(path)` runs, then `PRAGMA user_version` is 1 and the three tables match data-model.md §3 exactly (column names, `NOT NULL`, `PRIMARY KEY (provider, external_id)`, index `activity_started`);
   - given it runs twice, then it is idempotent;
   - given an activity with a +05:45 start, a 1 Hz series and `heart_rate_outstanding`, when it is upserted then read, then it reads back equal as a domain `TrainingActivity` (005 FR-024);
@@ -297,22 +297,22 @@ These apply to every task below. They are listed once rather than repeated.
   - given a stored series and a re-import **without** a series, then the stored series is kept, via `COALESCE(activity.heart_rate_json, excluded.heart_rate_json)` (005 FR-017b);
   - given a row whose `heart_rate_json` violates the domain (e.g. 300 bpm) or is malformed JSON, when it is read, then `ActivityRow.to_domain()` raises at the boundary (`ValueError` or `json.JSONDecodeError`);
   - queries: `between(start_utc, end_utc)` ordered by start; `latest_start()`; `earliest_outstanding_start(since_utc)`.
-- [ ] T054 [P] [US2] RED: write `alt-stack/backend/tests/persistence/test_connection_store.py`:
+- [X] T054 [P] [US2] RED: write `alt-stack/backend/tests/persistence/test_connection_store.py`:
   - given no connection, then `get()` returns `None`;
   - given a saved connection, when the database is reopened from the same path, then it is still there (009 US2 scenario 1, "survives a restart");
   - given a new token pair, when it is saved, then both the access and refresh tokens are replaced together (005 C48);
   - `repr()` of the connection row contains no token.
-- [ ] T055 [US2] GREEN: implement:
+- [X] T055 [US2] GREEN: implement:
   - `alt-stack/backend/src/tla/persistence/schema.py`: an ordered `MIGRATIONS` list holding migration 1, verbatim from data-model.md §3; `open_database(path) -> sqlite3.Connection`, which applies the pending migrations under `user_version`;
   - `alt-stack/backend/src/tla/persistence/rows.py`: `ActivityRow` with `from_domain` and `to_domain`, instants as integer UTC microseconds plus offset minutes (research R6), the series as `[[us_from_start, bpm], …]`; `ConnectionRow`; `SyncStateRow`;
   - `alt-stack/backend/src/tla/persistence/activity_store.py`: `ActivityStore(conn)` and `ConnectionStore(conn)`.
 
   Use one connection per unit of work, with no module-level connection.
-- [ ] T056 [US2] REFACTOR `alt-stack/backend/src/tla/persistence/`, and run `uv run pytest tests/persistence`
+- [X] T056 [US2] REFACTOR `alt-stack/backend/src/tla/persistence/`, and run `uv run pytest tests/persistence`
 
 ### Authorization (connect + renewal) (`tla/sync/authorization.py`)
 
-- [ ] T057 [P] [US2] RED: port `ConnectionTests.cs` into `alt-stack/backend/tests/sync/test_authorization.py`:
+- [X] T057 [P] [US2] RED: port `ConnectionTests.cs` into `alt-stack/backend/tests/sync/test_authorization.py`:
   - given a token response granting `read,activity:read_all`, when `exchange(code)` runs, then the connection is stored with its expiry, scopes and `connected_at` from the clock;
   - given a grant missing `activity:read_all`, then `InsufficientScope(requested, granted)` is raised, nothing is stored, and the message names the missing scope (009 US2 scenario 2);
   - given a held connection for athlete 1 and a callback for athlete 2, then `ReconnectionRequired`/mismatch, and the held connection is unchanged (005 FR-008);
@@ -322,18 +322,18 @@ These apply to every task below. They are listed once rather than repeated.
   - given `expires_at` ≤ now + 60 s, when `ensure_fresh()` runs, then it POSTs a refresh and stores **both** new tokens;
   - given `expires_at` > now + 60 s, then no request is made;
   - given the refresh is rejected (400/401), then `ReconnectionRequired` and nothing is stored.
-- [ ] T058 [US2] GREEN: implement `alt-stack/backend/src/tla/sync/authorization.py`: `StravaAuthorization(conn_store, oauth, clock)` with `exchange(code)`, `refresh()` and `ensure_fresh(margin=timedelta(seconds=60))`, porting `StravaAuthorization.cs` plus the specified renewal
+- [X] T058 [US2] GREEN: implement `alt-stack/backend/src/tla/sync/authorization.py`: `StravaAuthorization(conn_store, oauth, clock)` with `exchange(code)`, `refresh()` and `ensure_fresh(margin=timedelta(seconds=60))`, porting `StravaAuthorization.cs` plus the specified renewal
 
 ### The sync walk (`tla/sync/activity_sync.py`)
 
-- [ ] T059 [P] [US2] RED: port `IncrementalSyncTests.cs` and `ImportedHistoryTests.cs` into `alt-stack/backend/tests/sync/test_activity_sync.py`, using `scenario_transport` and a temp-file database:
+- [X] T059 [P] [US2] RED: port `IncrementalSyncTests.cs` and `ImportedHistoryTests.cs` into `alt-stack/backend/tests/sync/test_activity_sync.py`, using `scenario_transport` and a temp-file database:
   - given an empty store, when a sync runs, then pages are read until an empty page, only running and cycling activities are stored, and `SyncResult.imported` equals the count, with skipped activities listed with reasons (009 US2 scenario 3);
   - given activities older than 180 days before today, then no stream request is made for them; inside the window it is made (005 FR-017a);
   - given a manual activity, or one with `has_heartrate` false, then no stream request is made;
   - given a later sync, then `after` = resume point, which is `latest start − 7 days` (009 US2 scenario 5), and no stored session is duplicated;
   - given an outstanding series inside 180 days that is earlier than the latest start, then the resume point is its start − 7 days (005 FR-017e);
   - the resume point is never before the epoch (005 FR-028, FR-029).
-- [ ] T060 [P] [US2] RED: port `RateLimitTests.cs` (sync level) and `ReconciliationTests.cs` into `alt-stack/backend/tests/sync/test_sync_stops_and_reconciles.py`:
+- [X] T060 [P] [US2] RED: port `RateLimitTests.cs` (sync level) and `ReconciliationTests.cs` into `alt-stack/backend/tests/sync/test_sync_stops_and_reconciles.py`:
   - given a 429 on page 2, then page-1 sessions are kept, nothing is removed, the resume point reflects only what was stored, the outcome is `RateLimited` and `retry_after` is the next quarter hour (009 US2 scenario 4);
   - given an exhausted budget on a successful response, then the same;
   - given a 401 on list, then `ReconnectionRequired` and stored activities are untouched (009 US2 scenario 6);
@@ -342,29 +342,29 @@ These apply to every task below. They are listed once rather than repeated.
   - given a span read only partially, then nothing is removed;
   - given a stored activity whose sport type changed to `EBikeRide`, then it is removed with the reference's reason;
   - given `hr-dropouts`, then the discarded sample counts are reported in `SyncResult.discarded`.
-- [ ] T061 [US2] GREEN: implement:
+- [X] T061 [US2] GREEN: implement:
   - `alt-stack/backend/src/tla/sync/results.py`: `SyncOutcome`, `RemovalReason`, `RemovedActivity`, `DiscardedSamples` and `SyncResult`, carrying no credential;
   - `alt-stack/backend/src/tla/sync/activity_sync.py`: `ActivitySync(conn, client, authorization, clock)` with `run() -> SyncResult`, calling `authorization.ensure_fresh()` before the first request (research R10), then the walk, `_reconcile`, `_record_state`, ported from `StravaActivitySync.cs`.
 
   Sync failures are **outcomes**, never exceptions escaping `run()` (Principle VI). Log each outcome with `logging.getLogger("tla.sync")`, with no token.
-- [ ] T062 [US2] REFACTOR `alt-stack/backend/src/tla/sync/activity_sync.py`, keeping the method-to-method correspondence with `StravaActivitySync.cs` for review (plan, Structure Decision), and run `uv run pytest tests/sync`
+- [X] T062 [US2] REFACTOR `alt-stack/backend/src/tla/sync/activity_sync.py`, keeping the method-to-method correspondence with `StravaActivitySync.cs` for review (plan, Structure Decision), and run `uv run pytest tests/sync`
 
 ### Coordinator (single-sync guard and process-held status)
 
-- [ ] T063 [P] [US2] RED: port `SyncCoordinatorTests.cs` and `SyncMessageTests.cs` into `alt-stack/backend/tests/sync/test_coordinator.py`:
+- [X] T063 [P] [US2] RED: port `SyncCoordinatorTests.cs` and `SyncMessageTests.cs` into `alt-stack/backend/tests/sync/test_coordinator.py`:
   - given no sync has run, then `status.is_running` is false and `result is None`;
   - given a sync blocked inside the walk (a transport that waits on a `threading.Event`), when a second `run()` is called from another thread, then it returns the current running status immediately, without queuing, and exactly one walk ran (009 US2 scenario 7, and the two-tab edge case);
   - given no connection, then the status `failure` is `"Strava connection required."` and no request is made;
   - after completion, then `finished_at` is local time from the clock, and `retry_after_local` is set for `RateLimited`.
 
   In `alt-stack/backend/tests/sync/test_sync_message.py`, parametrize every row of the [http-api.md §3](./contracts/http-api.md#3-get-apisyncstatus-and-post-apisync) message table against `parity/golden/probes/display.json`: `Syncing activities…`, `3 activities imported.`, `Already up to date.`, `Rate limited by Strava. Available again at 07:15.`, `Sync interrupted. Your stored history is unchanged — try again.`, and so on.
-- [ ] T064 [US2] GREEN: implement `alt-stack/backend/src/tla/sync/coordinator.py` (`SyncStatus`, `SyncCoordinator` with a `threading.Lock` acquired `blocking=False`, and `run(make_sync)`, `status`) and `alt-stack/backend/src/tla/dashboard/sync_message.py` (`for_status(status) -> str`, verbatim from `SyncMessage.cs`, with times formatted `HH:mm` by hand, not via locale)
+- [X] T064 [US2] GREEN: implement `alt-stack/backend/src/tla/sync/coordinator.py` (`SyncStatus`, `SyncCoordinator` with a `threading.Lock` acquired `blocking=False`, and `run(make_sync)`, `status`) and `alt-stack/backend/src/tla/dashboard/sync_message.py` (`for_status(status) -> str`, verbatim from `SyncMessage.cs`, with times formatted `HH:mm` by hand, not via locale)
 
 ### Parity against the sync goldens
 
-- [ ] T065 [US2] RED: write `alt-stack/backend/tests/parity/test_sync_parity.py`, parametrized over `parity/golden/sync/*.json`. Given the scenario's clock, initial rows and replayed responses, when `ActivitySync.run()` runs, then these match the golden **exactly**: the final activity rows (as domain values), the sync state (resume point, last outcome), the `SyncResult` (counts, skipped with reasons, removed with reasons, discarded counts, outcome, retry-after), `for_status` text and the issued request sequence (SC-003). Handle `expired-token` as a separate test with a comment naming Amendment 1(b)1: it asserts one refresh POST, then a completed sync, and that the golden's `ReconnectionRequired` outcome is *not* matched ([parity.md §4](./contracts/parity.md#4-sync-fixture-and-golden))
-- [ ] T066 [US2] GREEN: fix whatever T065 exposes, in the owning module under `alt-stack/backend/src/tla/{strava,persistence,sync}/`. Each fix must cite a 005 requirement or a golden
-- [ ] T067 [US2] VERIFY:
+- [X] T065 [US2] RED: write `alt-stack/backend/tests/parity/test_sync_parity.py`, parametrized over `parity/golden/sync/*.json`. Given the scenario's clock, initial rows and replayed responses, when `ActivitySync.run()` runs, then these match the golden **exactly**: the final activity rows (as domain values), the sync state (resume point, last outcome), the `SyncResult` (counts, skipped with reasons, removed with reasons, discarded counts, outcome, retry-after), `for_status` text and the issued request sequence (SC-003). Handle `expired-token` as a separate test with a comment naming Amendment 1(b)1: it asserts one refresh POST, then a completed sync, and that the golden's `ReconnectionRequired` outcome is *not* matched ([parity.md §4](./contracts/parity.md#4-sync-fixture-and-golden))
+- [X] T066 [US2] GREEN: fix whatever T065 exposes, in the owning module under `alt-stack/backend/src/tla/{strava,persistence,sync}/`. Each fix must cite a 005 requirement or a golden
+- [X] T067 [US2] VERIFY:
   - `uv run pytest` is green;
   - `grep -rniE "test-(access|refresh)" alt-stack/backend/src` is empty;
   - a test in `alt-stack/backend/tests/sync/test_no_credentials.py` runs every sync scenario with `caplog` at DEBUG and asserts that no captured log record, and no `repr(SyncResult)`, contains a token value from the scenario (009 FR-010);

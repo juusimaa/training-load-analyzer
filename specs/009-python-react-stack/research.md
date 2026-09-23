@@ -112,9 +112,18 @@ does not do what its specification says:
    athlete MUST be told what to approve. Feature 008 already recorded this as "a recorded gap, not
    a preserved message" (`InformationPreservationTests`).
 
+4. **A read limit reached on a stream request escapes the sync** (found during implementation, by
+   the `rate-limited-on-streams` golden). `SeriesForAsync` catches only
+   `StravaRequestFailedException`, so a `StravaRateLimitedException` from a stream request leaves
+   `SyncAsync` as an exception: no outcome, no sync state, and the remaining activities are never
+   stored. 005 FR-017d says a series that cannot be retrieved because "a request limit is reached"
+   MUST leave the activity stored with its series outstanding, and MUST NOT fail the sync.
+
 **Decision (Amendment 1(b)).** The specification wins wherever meeting it needs **no new
 athlete-facing wording**. The new implementation renews the token before a sync (1), and shows
-the existing "Syncing…" / "Syncing activities…" state in the clicking tab (2). Where meeting the
+the existing "Syncing…" / "Syncing activities…" state in the clicking tab (2), and treats a
+limit reached on a stream request as FR-017d says, ending `RateLimited` with the existing wording
+(4). Where meeting the
 specification would need wording the reference never defined (3), the reference's behaviour
 stands. That follows the precedent feature 008 set for this exact gap. Every deviation is listed
 in the parity report (plan, Phase 2 "Parity reference").
