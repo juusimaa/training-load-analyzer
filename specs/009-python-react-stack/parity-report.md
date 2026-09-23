@@ -120,3 +120,77 @@ rejected. Options for the developer, none taken:
 
 **SC-005** was not measured against a live Strava account. That needs the developer's credentials
 and a real history (quickstart §5, journey 6).
+
+## TDD assessment
+
+Facts for the developer's own judgement (SC-008). The verdict is left to the developer. Evidence:
+`git log --oneline -- alt-stack parity` on branch `009-python-react-stack`.
+
+**Where RED preceded GREEN.** Every behaviour slice in both suites has a `test(009): RED …` commit
+before its `feat(009): GREEN …` commit, and each RED run was checked to fail on behaviour, not on a
+missing module. To make that possible, interface-only stubs (names, no rules) were committed with
+the tests. Examples:
+- **Backend.** `abdf560` → `c90b245` (heart rate, activity, load; 49 failing), `4ec2277` → `893d065`
+  (sync walk; 23 failing), `952f0e6` → `f380c91` (settings and routes; 32 failing).
+- **Frontend.** `b487b48` → `0a43382` (API client, windowing, geometry), `41c1071` → `b7b87a7`
+  (components), `0f90969` → `3b045c8` (states).
+
+**Where it did not, or not cleanly:**
+- **Parity tests after the code.**
+  - The history parity tests (`dc4faf0`) and the sync parity tests (`c154ce3`) were written after
+    the domain and the sync were green against the ported hand-computed tests. They passed on their
+    first run, so they never went red. The goldens existed first (`db4756c`), but the tests reading
+    them came later.
+  - The same holds for the view parity test (written RED with `302084c`, but against stubs, not
+    against a finished builder) and the domain independence and layering tests. Those are expected
+    to pass immediately, and did.
+- **Theme tests.** The frontend's ported theme tests (`aff3f8d`) passed on their first run: they
+  guard properties the byte-for-byte copied stylesheets already had. Their ability to fail was
+  shown by throwaway edits, reverted: a low-contrast token gave 5 failures, and a hex colour in a
+  component stylesheet was flagged.
+- **Test corrections inside GREEN commits.** Some test fixes landed with GREEN rather than as a new
+  RED:
+  - `4541fc9` corrected two backend expectations. A trend proportion compared at Python's default
+    28 digits, where the domain deliberately uses 34; and an overflow case that the reader's range
+    query filters out.
+  - `b7b87a7` fixed a frontend selector and whitespace trimming.
+  - One test was fixed before its GREEN commit: the aged-out sync test needed a renewal response,
+    because advancing the clock ten days expired the token.
+- **Research corrected by a golden.** Two slices were changed by what the goldens showed, not by a
+  failing hand-written test: research R17 (fractional offsets), and D2 (a rate limit on streams,
+  whose scenario was added mid-slice in `3bcbab3`).
+
+**Where a golden, rather than a hand-written test, caught something:**
+- The `utc-offset-not-whole-minute` golden showed the reference truncating `19800.5`. Task T050,
+  written from research R17, would have skipped it.
+- The `rate-limited-on-streams` golden showed the reference letting the limit escape the sync
+  (D2).
+
+No defect in the new implementation was caught first by a golden: every parity test passed at its
+first run.
+
+**Mocking.** No mocking facility is used in either suite (`git grep -nE "unittest\.mock|vi\.fn|vi\.mock|vi\.spyOn" alt-stack`
+finds nothing). The places where it would have been easiest to reach for one:
+- the Strava transport → `httpx.MockTransport`, replaying recorded scenarios;
+- the clock → `FixedClock`, passed in;
+- the frontend API → a plain object with hand-resolved promises and call counters;
+- the backoff delay → an injected `sleep` callable that records its arguments;
+- `location.reload` → an optional `reload` prop.
+
+## Simplicity sweep (T115)
+
+Every module, class and function in `alt-stack/backend/src/tla` and `alt-stack/frontend/src` is
+one of three things:
+- a port of a reference unit;
+- a module the plan names (`api/static.py`, `settings.py`, `clock.py`, `window.ts`, `isoWeek.ts`);
+- a route or component the contracts require.
+
+Single-caller helpers that are not ports, each kept:
+- `ActivityStore.exists`, `has_series`, `ids_since` and `remove`: the reference's inline EF
+  queries, named;
+- `api/sync.py::status_view`: the contract's `SyncStatusView` projection;
+- `components/ErrorBoundary.css`: one rule, because the copied `.error-ui` rule hides the notice
+  until a script shows it.
+
+The three basis `combine` helpers remain separate, in `domain/aggregation.py`, `domain/metrics.py`
+and `domain/trends.py` (004 research R12). Nothing was removed.
