@@ -505,3 +505,46 @@ Single-caller helpers that are not ports, each kept:
 
 The three basis `combine` helpers remain separate, in `domain/aggregation.py`, `domain/metrics.py`
 and `domain/trends.py` (004 research R12). Nothing was removed.
+
+## Locale runs and manual checks (T107, T097)
+
+- **Locale runs, automated.** These counts match the default-locale runs exactly:
+  - `LANG=fi_FI.UTF-8 LC_ALL=fi_FI.UTF-8 uv run pytest`: 660 passed, with `test_display_locale.py`
+    running (it sets `fi_FI.UTF-8` explicitly), not skipped.
+  - `npm run test:fi`: 558 passed, with the guard asserting `Intl.NumberFormat().format(1.5) === "1,5"`.
+  - `npm run test:tz`: the ISO-week tests under `Pacific/Kiritimati` and `America/Adak`, 10 passed each.
+- **Checked in real headless Chrome, not by eye.** A DevTools Protocol script, the same as in
+  Measurements, checked two things. Pointer events over every chart slot, then switching to the
+  30-day window, issued no HTTP request in either app, and the heading and bars updated. Run mode
+  and development mode both served the page and the API.
+- **Not done: needs the developer, a browser and, for some journeys, the live Strava account.**
+  - Quickstart §5, journeys 1–11: connect, consent with a scope unticked, a live first import to
+    the rate limit, the second tab mid-sync, renewal after six hours, and stopping the backend.
+  - The whole §6 visual pass: 320/768/1280/2560 px, 200 % zoom, live light/dark switching, tab
+    focus, and 48 × 48 targets on screen.
+
+  T097 and T107 stay open until that pass is done.
+
+## Constitution completion review
+
+| Principle / constraint | Holds? | Evidence |
+| --- | --- | --- |
+| I. Strict TDD | Yes, with the exceptions stated | A RED commit before every GREEN slice in both suites, each run to fail on behaviour. The parity, independence and theme tests passed at their first run, for the reasons given in the TDD assessment. |
+| II. Domain independence | Yes | `backend/tests/domain/test_independence.py` (stdlib only, no Strava name); `backend/tests/test_layering.py` (the domain imports only itself; only `strava`, `sync` and the composition root import `tla.strava`) |
+| III. Simplicity before abstraction | Yes | Simplicity sweep above: nothing removed, three single-caller helpers justified. Runtime dependencies: `fastapi`, `uvicorn`, `httpx`, `react`, `react-dom` only. |
+| IV. Testability, no mocking library | Yes | `git grep -nE "unittest\.mock\|vi\.fn\|vi\.mock\|vi\.spyOn" alt-stack` is empty. Clock, transport, database path, API and `sleep` are all inputs. |
+| V. Isolated integration | Yes | `tla/strava` and `tla/sync` are tested on recorded responses through `httpx.MockTransport` (`backend/tests/strava`, `backend/tests/sync`, `backend/tests/parity/test_sync_parity.py`), separately from the domain tests. |
+| VI. Deliberate errors | Yes | Sync failures are outcomes, including a limit on a stream request (D2). The dashboard read catches named classes and logs them (`backend/tests/dashboard/test_reader.py`). The start-up refusal is kept (`backend/tests/api/test_settings.py`). No `print` in the backend source. |
+| VII. Specification adherence | Yes, with items for review | Deviations D1–D11 each cite Amendment 1 or research. The research R17 correction and D2 came from goldens and were written into research.md and this report rather than decided silently. Open items: the three requirement-map GAPs, and the SC-004 FAIL. |
+| Alt-stack: scope and independence | Yes | All new code is under `alt-stack/` and `parity/`; `git status` shows no change in `src/` or `tests/`. The stylesheets are copied with provenance headers; the generator references the reference read-only. |
+| Alt-stack: reference stays green | Yes | `dotnet test`: 516 passed, from a clean clone too |
+| Alt-stack: own storage | Yes | `TLA_DATABASE_PATH` defaults to `alt-stack/backend/training-load.db`; the reference's file is never opened |
+| Alt-stack: in-process service tests | Yes | FastAPI `TestClient` in `backend/tests/api` |
+| Merge rule | Yes | Nothing is merged into `main`; the work is on branch `009-python-react-stack` |
+| Strava MCP and test data | Yes | Purpose-built fixtures; every token is `test-access-…`/`test-refresh-…`; `backend/tests/sync/test_no_credentials.py` |
+
+**Follow-ups outside this feature.** Run `/speckit-bug-assess` against `main` for each:
+- the unused token renewal (research R3(1), D1);
+- the in-flight sync state that never reaches the clicking tab (R3(2), D3);
+- a read limit on a stream request escaping the sync (R3(4), D2);
+- disconnect and full resync, tested but unreachable (requirement-map GAPs).
