@@ -4,36 +4,16 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { Dashboard } from "../src/components/Dashboard";
-import type { DashboardView, SyncStatusView } from "../src/types";
+import { content, loaded, rail, settle } from "./dashboardHarness";
 import { controlledApi } from "./deferred";
 import { loadHistory, loadSurfaces, normalisedText } from "./golden";
-import { never, syncStatusRows } from "./syncStatus";
+import { syncStatusRows } from "./syncStatus";
 
 afterEach(cleanup);
 
 const h3f = loadHistory("H3f");
 const long = loadHistory("consecutive-200");
 const rows = syncStatusRows();
-
-/** Lets every settled promise's continuation run, so a follow-up call would have been made. */
-async function settle() {
-  await act(async () => {
-    for (let i = 0; i < 5; i += 1) await new Promise((r) => setTimeout(r, 0));
-  });
-}
-
-async function loaded(view: DashboardView, status: SyncStatusView = never) {
-  const c = controlledApi();
-  const { container } = render(<Dashboard api={c.api} />);
-  await act(async () => {
-    c.status[0]?.resolve(status);
-    c.dashboard[0]?.resolve(view);
-  });
-  return { ...c, container };
-}
-
-const content = (container: HTMLElement) => container.querySelector("main.page > section.content");
-const rail = (container: HTMLElement) => container.querySelector("main.page > aside.rail");
 
 describe("Dashboard", () => {
   it("reads the view and the sync status once on load", async () => {

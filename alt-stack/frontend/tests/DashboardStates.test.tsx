@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { Unavailable } from "../src/api";
 import { Dashboard } from "../src/components/Dashboard";
 import { isoWeek } from "../src/isoWeek";
-import type { DashboardView, SyncStatusView } from "../src/types";
+import { content, loaded, rail } from "./dashboardHarness";
 import { controlledApi } from "./deferred";
 import { loadHistory, loadSurfaces, normalisedText } from "./golden";
 import { never, syncStatusRows } from "./syncStatus";
@@ -17,9 +17,6 @@ const rows = syncStatusRows();
 const h3f = loadHistory("H3f");
 const unavailableText =
   "Data unavailable Your stored training history could not be read. Nothing has been lost — try again, and if it persists, the application log says why.";
-
-const content = (container: HTMLElement) => container.querySelector("main.page > section.content");
-const rail = (container: HTMLElement) => container.querySelector("main.page > aside.rail");
 const railValues = (container: HTMLElement) =>
   [...container.querySelectorAll(".rail-value, .rail-note")].map((e) => normalisedText(e));
 
@@ -36,16 +33,6 @@ function loadingRail(): string {
     .loading.rail.replace("{asOf}", today())
     .replace("{isoWeek}", isoWeek(new Date()))
     .replace("0 bpm", "—");
-}
-
-async function loaded(view: DashboardView, status: SyncStatusView = never) {
-  const c = controlledApi();
-  const { container } = render(<Dashboard api={c.api} />);
-  await act(async () => {
-    c.status[0]?.resolve(status);
-    c.dashboard[0]?.resolve(view);
-  });
-  return { ...c, container };
 }
 
 describe("Dashboard states", () => {
