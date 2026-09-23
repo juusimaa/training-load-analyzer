@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from tla.dashboard.sync_message import CONNECTION_REQUIRED
-from tla.sync.activity_sync import ActivitySync, NotConnected
+from tla.sync.activity_sync import NotConnected
 from tla.sync.results import SyncResult
 
 _log = logging.getLogger("tla.sync")
@@ -36,13 +36,15 @@ class SyncCoordinator:
         self._running = threading.Lock()
         self.status = SyncStatus()
 
-    def run(self, make_sync: Callable[[], ActivitySync]) -> SyncStatus:
+    def run(self, sync_once: Callable[[], SyncResult]) -> SyncStatus:
+        """Runs `sync_once` (one ActivitySync.run over its own connection and client), or returns the
+        running status at once if a sync is already in flight."""
         if not self._running.acquire(blocking=False):
             return self.status
 
         self.status = SyncStatus(is_running=True)
         try:
-            result = make_sync().run()
+            result = sync_once()
             self.status = SyncStatus(
                 result=result,
                 finished_at=self._clock.now_local(),

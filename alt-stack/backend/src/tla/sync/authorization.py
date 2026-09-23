@@ -32,6 +32,10 @@ class StravaAuthorization:
         self._oauth = oauth
         self._clock = clock
 
+    def authorize_url(self, redirect_uri: str, state: str) -> str:
+        """Where to send the athlete to grant consent (005 FR-001)."""
+        return self._oauth.authorize_url(redirect_uri, state)
+
     def exchange(self, code: str) -> ConnectionRow:
         """A one-time code for a stored connection. Refused before anything is stored when the grant
         cannot see private activities (005 FR-002a)."""

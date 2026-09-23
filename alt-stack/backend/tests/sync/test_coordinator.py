@@ -23,13 +23,13 @@ PAGE = [activity("1", "2026-09-10T04:30:00Z"), activity("2", "2026-09-12T05:00:0
 
 
 def factory(h: SyncHarness, handler):
-    def make_sync() -> ActivitySync:
+    def sync_once():
         # One connection per unit of work, opened on the thread that runs the sync, as in production.
         conn = open_database(h.path)
         http = httpx.Client(transport=httpx.MockTransport(handler))
         auth = StravaAuthorization(ConnectionStore(conn), StravaOAuthClient(http, "12345", "s"), h.clock)
-        return ActivitySync(conn, StravaApiClient(http, sleep=lambda _: None), auth, h.clock)
-    return make_sync
+        return ActivitySync(conn, StravaApiClient(http, sleep=lambda _: None), auth, h.clock).run()
+    return sync_once
 
 
 def serving(pages, headers=ROOM, gate: threading.Event | None = None, requests: list | None = None):

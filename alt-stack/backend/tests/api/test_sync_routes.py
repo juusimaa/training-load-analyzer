@@ -13,7 +13,7 @@ from tests.golden import sync_scenario
 from tests.parity.histories import activity as fixture_activity
 from tla.main import create_app
 from tla.persistence.activity_store import ActivityStore, ConnectionStore
-from tla.persistence.rows import ConnectionRow
+from tla.persistence.rows import ConnectionRow, SyncStateRow
 from tla.persistence.schema import open_database
 
 
@@ -24,6 +24,10 @@ def seed(settings, name: str):
     ConnectionStore(conn).save(ConnectionRow(c["athleteId"], c["accessToken"], c["refreshToken"], datetime.fromisoformat(c["expiresAt"]), c["grantedScopes"], datetime.fromisoformat(c["connectedAt"])))
     for entry in scenario["activities"]:
         ActivityStore(conn).upsert(fixture_activity(entry), entry["heartRateOutstanding"])
+    if (state := scenario["syncState"]) is not None:
+        started = state["lastSyncStartedAt"]
+        ConnectionStore(conn).save_sync_state(SyncStateRow(
+            c["athleteId"], datetime.fromisoformat(state["resumePoint"]), started and datetime.fromisoformat(started), state["lastOutcome"]))
     conn.close()
     return scenario
 
