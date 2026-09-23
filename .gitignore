@@ -49,3 +49,9 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Alternative stack (feature 009)
+node_modules/
+alt-stack/frontend/dist/
+.venv/
+.pytest_cache/
