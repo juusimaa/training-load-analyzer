@@ -38,7 +38,8 @@ def load_surfaces() -> dict:
 
 
 def history_fixture(name: str) -> dict:
-    return _read(FIXTURES / "histories" / f"{name}.json")
+    """Numbers with a fraction come back as Decimal, so a moving time like 30671.58 s stays exact."""
+    return json.loads((FIXTURES / "histories" / f"{name}.json").read_text(encoding="utf-8"), parse_float=Decimal)
 
 
 def sync_scenario(name: str) -> dict:
