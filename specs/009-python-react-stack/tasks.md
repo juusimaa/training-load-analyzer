@@ -603,7 +603,7 @@ These apply to every task below. They are listed once rather than repeated.
 **Depends on**: US1–US4.
 
 - [ ] T108 [US5] Build the requirement map in `specs/009-python-react-stack/parity-report.md` § "Requirement map": one row per functional requirement in `specs/001-*/spec.md` to `specs/008-*/spec.md`, including their amendments, with the columns FR id, one-line summary, and the new implementation's test(s) (`path::test_name`), *or* "excluded" plus the reason. Exclusions are only those in 009 FR-001 (stack-named requirements) and Amendment 1(c). Write a throwaway script in the session scratchpad that lists every `FR-\d+[a-z]?` per spec, and confirm the map has none missing
-- [ ] T109 [P] [US5] Fill § "Tolerances" and § "Deviations" in `specs/009-python-react-stack/parity-report.md`:
+- [X] T109 [P] [US5] Fill § "Tolerances" and § "Deviations" in `specs/009-python-react-stack/parity-report.md`:
   - the six tolerance rows of [parity.md §5](./contracts/parity.md#5-tolerances);
   - Amendment 1(a) with any display ties found (T042);
   - 1(b)1 token renewal (`expired-token`);
