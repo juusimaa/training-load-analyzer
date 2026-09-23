@@ -6,7 +6,6 @@ Run with exactly one worker: the sync guard and the last sync status live in thi
 
 import logging
 import os
-import sys
 from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
@@ -74,7 +73,8 @@ def app() -> FastAPI:
     try:
         settings = Settings.from_env(os.environ)
     except ConfigurationError as refusal:
-        print(refusal, file=sys.stderr)
+        # Logging is not configured yet, so the last-resort handler writes the message to stderr.
+        logging.getLogger("tla").critical("%s", refusal)
         raise SystemExit(1) from None
     logging.basicConfig(level=logging.INFO)
     return create_app(settings, SystemClock(), frontend_dist=_FRONTEND_DIST)
