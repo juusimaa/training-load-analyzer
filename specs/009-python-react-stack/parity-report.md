@@ -15,7 +15,25 @@ and are never edited by hand.
 
 ## Tolerances
 
-_Filled in by T109._
+These are the only differences allowed between a golden and the new implementation
+([parity.md §5](./contracts/parity.md#5-tolerances)). Each row names the helper that applies it
+and a test that relies on it.
+
+| Quantity | Comparison | Why | Applied by | Pinned by |
+| --- | --- | --- | --- | --- |
+| Loads, daily and weekly points, trend changes | \|a − b\| ≤ 1e-20 points | .NET `decimal` (96-bit, scale ≤ 28) and Python `Decimal` (precision 34) round in different places; a 1 Hz series differs around the 27th digit (research R1, Amendment 1(a)) | `tests/golden.py::assert_decimal_close` | `tests/parity/test_history_domain.py` (every history, `one-second-hr` included) |
+| Fitness, Fatigue, Form | \|a − b\| ≤ 1e-4 | 003 FR-029; the daily load enters the smoothing as a double in both stacks, so in practice they agree to the last bit | `tests/golden.py::assert_float_close` | `tests/parity/test_history_domain.py::test_every_days_metrics_match_the_reference`, `tests/parity/test_view_parity.py::test_the_geometry_numbers_match_within_tolerance` |
+| Every string in `view` and `renderedText` | exact | 009 SC-002 | direct equality | `tests/parity/test_view_parity.py::test_every_string_and_boolean_matches_the_reference`; the frontend component tests against `renderedText` |
+| SVG coordinates, bar and slot numbers | parsed, element-wise \|a − b\| ≤ 0.01 | .NET's `Math.Round(v, 2)` rounds half to even with scaling error (2.675 → 2.68); the port uses `Math.round(v * 100) / 100` (research R8) | `alt-stack/frontend/tests/golden.ts::expectCoordsClose` | `alt-stack/frontend/tests/geometry.test.ts` (every history × windows 180, 90, 30) |
+| Tick labels, slot counts, bar counts, `null`-ness | exact | 008 FR-006 | direct equality | `alt-stack/frontend/tests/geometry.test.ts` |
+| Sync outputs | exact, except `expired-token` and `rate-limited-on-streams` (D1, D2) | 009 SC-003 | direct equality | `tests/parity/test_sync_parity.py::test_the_sync_matches_the_reference_exactly` |
+
+Checked on 2026-09-23 by comparing values directly rather than through the tolerance helpers:
+- **Loads.** Every load and daily total is exactly equal except in `one-second-hr`, the 1 Hz series
+  research R1 predicted, where it differs below 1e-20.
+- **Metrics.** Every Fitness, Fatigue and Form value in every history equals the reference's double
+  exactly: the largest difference is 0.0.
+- **Geometry.** Not checked for exact equality; the tests assert only the 0.01 tolerance.
 
 ## Deviations
 
