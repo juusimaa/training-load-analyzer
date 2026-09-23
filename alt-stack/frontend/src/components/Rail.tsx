@@ -11,7 +11,8 @@ import "./Dashboard.css";
 export interface RailProps {
   asOf: string;
   isoWeek: string;
-  maximumHeartRate: string;
+  /** Null before any view has arrived: the rail then shows `—`, never `0 bpm` (research R4). */
+  maximumHeartRate: string | null;
   windowDays: number;
   onWindowChange: (days: number) => void;
   syncStatus: SyncStatusView;
@@ -54,7 +55,7 @@ export function Rail({ asOf, isoWeek, maximumHeartRate, windowDays, onWindowChan
       </div>{" "}
       <div className="rail-block">
         <h2 className="kicker">Max heart rate</h2>{" "}
-        <div className="rail-value">{maximumHeartRate} bpm</div>{" "}
+        <div className="rail-value">{maximumHeartRate === null ? "—" : `${maximumHeartRate} bpm`}</div>{" "}
         <div className="rail-note">from configuration</div>
       </div>
     </aside>
