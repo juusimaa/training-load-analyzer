@@ -1,0 +1,81 @@
+{
+  "name": "hr-dropouts",
+  "activities": [
+    {
+      "id": "fixture-3801",
+      "start": "2026-09-10T07:30:00+03:00",
+      "movingSeconds": 3000,
+      "type": "Running",
+      "heartRate": [
+        [
+          1,
+          145
+        ],
+        [
+          2,
+          146
+        ],
+        [
+          4,
+          148
+        ],
+        [
+          6,
+          150
+        ]
+      ],
+      "heartRateOutstanding": false
+    },
+    {
+      "id": "fixture-3802",
+      "start": "2026-09-11T07:30:00+03:00",
+      "movingSeconds": 4000,
+      "type": "Cycling",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    }
+  ],
+  "syncState": {
+    "resumePoint": "2026-09-04T04:30:00Z",
+    "lastSyncStartedAt": "2026-09-17T10:07:33Z",
+    "lastOutcome": "Completed"
+  },
+  "result": {
+    "imported": 2,
+    "updated": 0,
+    "seriesOutstanding": 0,
+    "skipped": [],
+    "removed": [],
+    "discarded": [
+      {
+        "id": "fixture-3801",
+        "count": 5
+      },
+      {
+        "id": "fixture-3802",
+        "count": 1
+      }
+    ],
+    "outcome": "Completed",
+    "retryAfter": null
+  },
+  "message": "2 activities imported.",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=2&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3801/streams?keys=time,heartrate&key_by_type=true"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3802/streams?keys=time,heartrate&key_by_type=true"
+    }
+  ]
+}

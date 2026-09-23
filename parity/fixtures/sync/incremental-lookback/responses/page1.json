@@ -1,0 +1,44 @@
+[
+ {
+  "id": "fixture-2001",
+  "name": "Fixture activity",
+  "sport_type": "Run",
+  "type": "Workout",
+  "start_date": "2026-09-12T05:00:00Z",
+  "start_date_local": "2026-09-12T05:00:00Z",
+  "utc_offset": 10800,
+  "moving_time": 3120,
+  "elapsed_time": 3180,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ },
+ {
+  "id": "fixture-2009",
+  "name": "Fixture activity",
+  "sport_type": "Ride",
+  "type": "Workout",
+  "start_date": "2026-09-09T05:00:00Z",
+  "start_date_local": "2026-09-09T05:00:00Z",
+  "utc_offset": 10800,
+  "moving_time": 4800,
+  "elapsed_time": 4860,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ },
+ {
+  "id": "fixture-2010",
+  "name": "Fixture activity",
+  "sport_type": "GravelRide",
+  "type": "Workout",
+  "start_date": "2026-09-16T05:00:00Z",
+  "start_date_local": "2026-09-16T05:00:00Z",
+  "utc_offset": 10800,
+  "moving_time": 6000,
+  "elapsed_time": 6060,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ }
+]

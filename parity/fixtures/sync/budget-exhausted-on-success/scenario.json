@@ -1,0 +1,34 @@
+{
+  "name": "budget-exhausted-on-success",
+  "description": "A successful page whose headers show the daily budget spent is discarded, and the retry time is the next UTC midnight.",
+  "clock": {
+    "utc": "2026-09-17T10:07:33Z",
+    "localOffset": "+03:00"
+  },
+  "connection": {
+    "athleteId": 900001,
+    "accessToken": "test-access-budget-exhausted-on-success",
+    "refreshToken": "test-refresh-budget-exhausted-on-success",
+    "expiresAt": "2026-09-17T16:07:33Z",
+    "grantedScopes": "read,activity:read_all",
+    "connectedAt": "2026-09-01T08:00:00Z"
+  },
+  "activities": [],
+  "syncState": null,
+  "exchanges": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "57,1000",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/page1.json"
+      }
+    }
+  ]
+}

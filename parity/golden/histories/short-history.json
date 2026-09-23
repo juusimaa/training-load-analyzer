@@ -1,0 +1,5546 @@
+{
+  "name": "short-history",
+  "range": {
+    "start": "2026-03-23",
+    "end": "2026-09-18"
+  },
+  "loads": [
+    {
+      "id": "fixture-20260918-07",
+      "points": "60",
+      "provenance": "Estimated"
+    },
+    {
+      "id": "fixture-20260916-07",
+      "points": "100",
+      "provenance": "Estimated"
+    },
+    {
+      "id": "fixture-20260914-07",
+      "points": "60",
+      "provenance": "Estimated"
+    },
+    {
+      "id": "fixture-20260912-07",
+      "points": "100",
+      "provenance": "Estimated"
+    },
+    {
+      "id": "fixture-20260910-07",
+      "points": "60",
+      "provenance": "Estimated"
+    },
+    {
+      "id": "fixture-20260908-07",
+      "points": "100",
+      "provenance": "Estimated"
+    },
+    {
+      "id": "fixture-20260906-07",
+      "points": "60",
+      "provenance": "Estimated"
+    },
+    {
+      "id": "fixture-20260904-07",
+      "points": "100",
+      "provenance": "Estimated"
+    },
+    {
+      "id": "fixture-20260902-07",
+      "points": "60",
+      "provenance": "Estimated"
+    },
+    {
+      "id": "fixture-20260831-07",
+      "points": "100",
+      "provenance": "Estimated"
+    }
+  ],
+  "daily": [
+    {
+      "day": "2026-03-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-31",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-02",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-12",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-14",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-16",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-19",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-21",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-02",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-12",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-14",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-16",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-19",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-21",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-31",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-02",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-12",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-14",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-16",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-19",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-21",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-02",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-12",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-14",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-16",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-19",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-21",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-31",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-02",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-12",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-14",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-16",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-19",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-21",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-31",
+      "points": "100",
+      "count": 1,
+      "basis": "Estimated"
+    },
+    {
+      "day": "2026-09-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-02",
+      "points": "60",
+      "count": 1,
+      "basis": "Estimated"
+    },
+    {
+      "day": "2026-09-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-04",
+      "points": "100",
+      "count": 1,
+      "basis": "Estimated"
+    },
+    {
+      "day": "2026-09-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-06",
+      "points": "60",
+      "count": 1,
+      "basis": "Estimated"
+    },
+    {
+      "day": "2026-09-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-08",
+      "points": "100",
+      "count": 1,
+      "basis": "Estimated"
+    },
+    {
+      "day": "2026-09-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-10",
+      "points": "60",
+      "count": 1,
+      "basis": "Estimated"
+    },
+    {
+      "day": "2026-09-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-12",
+      "points": "100",
+      "count": 1,
+      "basis": "Estimated"
+    },
+    {
+      "day": "2026-09-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-14",
+      "points": "60",
+      "count": 1,
+      "basis": "Estimated"
+    },
+    {
+      "day": "2026-09-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-16",
+      "points": "100",
+      "count": 1,
+      "basis": "Estimated"
+    },
+    {
+      "day": "2026-09-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-18",
+      "points": "60",
+      "count": 1,
+      "basis": "Estimated"
+    }
+  ],
+  "weekly": [
+    {
+      "year": 2026,
+      "week": 13,
+      "monday": "2026-03-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 14,
+      "monday": "2026-03-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 15,
+      "monday": "2026-04-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 16,
+      "monday": "2026-04-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 17,
+      "monday": "2026-04-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 18,
+      "monday": "2026-04-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 19,
+      "monday": "2026-05-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 20,
+      "monday": "2026-05-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 21,
+      "monday": "2026-05-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 22,
+      "monday": "2026-05-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 23,
+      "monday": "2026-06-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 24,
+      "monday": "2026-06-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 25,
+      "monday": "2026-06-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 26,
+      "monday": "2026-06-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 27,
+      "monday": "2026-06-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 28,
+      "monday": "2026-07-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 29,
+      "monday": "2026-07-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 30,
+      "monday": "2026-07-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 31,
+      "monday": "2026-07-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 32,
+      "monday": "2026-08-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 33,
+      "monday": "2026-08-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 34,
+      "monday": "2026-08-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 35,
+      "monday": "2026-08-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 36,
+      "monday": "2026-08-31",
+      "points": "320",
+      "count": 4,
+      "basis": "Estimated"
+    },
+    {
+      "year": 2026,
+      "week": 37,
+      "monday": "2026-09-07",
+      "points": "260",
+      "count": 3,
+      "basis": "Estimated"
+    },
+    {
+      "year": 2026,
+      "week": 38,
+      "monday": "2026-09-14",
+      "points": "220",
+      "count": 3,
+      "basis": "Estimated"
+    }
+  ],
+  "metrics": [
+    {
+      "day": "2026-03-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-31",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-01",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-02",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-03",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-04",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-05",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-06",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-07",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-08",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-09",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-10",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-11",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-12",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-13",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-14",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-15",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-16",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-17",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-18",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-19",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-20",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-21",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-22",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-01",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-02",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-03",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-04",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-05",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-06",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-07",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-08",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-09",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-10",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-11",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-12",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-13",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-14",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-15",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-16",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-17",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-18",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-19",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-20",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-21",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-22",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-31",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-01",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-02",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-03",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-04",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-05",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-06",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-07",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-08",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-09",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-10",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-11",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-12",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-13",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-14",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-15",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-16",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-17",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-18",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-19",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-20",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-21",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-22",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-01",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-02",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-03",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-04",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-05",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-06",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-07",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-08",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-09",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-10",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-11",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-12",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-13",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-14",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-15",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-16",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-17",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-18",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-19",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-20",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-21",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-22",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-31",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-01",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-02",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-03",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-04",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-05",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-06",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-07",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-08",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-09",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-10",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-11",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-12",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-13",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-14",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-15",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-16",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-17",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-18",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-19",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-20",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-21",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-22",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-31",
+      "fitness": "2.3528313347756735",
+      "fatigue": "13.312210024981841",
+      "form": "-10.959378690206167",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-01",
+      "fitness": "2.2974731818766507",
+      "fatigue": "11.54006066748957",
+      "form": "-9.242587485612919",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-02",
+      "fitness": "3.655116313810793",
+      "fatigue": "17.99114956941214",
+      "form": "-14.336033255601347",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-03",
+      "fitness": "3.569117591856955",
+      "fatigue": "15.59612995282338",
+      "form": "-12.027012360966426",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-04",
+      "fitness": "5.8379736095564265",
+      "fatigue": "26.832150402716273",
+      "form": "-20.994176793159845",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-05",
+      "fitness": "5.700615937154849",
+      "fatigue": "23.26019818688767",
+      "form": "-17.55958224973282",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-06",
+      "fitness": "6.978188859975658",
+      "fatigue": "28.15107776701127",
+      "form": "-21.172888907035613",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-07",
+      "fitness": "6.814003845878325",
+      "fatigue": "24.40354717037076",
+      "form": "-17.589543324492436",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-08",
+      "fitness": "9.006513163015354",
+      "fatigue": "34.467105742487334",
+      "form": "-25.460592579471978",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-09",
+      "fitness": "8.794605099145233",
+      "fatigue": "29.87877223651484",
+      "form": "-21.084167137369608",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-10",
+      "fitness": "9.999381675468168",
+      "fatigue": "33.888573338493124",
+      "form": "-23.889191663024956",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-11",
+      "fitness": "9.764113090123937",
+      "fatigue": "29.37725528120292",
+      "form": "-19.613142191078985",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-12",
+      "fitness": "11.88721131255224",
+      "fatigue": "38.77870338357596",
+      "form": "-26.89149207102372",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-13",
+      "fitness": "11.607525279959512",
+      "fatigue": "33.616400944189586",
+      "form": "-22.008875664230075",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-14",
+      "fitness": "12.746118588846022",
+      "fatigue": "37.12864106264819",
+      "form": "-24.38252247380217",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-15",
+      "fitness": "12.446223916719985",
+      "fatigue": "32.185998384966815",
+      "form": "-19.73977446824683",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-16",
+      "fitness": "14.506216595186727",
+      "fatigue": "41.21354070630461",
+      "form": "-26.707324111117885",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-17",
+      "fitness": "14.164909785644745",
+      "fatigue": "35.72710760874996",
+      "form": "-21.562197823105215",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    },
+    {
+      "day": "2026-09-18",
+      "fitness": "15.243332150530794",
+      "fatigue": "38.958366023011",
+      "form": "-23.71503387248021",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    }
+  ],
+  "trends": [
+    {
+      "year": 2026,
+      "week": 14,
+      "monday": "2026-03-30",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 15,
+      "monday": "2026-04-06",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 16,
+      "monday": "2026-04-13",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 17,
+      "monday": "2026-04-20",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 18,
+      "monday": "2026-04-27",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 19,
+      "monday": "2026-05-04",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 20,
+      "monday": "2026-05-11",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 21,
+      "monday": "2026-05-18",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 22,
+      "monday": "2026-05-25",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 23,
+      "monday": "2026-06-01",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 24,
+      "monday": "2026-06-08",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 25,
+      "monday": "2026-06-15",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 26,
+      "monday": "2026-06-22",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 27,
+      "monday": "2026-06-29",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 28,
+      "monday": "2026-07-06",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 29,
+      "monday": "2026-07-13",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 30,
+      "monday": "2026-07-20",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 31,
+      "monday": "2026-07-27",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 32,
+      "monday": "2026-08-03",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 33,
+      "monday": "2026-08-10",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 34,
+      "monday": "2026-08-17",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 35,
+      "monday": "2026-08-24",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 36,
+      "monday": "2026-08-31",
+      "points": "320",
+      "previous": "0",
+      "absoluteChange": "320",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "Estimated",
+      "classification": "SignificantIncrease"
+    },
+    {
+      "year": 2026,
+      "week": 37,
+      "monday": "2026-09-07",
+      "points": "260",
+      "previous": "320",
+      "absoluteChange": "-60",
+      "relativeChange": "-0.1875",
+      "isComplete": true,
+      "basis": "Estimated",
+      "classification": "SignificantDecrease"
+    },
+    {
+      "year": 2026,
+      "week": 38,
+      "monday": "2026-09-14",
+      "points": "220",
+      "previous": "260",
+      "absoluteChange": "-40",
+      "relativeChange": "-0.1538461538461538461538461538",
+      "isComplete": false,
+      "basis": "Estimated",
+      "classification": "Indeterminate"
+    }
+  ],
+  "view": {
+    "asOf": "2026-09-18",
+    "isoWeek": "2026-W38",
+    "maximumHeartRate": "190",
+    "isStravaConnected": true,
+    "isUnavailable": false,
+    "hasActivities": true,
+    "hasEnoughHistoryForChart": false,
+    "current": {
+      "fitness": {
+        "value": "15.2",
+        "qualifiers": [
+          "still settling",
+          "estimated"
+        ]
+      },
+      "fatigue": {
+        "value": "39.0",
+        "qualifiers": [
+          "still settling",
+          "estimated"
+        ]
+      },
+      "form": {
+        "value": "-23.7",
+        "qualifiers": [
+          "still settling",
+          "estimated"
+        ]
+      }
+    },
+    "week": {
+      "points": "220.0",
+      "trend": {
+        "change": "-40.0",
+        "percent": "-15%",
+        "judgement": "Week in progress"
+      }
+    },
+    "days": [
+      {
+        "day": "2026-08-31",
+        "fitness": 2.3528313347756735,
+        "fatigue": 13.312210024981841,
+        "form": -10.959378690206167,
+        "load": 100,
+        "display": {
+          "fitness": "2.4",
+          "fatigue": "13.3",
+          "form": "-11.0",
+          "load": "100.0"
+        }
+      },
+      {
+        "day": "2026-09-01",
+        "fitness": 2.2974731818766507,
+        "fatigue": 11.54006066748957,
+        "form": -9.242587485612919,
+        "load": 0,
+        "display": {
+          "fitness": "2.3",
+          "fatigue": "11.5",
+          "form": "-9.2",
+          "load": "0.0"
+        }
+      },
+      {
+        "day": "2026-09-02",
+        "fitness": 3.655116313810793,
+        "fatigue": 17.99114956941214,
+        "form": -14.336033255601347,
+        "load": 60,
+        "display": {
+          "fitness": "3.7",
+          "fatigue": "18.0",
+          "form": "-14.3",
+          "load": "60.0"
+        }
+      },
+      {
+        "day": "2026-09-03",
+        "fitness": 3.569117591856955,
+        "fatigue": 15.59612995282338,
+        "form": -12.027012360966426,
+        "load": 0,
+        "display": {
+          "fitness": "3.6",
+          "fatigue": "15.6",
+          "form": "-12.0",
+          "load": "0.0"
+        }
+      },
+      {
+        "day": "2026-09-04",
+        "fitness": 5.8379736095564265,
+        "fatigue": 26.832150402716273,
+        "form": -20.994176793159845,
+        "load": 100,
+        "display": {
+          "fitness": "5.8",
+          "fatigue": "26.8",
+          "form": "-21.0",
+          "load": "100.0"
+        }
+      },
+      {
+        "day": "2026-09-05",
+        "fitness": 5.700615937154849,
+        "fatigue": 23.26019818688767,
+        "form": -17.55958224973282,
+        "load": 0,
+        "display": {
+          "fitness": "5.7",
+          "fatigue": "23.3",
+          "form": "-17.6",
+          "load": "0.0"
+        }
+      },
+      {
+        "day": "2026-09-06",
+        "fitness": 6.978188859975658,
+        "fatigue": 28.15107776701127,
+        "form": -21.172888907035613,
+        "load": 60,
+        "display": {
+          "fitness": "7.0",
+          "fatigue": "28.2",
+          "form": "-21.2",
+          "load": "60.0"
+        }
+      },
+      {
+        "day": "2026-09-07",
+        "fitness": 6.814003845878325,
+        "fatigue": 24.40354717037076,
+        "form": -17.589543324492436,
+        "load": 0,
+        "display": {
+          "fitness": "6.8",
+          "fatigue": "24.4",
+          "form": "-17.6",
+          "load": "0.0"
+        }
+      },
+      {
+        "day": "2026-09-08",
+        "fitness": 9.006513163015354,
+        "fatigue": 34.467105742487334,
+        "form": -25.460592579471978,
+        "load": 100,
+        "display": {
+          "fitness": "9.0",
+          "fatigue": "34.5",
+          "form": "-25.5",
+          "load": "100.0"
+        }
+      },
+      {
+        "day": "2026-09-09",
+        "fitness": 8.794605099145233,
+        "fatigue": 29.87877223651484,
+        "form": -21.084167137369608,
+        "load": 0,
+        "display": {
+          "fitness": "8.8",
+          "fatigue": "29.9",
+          "form": "-21.1",
+          "load": "0.0"
+        }
+      },
+      {
+        "day": "2026-09-10",
+        "fitness": 9.999381675468168,
+        "fatigue": 33.888573338493124,
+        "form": -23.889191663024956,
+        "load": 60,
+        "display": {
+          "fitness": "10.0",
+          "fatigue": "33.9",
+          "form": "-23.9",
+          "load": "60.0"
+        }
+      },
+      {
+        "day": "2026-09-11",
+        "fitness": 9.764113090123937,
+        "fatigue": 29.37725528120292,
+        "form": -19.613142191078985,
+        "load": 0,
+        "display": {
+          "fitness": "9.8",
+          "fatigue": "29.4",
+          "form": "-19.6",
+          "load": "0.0"
+        }
+      },
+      {
+        "day": "2026-09-12",
+        "fitness": 11.88721131255224,
+        "fatigue": 38.77870338357596,
+        "form": -26.89149207102372,
+        "load": 100,
+        "display": {
+          "fitness": "11.9",
+          "fatigue": "38.8",
+          "form": "-26.9",
+          "load": "100.0"
+        }
+      },
+      {
+        "day": "2026-09-13",
+        "fitness": 11.607525279959512,
+        "fatigue": 33.616400944189586,
+        "form": -22.008875664230075,
+        "load": 0,
+        "display": {
+          "fitness": "11.6",
+          "fatigue": "33.6",
+          "form": "-22.0",
+          "load": "0.0"
+        }
+      },
+      {
+        "day": "2026-09-14",
+        "fitness": 12.746118588846022,
+        "fatigue": 37.12864106264819,
+        "form": -24.38252247380217,
+        "load": 60,
+        "display": {
+          "fitness": "12.7",
+          "fatigue": "37.1",
+          "form": "-24.4",
+          "load": "60.0"
+        }
+      },
+      {
+        "day": "2026-09-15",
+        "fitness": 12.446223916719985,
+        "fatigue": 32.185998384966815,
+        "form": -19.73977446824683,
+        "load": 0,
+        "display": {
+          "fitness": "12.4",
+          "fatigue": "32.2",
+          "form": "-19.7",
+          "load": "0.0"
+        }
+      },
+      {
+        "day": "2026-09-16",
+        "fitness": 14.506216595186727,
+        "fatigue": 41.21354070630461,
+        "form": -26.707324111117885,
+        "load": 100,
+        "display": {
+          "fitness": "14.5",
+          "fatigue": "41.2",
+          "form": "-26.7",
+          "load": "100.0"
+        }
+      },
+      {
+        "day": "2026-09-17",
+        "fitness": 14.164909785644745,
+        "fatigue": 35.72710760874996,
+        "form": -21.562197823105215,
+        "load": 0,
+        "display": {
+          "fitness": "14.2",
+          "fatigue": "35.7",
+          "form": "-21.6",
+          "load": "0.0"
+        }
+      },
+      {
+        "day": "2026-09-18",
+        "fitness": 15.243332150530794,
+        "fatigue": 38.958366023011,
+        "form": -23.71503387248021,
+        "load": 60,
+        "display": {
+          "fitness": "15.2",
+          "fatigue": "39.0",
+          "form": "-23.7",
+          "load": "60.0"
+        }
+      }
+    ],
+    "recent": [
+      {
+        "day": "2026-09-18",
+        "type": "Cycling",
+        "movingTime": "30m",
+        "provenance": "estimated",
+        "load": "60.0"
+      },
+      {
+        "day": "2026-09-16",
+        "type": "Running",
+        "movingTime": "50m",
+        "provenance": "estimated",
+        "load": "100.0"
+      },
+      {
+        "day": "2026-09-14",
+        "type": "Running",
+        "movingTime": "30m",
+        "provenance": "estimated",
+        "load": "60.0"
+      },
+      {
+        "day": "2026-09-12",
+        "type": "Cycling",
+        "movingTime": "50m",
+        "provenance": "estimated",
+        "load": "100.0"
+      },
+      {
+        "day": "2026-09-10",
+        "type": "Running",
+        "movingTime": "30m",
+        "provenance": "estimated",
+        "load": "60.0"
+      },
+      {
+        "day": "2026-09-08",
+        "type": "Running",
+        "movingTime": "50m",
+        "provenance": "estimated",
+        "load": "100.0"
+      },
+      {
+        "day": "2026-09-06",
+        "type": "Cycling",
+        "movingTime": "30m",
+        "provenance": "estimated",
+        "load": "60.0"
+      }
+    ]
+  },
+  "geometry": {
+    "180": {
+      "viewBox": "0 0 1000 300",
+      "plot": {
+        "Fitness": "0,168.26 55.56,168.47 111.11,163.31 166.67,163.64 222.22,155.02 277.78,155.55 333.33,150.69 388.89,151.32 444.44,142.99 500,143.8 555.56,139.22 611.11,140.12 666.67,132.05 722.22,133.11 777.78,128.79 833.33,129.93 888.89,122.11 944.44,123.4 1000,119.31",
+        "Fatigue": "0,126.64 55.56,133.37 111.11,108.87 166.67,117.97 222.22,75.3 277.78,88.87 333.33,70.29 388.89,84.52 444.44,46.31 500,63.73 555.56,48.51 611.11,65.64 666.67,29.94 722.22,49.54 777.78,36.2 833.33,54.97 888.89,20.69 944.44,41.52 1000,29.25",
+        "Form": "0,218.81 55.56,212.29 111.11,231.63 166.67,222.86 222.22,256.92 277.78,243.87 333.33,257.59 388.89,243.99 444.44,273.88 500,257.26 555.56,267.91 611.11,251.67 666.67,279.31 722.22,260.77 777.78,269.78 833.33,252.15 888.89,278.61 944.44,259.07 1000,267.25"
+      },
+      "plotClasses": [
+        "series-fitness",
+        "series-fatigue",
+        "series-form"
+      ],
+      "bars": [
+        [
+          "-25.32",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "85.8",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "196.91",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "308.02",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "419.13",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "530.24",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "641.35",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "752.46",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "863.57",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "974.68",
+          "210",
+          "50.63",
+          "90"
+        ]
+      ],
+      "zeroRule": "177.19",
+      "ticks": [
+        "2026-08-31",
+        "2026-09-04",
+        "2026-09-07",
+        "2026-09-11",
+        "2026-09-14",
+        "2026-09-18"
+      ],
+      "slots": [
+        {
+          "day": "2026-08-31",
+          "left": "0",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "2.4",
+              "56.09"
+            ],
+            [
+              "Fatigue",
+              "13.3",
+              "42.21"
+            ],
+            [
+              "Form",
+              "-11.0",
+              "72.94"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-01",
+          "left": "5.56",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "2.3",
+              "56.16"
+            ],
+            [
+              "Fatigue",
+              "11.5",
+              "44.46"
+            ],
+            [
+              "Form",
+              "-9.2",
+              "70.76"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-02",
+          "left": "11.11",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "3.7",
+              "54.44"
+            ],
+            [
+              "Fatigue",
+              "18.0",
+              "36.29"
+            ],
+            [
+              "Form",
+              "-14.3",
+              "77.21"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-03",
+          "left": "16.67",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "3.6",
+              "54.55"
+            ],
+            [
+              "Fatigue",
+              "15.6",
+              "39.32"
+            ],
+            [
+              "Form",
+              "-12.0",
+              "74.29"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-04",
+          "left": "22.22",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "5.8",
+              "51.67"
+            ],
+            [
+              "Fatigue",
+              "26.8",
+              "25.1"
+            ],
+            [
+              "Form",
+              "-21.0",
+              "85.64"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-05",
+          "left": "27.78",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "5.7",
+              "51.85"
+            ],
+            [
+              "Fatigue",
+              "23.3",
+              "29.62"
+            ],
+            [
+              "Form",
+              "-17.6",
+              "81.29"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-06",
+          "left": "33.33",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "7.0",
+              "50.23"
+            ],
+            [
+              "Fatigue",
+              "28.2",
+              "23.43"
+            ],
+            [
+              "Form",
+              "-21.2",
+              "85.86"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-07",
+          "left": "38.89",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "6.8",
+              "50.44"
+            ],
+            [
+              "Fatigue",
+              "24.4",
+              "28.17"
+            ],
+            [
+              "Form",
+              "-17.6",
+              "81.33"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-08",
+          "left": "44.44",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "9.0",
+              "47.66"
+            ],
+            [
+              "Fatigue",
+              "34.5",
+              "15.44"
+            ],
+            [
+              "Form",
+              "-25.5",
+              "91.29"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-09",
+          "left": "50",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "8.8",
+              "47.93"
+            ],
+            [
+              "Fatigue",
+              "29.9",
+              "21.24"
+            ],
+            [
+              "Form",
+              "-21.1",
+              "85.75"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-10",
+          "left": "55.56",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "10.0",
+              "46.41"
+            ],
+            [
+              "Fatigue",
+              "33.9",
+              "16.17"
+            ],
+            [
+              "Form",
+              "-23.9",
+              "89.3"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-11",
+          "left": "61.11",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "9.8",
+              "46.71"
+            ],
+            [
+              "Fatigue",
+              "29.4",
+              "21.88"
+            ],
+            [
+              "Form",
+              "-19.6",
+              "83.89"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-12",
+          "left": "66.67",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "11.9",
+              "44.02"
+            ],
+            [
+              "Fatigue",
+              "38.8",
+              "9.98"
+            ],
+            [
+              "Form",
+              "-26.9",
+              "93.1"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-13",
+          "left": "72.22",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "11.6",
+              "44.37"
+            ],
+            [
+              "Fatigue",
+              "33.6",
+              "16.51"
+            ],
+            [
+              "Form",
+              "-22.0",
+              "86.92"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-14",
+          "left": "77.78",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "12.7",
+              "42.93"
+            ],
+            [
+              "Fatigue",
+              "37.1",
+              "12.07"
+            ],
+            [
+              "Form",
+              "-24.4",
+              "89.93"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-15",
+          "left": "83.33",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "12.4",
+              "43.31"
+            ],
+            [
+              "Fatigue",
+              "32.2",
+              "18.32"
+            ],
+            [
+              "Form",
+              "-19.7",
+              "84.05"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-16",
+          "left": "88.89",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "14.5",
+              "40.7"
+            ],
+            [
+              "Fatigue",
+              "41.2",
+              "6.9"
+            ],
+            [
+              "Form",
+              "-26.7",
+              "92.87"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-17",
+          "left": "94.44",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "14.2",
+              "41.13"
+            ],
+            [
+              "Fatigue",
+              "35.7",
+              "13.84"
+            ],
+            [
+              "Form",
+              "-21.6",
+              "86.36"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-18",
+          "left": "100",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "15.2",
+              "39.77"
+            ],
+            [
+              "Fatigue",
+              "39.0",
+              "9.75"
+            ],
+            [
+              "Form",
+              "-23.7",
+              "89.08"
+            ]
+          ]
+        }
+      ]
+    },
+    "90": {
+      "viewBox": "0 0 1000 300",
+      "plot": {
+        "Fitness": "0,168.26 55.56,168.47 111.11,163.31 166.67,163.64 222.22,155.02 277.78,155.55 333.33,150.69 388.89,151.32 444.44,142.99 500,143.8 555.56,139.22 611.11,140.12 666.67,132.05 722.22,133.11 777.78,128.79 833.33,129.93 888.89,122.11 944.44,123.4 1000,119.31",
+        "Fatigue": "0,126.64 55.56,133.37 111.11,108.87 166.67,117.97 222.22,75.3 277.78,88.87 333.33,70.29 388.89,84.52 444.44,46.31 500,63.73 555.56,48.51 611.11,65.64 666.67,29.94 722.22,49.54 777.78,36.2 833.33,54.97 888.89,20.69 944.44,41.52 1000,29.25",
+        "Form": "0,218.81 55.56,212.29 111.11,231.63 166.67,222.86 222.22,256.92 277.78,243.87 333.33,257.59 388.89,243.99 444.44,273.88 500,257.26 555.56,267.91 611.11,251.67 666.67,279.31 722.22,260.77 777.78,269.78 833.33,252.15 888.89,278.61 944.44,259.07 1000,267.25"
+      },
+      "plotClasses": [
+        "series-fitness",
+        "series-fatigue",
+        "series-form"
+      ],
+      "bars": [
+        [
+          "-25.32",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "85.8",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "196.91",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "308.02",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "419.13",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "530.24",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "641.35",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "752.46",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "863.57",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "974.68",
+          "210",
+          "50.63",
+          "90"
+        ]
+      ],
+      "zeroRule": "177.19",
+      "ticks": [
+        "2026-08-31",
+        "2026-09-04",
+        "2026-09-07",
+        "2026-09-11",
+        "2026-09-14",
+        "2026-09-18"
+      ],
+      "slots": [
+        {
+          "day": "2026-08-31",
+          "left": "0",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "2.4",
+              "56.09"
+            ],
+            [
+              "Fatigue",
+              "13.3",
+              "42.21"
+            ],
+            [
+              "Form",
+              "-11.0",
+              "72.94"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-01",
+          "left": "5.56",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "2.3",
+              "56.16"
+            ],
+            [
+              "Fatigue",
+              "11.5",
+              "44.46"
+            ],
+            [
+              "Form",
+              "-9.2",
+              "70.76"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-02",
+          "left": "11.11",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "3.7",
+              "54.44"
+            ],
+            [
+              "Fatigue",
+              "18.0",
+              "36.29"
+            ],
+            [
+              "Form",
+              "-14.3",
+              "77.21"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-03",
+          "left": "16.67",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "3.6",
+              "54.55"
+            ],
+            [
+              "Fatigue",
+              "15.6",
+              "39.32"
+            ],
+            [
+              "Form",
+              "-12.0",
+              "74.29"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-04",
+          "left": "22.22",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "5.8",
+              "51.67"
+            ],
+            [
+              "Fatigue",
+              "26.8",
+              "25.1"
+            ],
+            [
+              "Form",
+              "-21.0",
+              "85.64"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-05",
+          "left": "27.78",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "5.7",
+              "51.85"
+            ],
+            [
+              "Fatigue",
+              "23.3",
+              "29.62"
+            ],
+            [
+              "Form",
+              "-17.6",
+              "81.29"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-06",
+          "left": "33.33",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "7.0",
+              "50.23"
+            ],
+            [
+              "Fatigue",
+              "28.2",
+              "23.43"
+            ],
+            [
+              "Form",
+              "-21.2",
+              "85.86"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-07",
+          "left": "38.89",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "6.8",
+              "50.44"
+            ],
+            [
+              "Fatigue",
+              "24.4",
+              "28.17"
+            ],
+            [
+              "Form",
+              "-17.6",
+              "81.33"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-08",
+          "left": "44.44",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "9.0",
+              "47.66"
+            ],
+            [
+              "Fatigue",
+              "34.5",
+              "15.44"
+            ],
+            [
+              "Form",
+              "-25.5",
+              "91.29"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-09",
+          "left": "50",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "8.8",
+              "47.93"
+            ],
+            [
+              "Fatigue",
+              "29.9",
+              "21.24"
+            ],
+            [
+              "Form",
+              "-21.1",
+              "85.75"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-10",
+          "left": "55.56",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "10.0",
+              "46.41"
+            ],
+            [
+              "Fatigue",
+              "33.9",
+              "16.17"
+            ],
+            [
+              "Form",
+              "-23.9",
+              "89.3"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-11",
+          "left": "61.11",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "9.8",
+              "46.71"
+            ],
+            [
+              "Fatigue",
+              "29.4",
+              "21.88"
+            ],
+            [
+              "Form",
+              "-19.6",
+              "83.89"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-12",
+          "left": "66.67",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "11.9",
+              "44.02"
+            ],
+            [
+              "Fatigue",
+              "38.8",
+              "9.98"
+            ],
+            [
+              "Form",
+              "-26.9",
+              "93.1"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-13",
+          "left": "72.22",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "11.6",
+              "44.37"
+            ],
+            [
+              "Fatigue",
+              "33.6",
+              "16.51"
+            ],
+            [
+              "Form",
+              "-22.0",
+              "86.92"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-14",
+          "left": "77.78",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "12.7",
+              "42.93"
+            ],
+            [
+              "Fatigue",
+              "37.1",
+              "12.07"
+            ],
+            [
+              "Form",
+              "-24.4",
+              "89.93"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-15",
+          "left": "83.33",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "12.4",
+              "43.31"
+            ],
+            [
+              "Fatigue",
+              "32.2",
+              "18.32"
+            ],
+            [
+              "Form",
+              "-19.7",
+              "84.05"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-16",
+          "left": "88.89",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "14.5",
+              "40.7"
+            ],
+            [
+              "Fatigue",
+              "41.2",
+              "6.9"
+            ],
+            [
+              "Form",
+              "-26.7",
+              "92.87"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-17",
+          "left": "94.44",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "14.2",
+              "41.13"
+            ],
+            [
+              "Fatigue",
+              "35.7",
+              "13.84"
+            ],
+            [
+              "Form",
+              "-21.6",
+              "86.36"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-18",
+          "left": "100",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "15.2",
+              "39.77"
+            ],
+            [
+              "Fatigue",
+              "39.0",
+              "9.75"
+            ],
+            [
+              "Form",
+              "-23.7",
+              "89.08"
+            ]
+          ]
+        }
+      ]
+    },
+    "30": {
+      "viewBox": "0 0 1000 300",
+      "plot": {
+        "Fitness": "0,168.26 55.56,168.47 111.11,163.31 166.67,163.64 222.22,155.02 277.78,155.55 333.33,150.69 388.89,151.32 444.44,142.99 500,143.8 555.56,139.22 611.11,140.12 666.67,132.05 722.22,133.11 777.78,128.79 833.33,129.93 888.89,122.11 944.44,123.4 1000,119.31",
+        "Fatigue": "0,126.64 55.56,133.37 111.11,108.87 166.67,117.97 222.22,75.3 277.78,88.87 333.33,70.29 388.89,84.52 444.44,46.31 500,63.73 555.56,48.51 611.11,65.64 666.67,29.94 722.22,49.54 777.78,36.2 833.33,54.97 888.89,20.69 944.44,41.52 1000,29.25",
+        "Form": "0,218.81 55.56,212.29 111.11,231.63 166.67,222.86 222.22,256.92 277.78,243.87 333.33,257.59 388.89,243.99 444.44,273.88 500,257.26 555.56,267.91 611.11,251.67 666.67,279.31 722.22,260.77 777.78,269.78 833.33,252.15 888.89,278.61 944.44,259.07 1000,267.25"
+      },
+      "plotClasses": [
+        "series-fitness",
+        "series-fatigue",
+        "series-form"
+      ],
+      "bars": [
+        [
+          "-25.32",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "85.8",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "196.91",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "308.02",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "419.13",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "530.24",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "641.35",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "752.46",
+          "210",
+          "50.63",
+          "90"
+        ],
+        [
+          "863.57",
+          "150",
+          "50.63",
+          "150"
+        ],
+        [
+          "974.68",
+          "210",
+          "50.63",
+          "90"
+        ]
+      ],
+      "zeroRule": "177.19",
+      "ticks": [
+        "2026-08-31",
+        "2026-09-04",
+        "2026-09-07",
+        "2026-09-11",
+        "2026-09-14",
+        "2026-09-18"
+      ],
+      "slots": [
+        {
+          "day": "2026-08-31",
+          "left": "0",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "2.4",
+              "56.09"
+            ],
+            [
+              "Fatigue",
+              "13.3",
+              "42.21"
+            ],
+            [
+              "Form",
+              "-11.0",
+              "72.94"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-01",
+          "left": "5.56",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "2.3",
+              "56.16"
+            ],
+            [
+              "Fatigue",
+              "11.5",
+              "44.46"
+            ],
+            [
+              "Form",
+              "-9.2",
+              "70.76"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-02",
+          "left": "11.11",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "3.7",
+              "54.44"
+            ],
+            [
+              "Fatigue",
+              "18.0",
+              "36.29"
+            ],
+            [
+              "Form",
+              "-14.3",
+              "77.21"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-03",
+          "left": "16.67",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "3.6",
+              "54.55"
+            ],
+            [
+              "Fatigue",
+              "15.6",
+              "39.32"
+            ],
+            [
+              "Form",
+              "-12.0",
+              "74.29"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-04",
+          "left": "22.22",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "5.8",
+              "51.67"
+            ],
+            [
+              "Fatigue",
+              "26.8",
+              "25.1"
+            ],
+            [
+              "Form",
+              "-21.0",
+              "85.64"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-05",
+          "left": "27.78",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "5.7",
+              "51.85"
+            ],
+            [
+              "Fatigue",
+              "23.3",
+              "29.62"
+            ],
+            [
+              "Form",
+              "-17.6",
+              "81.29"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-06",
+          "left": "33.33",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "7.0",
+              "50.23"
+            ],
+            [
+              "Fatigue",
+              "28.2",
+              "23.43"
+            ],
+            [
+              "Form",
+              "-21.2",
+              "85.86"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-07",
+          "left": "38.89",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "6.8",
+              "50.44"
+            ],
+            [
+              "Fatigue",
+              "24.4",
+              "28.17"
+            ],
+            [
+              "Form",
+              "-17.6",
+              "81.33"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-08",
+          "left": "44.44",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "9.0",
+              "47.66"
+            ],
+            [
+              "Fatigue",
+              "34.5",
+              "15.44"
+            ],
+            [
+              "Form",
+              "-25.5",
+              "91.29"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-09",
+          "left": "50",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "8.8",
+              "47.93"
+            ],
+            [
+              "Fatigue",
+              "29.9",
+              "21.24"
+            ],
+            [
+              "Form",
+              "-21.1",
+              "85.75"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-10",
+          "left": "55.56",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "10.0",
+              "46.41"
+            ],
+            [
+              "Fatigue",
+              "33.9",
+              "16.17"
+            ],
+            [
+              "Form",
+              "-23.9",
+              "89.3"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-11",
+          "left": "61.11",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "9.8",
+              "46.71"
+            ],
+            [
+              "Fatigue",
+              "29.4",
+              "21.88"
+            ],
+            [
+              "Form",
+              "-19.6",
+              "83.89"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-12",
+          "left": "66.67",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "11.9",
+              "44.02"
+            ],
+            [
+              "Fatigue",
+              "38.8",
+              "9.98"
+            ],
+            [
+              "Form",
+              "-26.9",
+              "93.1"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-13",
+          "left": "72.22",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "11.6",
+              "44.37"
+            ],
+            [
+              "Fatigue",
+              "33.6",
+              "16.51"
+            ],
+            [
+              "Form",
+              "-22.0",
+              "86.92"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-14",
+          "left": "77.78",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "12.7",
+              "42.93"
+            ],
+            [
+              "Fatigue",
+              "37.1",
+              "12.07"
+            ],
+            [
+              "Form",
+              "-24.4",
+              "89.93"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-15",
+          "left": "83.33",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "12.4",
+              "43.31"
+            ],
+            [
+              "Fatigue",
+              "32.2",
+              "18.32"
+            ],
+            [
+              "Form",
+              "-19.7",
+              "84.05"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-16",
+          "left": "88.89",
+          "width": "5.26",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "100.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "14.5",
+              "40.7"
+            ],
+            [
+              "Fatigue",
+              "41.2",
+              "6.9"
+            ],
+            [
+              "Form",
+              "-26.7",
+              "92.87"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-17",
+          "left": "94.44",
+          "width": "5.26",
+          "barTop": null,
+          "barHeight": null,
+          "load": "0.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "14.2",
+              "41.13"
+            ],
+            [
+              "Fatigue",
+              "35.7",
+              "13.84"
+            ],
+            [
+              "Form",
+              "-21.6",
+              "86.36"
+            ]
+          ]
+        },
+        {
+          "day": "2026-09-18",
+          "left": "100",
+          "width": "5.26",
+          "barTop": "70",
+          "barHeight": "30",
+          "load": "60.0",
+          "opensLeft": true,
+          "points": [
+            [
+              "Fitness",
+              "15.2",
+              "39.77"
+            ],
+            [
+              "Fatigue",
+              "39.0",
+              "9.75"
+            ],
+            [
+              "Form",
+              "-23.7",
+              "89.08"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "renderedText": {
+    "metricRow": "Fitness 15.2 still settlingestimated Fatigue 39.0 still settlingestimated Form -23.7 still settlingestimated This week 220.0 -40.0 (-15%) Week in progress",
+    "recent": "Recent activitiesDay Type Moving time Basis Load 2026-09-18 Cycling 30m estimated 60.02026-09-16 Running 50m estimated 100.02026-09-14 Running 30m estimated 60.02026-09-12 Cycling 50m estimated 100.02026-09-10 Running 30m estimated 60.02026-09-08 Running 50m estimated 100.02026-09-06 Cycling 30m estimated 60.0",
+    "chart180": "Daily load and metrics · last 180 days Fitness Fatigue FormNot enough data to show trends (30+ days required)",
+    "chart90": "Daily load and metrics · last 90 days Fitness Fatigue FormNot enough data to show trends (30+ days required)",
+    "chart30": "Daily load and metrics · last 30 days Fitness Fatigue FormNot enough data to show trends (30+ days required)",
+    "rail": "Training Load As of 2026-09-18 ISO week 2026-W38 Window 30 days 90 days 180 days Strava Sync Activities Max heart rate 190 bpm from configuration",
+    "content": "Fitness 15.2 still settlingestimated Fatigue 39.0 still settlingestimated Form -23.7 still settlingestimated This week 220.0 -40.0 (-15%) Week in progressDaily load and metrics · last 180 days Fitness Fatigue FormNot enough data to show trends (30+ days required)Recent activitiesDay Type Moving time Basis Load 2026-09-18 Cycling 30m estimated 60.02026-09-16 Running 50m estimated 100.02026-09-14 Running 30m estimated 60.02026-09-12 Cycling 50m estimated 100.02026-09-10 Running 30m estimated 60.02026-09-08 Running 50m estimated 100.02026-09-06 Cycling 30m estimated 60.0"
+  }
+}

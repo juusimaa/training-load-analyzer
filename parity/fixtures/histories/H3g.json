@@ -1,0 +1,30 @@
+{
+  "name": "H3g",
+  "today": "2026-09-18",
+  "offset": "+03:00",
+  "maximumHeartRate": 190,
+  "isStravaConnected": true,
+  "activities": [
+    {
+      "id": "fixture-20260918-07",
+      "start": "2026-09-18T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260916-07",
+      "start": "2026-09-16T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260914-07",
+      "start": "2026-09-14T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    }
+  ]
+}

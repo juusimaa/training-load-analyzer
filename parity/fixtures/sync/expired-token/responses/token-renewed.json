@@ -1,0 +1,7 @@
+{
+ "token_type": "Bearer",
+ "access_token": "test-access-expired-token-renewed",
+ "expires_at": 1789661253,
+ "expires_in": 21600,
+ "refresh_token": "test-refresh-expired-token-renewed"
+}

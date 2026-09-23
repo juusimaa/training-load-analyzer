@@ -1,0 +1,73 @@
+{
+  "name": "expired-token",
+  "description": "The stored access token has expired. The reference sends it anyway and ends ReconnectionRequired (research R3(1)); the specified behaviour renews first (Amendment 1(b)1), which is the `renewal` sequence.",
+  "clock": {
+    "utc": "2026-09-17T10:07:33Z",
+    "localOffset": "+03:00"
+  },
+  "connection": {
+    "athleteId": 900001,
+    "accessToken": "test-access-expired-token",
+    "refreshToken": "test-refresh-expired-token",
+    "expiresAt": "2026-09-17T09:00:00Z",
+    "grantedScopes": "read,activity:read_all",
+    "connectedAt": "2026-09-01T08:00:00Z"
+  },
+  "activities": [],
+  "syncState": null,
+  "exchanges": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200",
+      "response": {
+        "status": 401,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "1,41",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/page1-unauthorized.json"
+      }
+    }
+  ],
+  "renewal": [
+    {
+      "method": "POST",
+      "url": "https://www.strava.com/oauth/token",
+      "response": {
+        "status": 200,
+        "headers": {},
+        "body": "responses/token-renewed.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "2,42",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/renewed-page1.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=2&per_page=200",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "3,43",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/renewed-page2.json"
+      }
+    }
+  ]
+}

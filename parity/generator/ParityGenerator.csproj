@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Feature 009's parity reference (research R13). Runs the .NET reference on the shared fixtures in
+    ../fixtures and writes what it produced to ../golden. It references the reference's projects
+    read-only, is not part of TrainingLoadAnalyzer.sln, and ships nothing (009 FR-003, FR-004).
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ParityGenerator</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/TrainingLoadAnalyzer.Domain/TrainingLoadAnalyzer.Domain.csproj" />
+    <ProjectReference Include="../../src/TrainingLoadAnalyzer.Infrastructure/TrainingLoadAnalyzer.Infrastructure.csproj" />
+    <ProjectReference Include="../../src/TrainingLoadAnalyzer.Web/TrainingLoadAnalyzer.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
+
+    <!--
+      Pages/Dashboard.razor declares @rendermode InteractiveServer, which HtmlRenderer refuses to
+      render. The reference's own tests render that page with bUnit at this version, so the page
+      goes through bUnit here too; every other component goes through HtmlRenderer.
+    -->
+    <PackageReference Include="bunit" Version="2.11.3" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,30 @@
+[
+ {
+  "id": "fixture-3901",
+  "name": "Fixture activity",
+  "sport_type": "Run",
+  "type": "Workout",
+  "start_date": "2026-09-10T04:30:00Z",
+  "start_date_local": "2026-09-10T04:30:00Z",
+  "utc_offset": 10800.0,
+  "moving_time": 3120,
+  "elapsed_time": 3180,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ },
+ {
+  "id": "fixture-3902",
+  "name": "Fixture activity",
+  "sport_type": "Ride",
+  "type": "Workout",
+  "start_date": "2026-09-11T18:45:00Z",
+  "start_date_local": "2026-09-11T18:45:00Z",
+  "utc_offset": 19800.0,
+  "moving_time": 3600,
+  "elapsed_time": 3660,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ }
+]

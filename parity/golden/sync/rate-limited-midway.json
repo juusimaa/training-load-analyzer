@@ -1,0 +1,47 @@
+{
+  "name": "rate-limited-midway",
+  "activities": [
+    {
+      "id": "fixture-3101",
+      "start": "2026-09-10T07:30:00+03:00",
+      "movingSeconds": 3000,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    },
+    {
+      "id": "fixture-3102",
+      "start": "2026-09-11T07:30:00+03:00",
+      "movingSeconds": 4000,
+      "type": "Cycling",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    }
+  ],
+  "syncState": {
+    "resumePoint": "2026-09-04T04:30:00Z",
+    "lastSyncStartedAt": "2026-09-17T10:07:33Z",
+    "lastOutcome": "RateLimited"
+  },
+  "result": {
+    "imported": 2,
+    "updated": 0,
+    "seriesOutstanding": 0,
+    "skipped": [],
+    "removed": [],
+    "discarded": [],
+    "outcome": "RateLimited",
+    "retryAfter": "2026-09-17T10:15:00Z"
+  },
+  "message": "Rate limited by Strava. Available again at 13:15.",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=2&per_page=200"
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "name": "negative-form",
+  "today": "2026-09-18",
+  "offset": "+03:00",
+  "maximumHeartRate": 190,
+  "isStravaConnected": true,
+  "activities": [
+    {
+      "id": "fixture-20260828-07",
+      "start": "2026-08-28T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260827-07",
+      "start": "2026-08-27T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Cycling",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260826-07",
+      "start": "2026-08-26T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260825-07",
+      "start": "2026-08-25T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Cycling",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260824-07",
+      "start": "2026-08-24T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260823-07",
+      "start": "2026-08-23T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Cycling",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260822-07",
+      "start": "2026-08-22T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260821-07",
+      "start": "2026-08-21T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Cycling",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260820-07",
+      "start": "2026-08-20T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260819-07",
+      "start": "2026-08-19T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Cycling",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260818-07",
+      "start": "2026-08-18T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260817-07",
+      "start": "2026-08-17T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Cycling",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260816-07",
+      "start": "2026-08-16T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260815-07",
+      "start": "2026-08-15T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Cycling",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260814-07",
+      "start": "2026-08-14T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260813-07",
+      "start": "2026-08-13T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Cycling",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260812-07",
+      "start": "2026-08-12T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260811-07",
+      "start": "2026-08-11T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Cycling",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260810-07",
+      "start": "2026-08-10T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260809-07",
+      "start": "2026-08-09T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Cycling",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260808-07",
+      "start": "2026-08-08T07:00:00+03:00",
+      "movingSeconds": 9000,
+      "type": "Running",
+      "heartRate": null
+    }
+  ]
+}

@@ -1,0 +1,3640 @@
+{
+  "name": "H1",
+  "range": {
+    "start": "2026-03-23",
+    "end": "2026-09-18"
+  },
+  "loads": [
+    {
+      "id": "fixture-20260918-07",
+      "points": "120",
+      "provenance": "Estimated"
+    }
+  ],
+  "daily": [
+    {
+      "day": "2026-03-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-03-31",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-02",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-12",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-14",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-16",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-19",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-21",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-04-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-02",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-12",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-14",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-16",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-19",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-21",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-05-31",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-02",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-12",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-14",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-16",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-19",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-21",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-06-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-02",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-12",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-14",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-16",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-19",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-21",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-07-31",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-02",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-12",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-14",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-16",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-19",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-21",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-26",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-28",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-08-31",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-02",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-05",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-09",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-12",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-14",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-16",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "day": "2026-09-18",
+      "points": "120",
+      "count": 1,
+      "basis": "Estimated"
+    }
+  ],
+  "weekly": [
+    {
+      "year": 2026,
+      "week": 13,
+      "monday": "2026-03-23",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 14,
+      "monday": "2026-03-30",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 15,
+      "monday": "2026-04-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 16,
+      "monday": "2026-04-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 17,
+      "monday": "2026-04-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 18,
+      "monday": "2026-04-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 19,
+      "monday": "2026-05-04",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 20,
+      "monday": "2026-05-11",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 21,
+      "monday": "2026-05-18",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 22,
+      "monday": "2026-05-25",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 23,
+      "monday": "2026-06-01",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 24,
+      "monday": "2026-06-08",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 25,
+      "monday": "2026-06-15",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 26,
+      "monday": "2026-06-22",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 27,
+      "monday": "2026-06-29",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 28,
+      "monday": "2026-07-06",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 29,
+      "monday": "2026-07-13",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 30,
+      "monday": "2026-07-20",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 31,
+      "monday": "2026-07-27",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 32,
+      "monday": "2026-08-03",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 33,
+      "monday": "2026-08-10",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 34,
+      "monday": "2026-08-17",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 35,
+      "monday": "2026-08-24",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 36,
+      "monday": "2026-08-31",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 37,
+      "monday": "2026-09-07",
+      "points": "0",
+      "count": 0,
+      "basis": "None"
+    },
+    {
+      "year": 2026,
+      "week": 38,
+      "monday": "2026-09-14",
+      "points": "120",
+      "count": 1,
+      "basis": "Estimated"
+    }
+  ],
+  "metrics": [
+    {
+      "day": "2026-03-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-03-31",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-01",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-02",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-03",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-04",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-05",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-06",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-07",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-08",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-09",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-10",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-11",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-12",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-13",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-14",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-15",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-16",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-17",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-18",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-19",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-20",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-21",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-22",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-04-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-01",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-02",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-03",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": false,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-04",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-05",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-06",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-07",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-08",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-09",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-10",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-11",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-12",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-13",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-14",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-15",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-16",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-17",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-18",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-19",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-20",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-21",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-22",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-05-31",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-01",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-02",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-03",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-04",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-05",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-06",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-07",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-08",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-09",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-10",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-11",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-12",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-13",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-14",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-15",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-16",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-17",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-18",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-19",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-20",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-21",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-22",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-06-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-01",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-02",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-03",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-04",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-05",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-06",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-07",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-08",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-09",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-10",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-11",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-12",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-13",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-14",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-15",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-16",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-17",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-18",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-19",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-20",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-21",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-22",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-07-31",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-01",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-02",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-03",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-04",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-05",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-06",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-07",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-08",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-09",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-10",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-11",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-12",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-13",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-14",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-15",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-16",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-17",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-18",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-19",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-20",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-21",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-22",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-23",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-24",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-25",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-26",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-27",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-28",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-29",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-30",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-08-31",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-01",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-02",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-03",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-04",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-05",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-06",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-07",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-08",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-09",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-10",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-11",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-12",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-13",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-14",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-15",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-16",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-17",
+      "fitness": "0",
+      "fatigue": "0",
+      "form": "0",
+      "isReliable": true,
+      "fitnessBasis": "None",
+      "fatigueBasis": "None",
+      "formBasis": "None"
+    },
+    {
+      "day": "2026-09-18",
+      "fitness": "2.8233976017308082",
+      "fatigue": "15.974652029978209",
+      "form": "-13.151254428247402",
+      "isReliable": true,
+      "fitnessBasis": "Estimated",
+      "fatigueBasis": "Estimated",
+      "formBasis": "Estimated"
+    }
+  ],
+  "trends": [
+    {
+      "year": 2026,
+      "week": 14,
+      "monday": "2026-03-30",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 15,
+      "monday": "2026-04-06",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 16,
+      "monday": "2026-04-13",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 17,
+      "monday": "2026-04-20",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 18,
+      "monday": "2026-04-27",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 19,
+      "monday": "2026-05-04",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 20,
+      "monday": "2026-05-11",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 21,
+      "monday": "2026-05-18",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 22,
+      "monday": "2026-05-25",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 23,
+      "monday": "2026-06-01",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 24,
+      "monday": "2026-06-08",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 25,
+      "monday": "2026-06-15",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 26,
+      "monday": "2026-06-22",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 27,
+      "monday": "2026-06-29",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 28,
+      "monday": "2026-07-06",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 29,
+      "monday": "2026-07-13",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 30,
+      "monday": "2026-07-20",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 31,
+      "monday": "2026-07-27",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 32,
+      "monday": "2026-08-03",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 33,
+      "monday": "2026-08-10",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 34,
+      "monday": "2026-08-17",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 35,
+      "monday": "2026-08-24",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 36,
+      "monday": "2026-08-31",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 37,
+      "monday": "2026-09-07",
+      "points": "0",
+      "previous": "0",
+      "absoluteChange": "0",
+      "relativeChange": null,
+      "isComplete": true,
+      "basis": "None",
+      "classification": "Steady"
+    },
+    {
+      "year": 2026,
+      "week": 38,
+      "monday": "2026-09-14",
+      "points": "120",
+      "previous": "0",
+      "absoluteChange": "120",
+      "relativeChange": null,
+      "isComplete": false,
+      "basis": "Estimated",
+      "classification": "Indeterminate"
+    }
+  ],
+  "view": {
+    "asOf": "2026-09-18",
+    "isoWeek": "2026-W38",
+    "maximumHeartRate": "190",
+    "isStravaConnected": true,
+    "isUnavailable": false,
+    "hasActivities": true,
+    "hasEnoughHistoryForChart": false,
+    "current": {
+      "fitness": {
+        "value": "2.8",
+        "qualifiers": [
+          "still settling",
+          "estimated"
+        ]
+      },
+      "fatigue": {
+        "value": "16.0",
+        "qualifiers": [
+          "still settling",
+          "estimated"
+        ]
+      },
+      "form": {
+        "value": "-13.2",
+        "qualifiers": [
+          "still settling",
+          "estimated"
+        ]
+      }
+    },
+    "week": {
+      "points": "120.0",
+      "trend": null
+    },
+    "days": [
+      {
+        "day": "2026-09-18",
+        "fitness": 2.8233976017308082,
+        "fatigue": 15.974652029978209,
+        "form": -13.151254428247402,
+        "load": 120,
+        "display": {
+          "fitness": "2.8",
+          "fatigue": "16.0",
+          "form": "-13.2",
+          "load": "120.0"
+        }
+      }
+    ],
+    "recent": [
+      {
+        "day": "2026-09-18",
+        "type": "Running",
+        "movingTime": "1h 00m",
+        "provenance": "estimated",
+        "load": "120.0"
+      }
+    ]
+  },
+  "geometry": {
+    "180": {
+      "viewBox": "0 0 1000 300",
+      "plot": {
+        "Fitness": "0,137.46",
+        "Fatigue": "0,20.69",
+        "Form": "0,279.31"
+      },
+      "plotClasses": [
+        "series-fitness",
+        "series-fatigue",
+        "series-form"
+      ],
+      "bars": [
+        [
+          "-499",
+          "150",
+          "998",
+          "150"
+        ]
+      ],
+      "zeroRule": "162.54",
+      "ticks": [
+        "2026-09-18"
+      ],
+      "slots": [
+        {
+          "day": "2026-09-18",
+          "left": "0",
+          "width": "100",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "120.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "2.8",
+              "45.82"
+            ],
+            [
+              "Fatigue",
+              "16.0",
+              "6.9"
+            ],
+            [
+              "Form",
+              "-13.2",
+              "93.1"
+            ]
+          ]
+        }
+      ]
+    },
+    "90": {
+      "viewBox": "0 0 1000 300",
+      "plot": {
+        "Fitness": "0,137.46",
+        "Fatigue": "0,20.69",
+        "Form": "0,279.31"
+      },
+      "plotClasses": [
+        "series-fitness",
+        "series-fatigue",
+        "series-form"
+      ],
+      "bars": [
+        [
+          "-499",
+          "150",
+          "998",
+          "150"
+        ]
+      ],
+      "zeroRule": "162.54",
+      "ticks": [
+        "2026-09-18"
+      ],
+      "slots": [
+        {
+          "day": "2026-09-18",
+          "left": "0",
+          "width": "100",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "120.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "2.8",
+              "45.82"
+            ],
+            [
+              "Fatigue",
+              "16.0",
+              "6.9"
+            ],
+            [
+              "Form",
+              "-13.2",
+              "93.1"
+            ]
+          ]
+        }
+      ]
+    },
+    "30": {
+      "viewBox": "0 0 1000 300",
+      "plot": {
+        "Fitness": "0,137.46",
+        "Fatigue": "0,20.69",
+        "Form": "0,279.31"
+      },
+      "plotClasses": [
+        "series-fitness",
+        "series-fatigue",
+        "series-form"
+      ],
+      "bars": [
+        [
+          "-499",
+          "150",
+          "998",
+          "150"
+        ]
+      ],
+      "zeroRule": "162.54",
+      "ticks": [
+        "2026-09-18"
+      ],
+      "slots": [
+        {
+          "day": "2026-09-18",
+          "left": "0",
+          "width": "100",
+          "barTop": "50",
+          "barHeight": "50",
+          "load": "120.0",
+          "opensLeft": false,
+          "points": [
+            [
+              "Fitness",
+              "2.8",
+              "45.82"
+            ],
+            [
+              "Fatigue",
+              "16.0",
+              "6.9"
+            ],
+            [
+              "Form",
+              "-13.2",
+              "93.1"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "renderedText": {
+    "metricRow": "Fitness 2.8 still settlingestimated Fatigue 16.0 still settlingestimated Form -13.2 still settlingestimated This week 120.0 —",
+    "recent": "Recent activitiesDay Type Moving time Basis Load 2026-09-18 Running 1h 00m estimated 120.0",
+    "chart180": "Daily load and metrics · last 180 days Fitness Fatigue FormNot enough data to show trends (30+ days required)",
+    "chart90": "Daily load and metrics · last 90 days Fitness Fatigue FormNot enough data to show trends (30+ days required)",
+    "chart30": "Daily load and metrics · last 30 days Fitness Fatigue FormNot enough data to show trends (30+ days required)",
+    "rail": "Training Load As of 2026-09-18 ISO week 2026-W38 Window 30 days 90 days 180 days Strava Sync Activities Max heart rate 190 bpm from configuration",
+    "content": "Fitness 2.8 still settlingestimated Fatigue 16.0 still settlingestimated Form -13.2 still settlingestimated This week 120.0 —Daily load and metrics · last 180 days Fitness Fatigue FormNot enough data to show trends (30+ days required)Recent activitiesDay Type Moving time Basis Load 2026-09-18 Running 1h 00m estimated 120.0"
+  }
+}

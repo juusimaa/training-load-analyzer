@@ -1,0 +1,26 @@
+{
+  "name": "budget-exhausted-on-success",
+  "activities": [],
+  "syncState": {
+    "resumePoint": "1970-01-01T00:00:00Z",
+    "lastSyncStartedAt": "2026-09-17T10:07:33Z",
+    "lastOutcome": "RateLimited"
+  },
+  "result": {
+    "imported": 0,
+    "updated": 0,
+    "seriesOutstanding": 0,
+    "skipped": [],
+    "removed": [],
+    "discarded": [],
+    "outcome": "RateLimited",
+    "retryAfter": "2026-09-18T00:00:00Z"
+  },
+  "message": "Rate limited by Strava. Available again at 03:00.",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200"
+    }
+  ]
+}

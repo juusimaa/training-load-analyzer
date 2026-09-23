@@ -1,0 +1,384 @@
+{
+  "metric": [
+    {
+      "input": "45.25",
+      "output": "45.3"
+    },
+    {
+      "input": "0.15",
+      "output": "0.2"
+    },
+    {
+      "input": "12.349999999999999",
+      "output": "12.4"
+    },
+    {
+      "input": "-0.25",
+      "output": "-0.3"
+    },
+    {
+      "input": "-13.25",
+      "output": "-13.3"
+    },
+    {
+      "input": "-0.04",
+      "output": "-0.0"
+    },
+    {
+      "input": "0.05",
+      "output": "0.1"
+    },
+    {
+      "input": "2.675",
+      "output": "2.7"
+    },
+    {
+      "input": "0",
+      "output": "0.0"
+    },
+    {
+      "input": "-0.05",
+      "output": "-0.1"
+    },
+    {
+      "input": "1.45",
+      "output": "1.5"
+    },
+    {
+      "input": "99.95",
+      "output": "100.0"
+    },
+    {
+      "input": "-99.95",
+      "output": "-100.0"
+    }
+  ],
+  "points": [
+    {
+      "input": "45.25",
+      "output": "45.3"
+    },
+    {
+      "input": "0.15",
+      "output": "0.2"
+    },
+    {
+      "input": "-0.25",
+      "output": "-0.3"
+    },
+    {
+      "input": "-13.25",
+      "output": "-13.3"
+    },
+    {
+      "input": "-0.04",
+      "output": "0.0"
+    },
+    {
+      "input": "0.04",
+      "output": "0.0"
+    },
+    {
+      "input": "0.05",
+      "output": "0.1"
+    },
+    {
+      "input": "2.675",
+      "output": "2.7"
+    },
+    {
+      "input": "0",
+      "output": "0.0"
+    },
+    {
+      "input": "120",
+      "output": "120.0"
+    },
+    {
+      "input": "120.00",
+      "output": "120.0"
+    },
+    {
+      "input": "-0.05",
+      "output": "-0.1"
+    },
+    {
+      "input": "1.45",
+      "output": "1.5"
+    }
+  ],
+  "percent": [
+    {
+      "input": "-0.004",
+      "output": "0%"
+    },
+    {
+      "input": "0.005",
+      "output": "+1%"
+    },
+    {
+      "input": "0.0049",
+      "output": "0%"
+    },
+    {
+      "input": "-0.005",
+      "output": "-1%"
+    },
+    {
+      "input": "0.3333",
+      "output": "+33%"
+    },
+    {
+      "input": "0",
+      "output": "0%"
+    },
+    {
+      "input": "1",
+      "output": "+100%"
+    },
+    {
+      "input": "-1",
+      "output": "-100%"
+    },
+    {
+      "input": "-0.3333",
+      "output": "-33%"
+    },
+    {
+      "input": "0.015",
+      "output": "+2%"
+    },
+    {
+      "input": "-0.015",
+      "output": "-2%"
+    }
+  ],
+  "weekChange": [
+    {
+      "input": "-0.04",
+      "output": "0.0"
+    },
+    {
+      "input": "0",
+      "output": "+0.0"
+    },
+    {
+      "input": "120",
+      "output": "+120.0"
+    },
+    {
+      "input": "-120",
+      "output": "-120.0"
+    },
+    {
+      "input": "0.04",
+      "output": "+0.0"
+    },
+    {
+      "input": "-0.05",
+      "output": "-0.1"
+    },
+    {
+      "input": "0.05",
+      "output": "+0.1"
+    }
+  ],
+  "duration": [
+    {
+      "seconds": 0,
+      "output": "0m"
+    },
+    {
+      "seconds": 59,
+      "output": "0m"
+    },
+    {
+      "seconds": 60,
+      "output": "1m"
+    },
+    {
+      "seconds": 2700,
+      "output": "45m"
+    },
+    {
+      "seconds": 3599,
+      "output": "59m"
+    },
+    {
+      "seconds": 3600,
+      "output": "1h 00m"
+    },
+    {
+      "seconds": 3900,
+      "output": "1h 05m"
+    },
+    {
+      "seconds": 36000,
+      "output": "10h 00m"
+    },
+    {
+      "seconds": 90061,
+      "output": "25h 01m"
+    }
+  ],
+  "day": [
+    {
+      "input": "2026-09-18",
+      "output": "2026-09-18"
+    },
+    {
+      "input": "2027-01-01",
+      "output": "2027-01-01"
+    },
+    {
+      "input": "2020-02-29",
+      "output": "2020-02-29"
+    }
+  ],
+  "missing": "—",
+  "syncMessage": [
+    {
+      "row": "running",
+      "status": {
+        "isRunning": true,
+        "failure": null,
+        "outcome": null,
+        "imported": null,
+        "updated": null,
+        "finishedAt": null,
+        "retryAfterLocal": null
+      },
+      "message": "Syncing activities…"
+    },
+    {
+      "row": "notConnected",
+      "status": {
+        "isRunning": false,
+        "failure": "Strava connection required.",
+        "outcome": null,
+        "imported": null,
+        "updated": null,
+        "finishedAt": "2026-09-18T07:07:00+03:00",
+        "retryAfterLocal": null
+      },
+      "message": "Strava connection required."
+    },
+    {
+      "row": "never",
+      "status": {
+        "isRunning": false,
+        "failure": null,
+        "outcome": null,
+        "imported": null,
+        "updated": null,
+        "finishedAt": null,
+        "retryAfterLocal": null
+      },
+      "message": ""
+    },
+    {
+      "row": "completedImported",
+      "status": {
+        "isRunning": false,
+        "failure": null,
+        "outcome": "Completed",
+        "imported": 3,
+        "updated": 0,
+        "finishedAt": "2026-09-18T07:07:00+03:00",
+        "retryAfterLocal": null
+      },
+      "message": "3 activities imported."
+    },
+    {
+      "row": "completedNothingNew",
+      "status": {
+        "isRunning": false,
+        "failure": null,
+        "outcome": "Completed",
+        "imported": 0,
+        "updated": 2,
+        "finishedAt": "2026-09-18T07:07:00+03:00",
+        "retryAfterLocal": null
+      },
+      "message": "Already up to date."
+    },
+    {
+      "row": "rateLimitedKnown",
+      "status": {
+        "isRunning": false,
+        "failure": null,
+        "outcome": "RateLimited",
+        "imported": 1,
+        "updated": 0,
+        "finishedAt": "2026-09-18T07:07:00+03:00",
+        "retryAfterLocal": "2026-09-18T07:15:00+03:00"
+      },
+      "message": "Rate limited by Strava. Available again at 07:15."
+    },
+    {
+      "row": "rateLimitedUnknown",
+      "status": {
+        "isRunning": false,
+        "failure": null,
+        "outcome": "RateLimited",
+        "imported": 0,
+        "updated": 0,
+        "finishedAt": "2026-09-18T07:07:00+03:00",
+        "retryAfterLocal": null
+      },
+      "message": "Rate limited by Strava. Try again shortly."
+    },
+    {
+      "row": "interrupted",
+      "status": {
+        "isRunning": false,
+        "failure": null,
+        "outcome": "Interrupted",
+        "imported": 0,
+        "updated": 0,
+        "finishedAt": "2026-09-18T07:07:00+03:00",
+        "retryAfterLocal": null
+      },
+      "message": "Sync interrupted. Your stored history is unchanged — try again."
+    },
+    {
+      "row": "reconnectionRequired",
+      "status": {
+        "isRunning": false,
+        "failure": null,
+        "outcome": "ReconnectionRequired",
+        "imported": 0,
+        "updated": 0,
+        "finishedAt": "2026-09-18T07:07:00+03:00",
+        "retryAfterLocal": null
+      },
+      "message": "Strava connection required."
+    },
+    {
+      "row": "refused",
+      "status": {
+        "isRunning": false,
+        "failure": null,
+        "outcome": "Refused",
+        "imported": 0,
+        "updated": 0,
+        "finishedAt": "2026-09-18T07:07:00+03:00",
+        "retryAfterLocal": null
+      },
+      "message": "A sync is already running."
+    },
+    {
+      "row": "unrecognised",
+      "status": {
+        "isRunning": false,
+        "failure": null,
+        "outcome": "Unrecognised",
+        "imported": 0,
+        "updated": 0,
+        "finishedAt": "2026-09-18T07:07:00+03:00",
+        "retryAfterLocal": null
+      },
+      "message": "Sync finished with an outcome this page does not recognise."
+    }
+  ]
+}

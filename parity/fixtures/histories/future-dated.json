@@ -1,0 +1,30 @@
+{
+  "name": "future-dated",
+  "today": "2026-09-18",
+  "offset": "+03:00",
+  "maximumHeartRate": 190,
+  "isStravaConnected": true,
+  "activities": [
+    {
+      "id": "fixture-20260910-07",
+      "start": "2026-09-10T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260915-07",
+      "start": "2026-09-15T07:00:00+03:00",
+      "movingSeconds": 5400,
+      "type": "Cycling",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260920-07-future",
+      "start": "2026-09-20T07:00:00+03:00",
+      "movingSeconds": 1800,
+      "type": "Running",
+      "heartRate": null
+    }
+  ]
+}

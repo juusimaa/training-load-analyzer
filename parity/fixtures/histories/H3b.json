@@ -1,0 +1,16 @@
+{
+  "name": "H3b",
+  "today": "2026-09-18",
+  "offset": "+03:00",
+  "maximumHeartRate": 190,
+  "isStravaConnected": true,
+  "activities": [
+    {
+      "id": "fixture-20260918-07",
+      "start": "2026-09-18T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    }
+  ]
+}

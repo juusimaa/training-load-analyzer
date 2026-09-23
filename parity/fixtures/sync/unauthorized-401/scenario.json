@@ -1,0 +1,47 @@
+{
+  "name": "unauthorized-401",
+  "description": "Strava rejects the stored credential: the sync ends ReconnectionRequired and stored activities are untouched.",
+  "clock": {
+    "utc": "2026-09-17T10:07:33Z",
+    "localOffset": "+03:00"
+  },
+  "connection": {
+    "athleteId": 900001,
+    "accessToken": "test-access-unauthorized-401",
+    "refreshToken": "test-refresh-unauthorized-401",
+    "expiresAt": "2026-09-17T16:07:33Z",
+    "grantedScopes": "read,activity:read_all",
+    "connectedAt": "2026-09-01T08:00:00Z"
+  },
+  "activities": [
+    {
+      "id": "fixture-3401",
+      "start": "2026-09-12T08:00:00+03:00",
+      "movingSeconds": 3120,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    }
+  ],
+  "syncState": {
+    "resumePoint": "2026-09-05T05:00:00Z",
+    "lastSyncStartedAt": "2026-09-12T20:00:00Z",
+    "lastOutcome": "Completed"
+  },
+  "exchanges": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1788584400&page=1&per_page=200",
+      "response": {
+        "status": 401,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "1,41",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/page1-unauthorized.json"
+      }
+    }
+  ]
+}

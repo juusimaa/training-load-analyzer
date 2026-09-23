@@ -1,0 +1,60 @@
+{
+  "name": "reconcile-deletion",
+  "activities": [
+    {
+      "id": "fixture-3500",
+      "start": "2026-08-01T08:00:00+03:00",
+      "movingSeconds": 3000,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    },
+    {
+      "id": "fixture-3501",
+      "start": "2026-09-01T08:00:00+03:00",
+      "movingSeconds": 3000,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    },
+    {
+      "id": "fixture-3503",
+      "start": "2026-09-10T08:00:00+03:00",
+      "movingSeconds": 3500,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    }
+  ],
+  "syncState": {
+    "resumePoint": "2026-09-03T05:00:00Z",
+    "lastSyncStartedAt": "2026-09-17T10:07:33Z",
+    "lastOutcome": "Completed"
+  },
+  "result": {
+    "imported": 0,
+    "updated": 2,
+    "seriesOutstanding": 0,
+    "skipped": [],
+    "removed": [
+      {
+        "id": "fixture-3502",
+        "reason": "DeletedAtSource"
+      }
+    ],
+    "discarded": [],
+    "outcome": "Completed",
+    "retryAfter": null
+  },
+  "message": "Already up to date.",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1787616000&page=1&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1787616000&page=2&per_page=200"
+    }
+  ]
+}

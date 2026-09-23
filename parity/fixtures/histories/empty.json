@@ -1,0 +1,8 @@
+{
+  "name": "empty",
+  "today": "2026-09-18",
+  "offset": "+03:00",
+  "maximumHeartRate": 190,
+  "isStravaConnected": true,
+  "activities": []
+}

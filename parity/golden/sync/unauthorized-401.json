@@ -1,0 +1,35 @@
+{
+  "name": "unauthorized-401",
+  "activities": [
+    {
+      "id": "fixture-3401",
+      "start": "2026-09-12T08:00:00+03:00",
+      "movingSeconds": 3120,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    }
+  ],
+  "syncState": {
+    "resumePoint": "2026-09-05T05:00:00Z",
+    "lastSyncStartedAt": "2026-09-17T10:07:33Z",
+    "lastOutcome": "ReconnectionRequired"
+  },
+  "result": {
+    "imported": 0,
+    "updated": 0,
+    "seriesOutstanding": 0,
+    "skipped": [],
+    "removed": [],
+    "discarded": [],
+    "outcome": "ReconnectionRequired",
+    "retryAfter": null
+  },
+  "message": "Strava connection required.",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1788584400&page=1&per_page=200"
+    }
+  ]
+}

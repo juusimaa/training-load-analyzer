@@ -1,0 +1,30 @@
+[
+ {
+  "id": "fixture-3501",
+  "name": "Fixture activity",
+  "sport_type": "Run",
+  "type": "Workout",
+  "start_date": "2026-09-01T05:00:00Z",
+  "start_date_local": "2026-09-01T05:00:00Z",
+  "utc_offset": 10800,
+  "moving_time": 3000,
+  "elapsed_time": 3060,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ },
+ {
+  "id": "fixture-3503",
+  "name": "Fixture activity",
+  "sport_type": "Run",
+  "type": "Workout",
+  "start_date": "2026-09-10T05:00:00Z",
+  "start_date_local": "2026-09-10T05:00:00Z",
+  "utc_offset": 10800,
+  "moving_time": 3500,
+  "elapsed_time": 3560,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ }
+]

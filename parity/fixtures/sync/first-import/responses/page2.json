@@ -1,0 +1,31 @@
+[
+ {
+  "id": "fixture-1005",
+  "name": "Fixture activity",
+  "sport_type": "VirtualRide",
+  "type": "Workout",
+  "start_date": "2026-09-14T05:00:00Z",
+  "start_date_local": "2026-09-14T05:00:00Z",
+  "utc_offset": 10800,
+  "moving_time": 3600,
+  "elapsed_time": 3660,
+  "has_heartrate": true,
+  "manual": false,
+  "private": false,
+  "trainer": true
+ },
+ {
+  "id": "fixture-1006",
+  "name": "Fixture activity",
+  "sport_type": "TrailRun",
+  "type": "Workout",
+  "start_date": "2026-09-15T05:00:00Z",
+  "start_date_local": "2026-09-15T05:00:00Z",
+  "utc_offset": 10800,
+  "moving_time": 0,
+  "elapsed_time": 60,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ }
+]

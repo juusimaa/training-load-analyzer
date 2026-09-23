@@ -1,0 +1,55 @@
+{
+  "name": "incremental-lookback",
+  "activities": [
+    {
+      "id": "fixture-2009",
+      "start": "2026-09-09T08:00:00+03:00",
+      "movingSeconds": 4800,
+      "type": "Cycling",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    },
+    {
+      "id": "fixture-2001",
+      "start": "2026-09-12T08:00:00+03:00",
+      "movingSeconds": 3120,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    },
+    {
+      "id": "fixture-2010",
+      "start": "2026-09-16T08:00:00+03:00",
+      "movingSeconds": 6000,
+      "type": "Cycling",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    }
+  ],
+  "syncState": {
+    "resumePoint": "2026-09-09T05:00:00Z",
+    "lastSyncStartedAt": "2026-09-17T10:07:33Z",
+    "lastOutcome": "Completed"
+  },
+  "result": {
+    "imported": 2,
+    "updated": 1,
+    "seriesOutstanding": 0,
+    "skipped": [],
+    "removed": [],
+    "discarded": [],
+    "outcome": "Completed",
+    "retryAfter": null
+  },
+  "message": "2 activities imported.",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1788584400&page=1&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1788584400&page=2&per_page=200"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "transient-5xx-then-ok",
+  "activities": [
+    {
+      "id": "fixture-3301",
+      "start": "2026-09-10T07:30:00+03:00",
+      "movingSeconds": 3000,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    }
+  ],
+  "syncState": {
+    "resumePoint": "2026-09-03T04:30:00Z",
+    "lastSyncStartedAt": "2026-09-17T10:07:33Z",
+    "lastOutcome": "Completed"
+  },
+  "result": {
+    "imported": 1,
+    "updated": 0,
+    "seriesOutstanding": 0,
+    "skipped": [],
+    "removed": [],
+    "discarded": [],
+    "outcome": "Completed",
+    "retryAfter": null
+  },
+  "message": "1 activities imported.",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=2&per_page=200"
+    }
+  ]
+}

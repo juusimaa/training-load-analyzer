@@ -1,0 +1,61 @@
+{
+  "name": "incremental-lookback",
+  "description": "A later sync reads from the stored resume point (latest start − 7 days), finds a late upload, and re-reads a stored activity without duplicating it.",
+  "clock": {
+    "utc": "2026-09-17T10:07:33Z",
+    "localOffset": "+03:00"
+  },
+  "connection": {
+    "athleteId": 900001,
+    "accessToken": "test-access-incremental-lookback",
+    "refreshToken": "test-refresh-incremental-lookback",
+    "expiresAt": "2026-09-17T16:07:33Z",
+    "grantedScopes": "read,activity:read_all",
+    "connectedAt": "2026-09-01T08:00:00Z"
+  },
+  "activities": [
+    {
+      "id": "fixture-2001",
+      "start": "2026-09-12T08:00:00+03:00",
+      "movingSeconds": 3120,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    }
+  ],
+  "syncState": {
+    "resumePoint": "2026-09-05T05:00:00Z",
+    "lastSyncStartedAt": "2026-09-12T20:00:00Z",
+    "lastOutcome": "Completed"
+  },
+  "exchanges": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1788584400&page=1&per_page=200",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "1,41",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/page1.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1788584400&page=2&per_page=200",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "2,42",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/page2.json"
+      }
+    }
+  ]
+}

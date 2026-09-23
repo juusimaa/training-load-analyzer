@@ -1,0 +1,58 @@
+{
+  "name": "H2",
+  "today": "2026-09-18",
+  "offset": "+03:00",
+  "maximumHeartRate": 190,
+  "isStravaConnected": true,
+  "activities": [
+    {
+      "id": "fixture-20260907-07",
+      "start": "2026-09-07T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260909-07",
+      "start": "2026-09-09T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260911-07",
+      "start": "2026-09-11T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260914-07",
+      "start": "2026-09-14T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260915-07",
+      "start": "2026-09-15T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260916-07",
+      "start": "2026-09-16T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    },
+    {
+      "id": "fixture-20260917-07",
+      "start": "2026-09-17T07:00:00+03:00",
+      "movingSeconds": 3600,
+      "type": "Running",
+      "heartRate": null
+    }
+  ]
+}

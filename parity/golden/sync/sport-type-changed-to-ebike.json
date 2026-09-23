@@ -1,0 +1,49 @@
+{
+  "name": "sport-type-changed-to-ebike",
+  "activities": [
+    {
+      "id": "fixture-3602",
+      "start": "2026-09-11T08:00:00+03:00",
+      "movingSeconds": 3000,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    }
+  ],
+  "syncState": {
+    "resumePoint": "2026-09-04T05:00:00Z",
+    "lastSyncStartedAt": "2026-09-17T10:07:33Z",
+    "lastOutcome": "Completed"
+  },
+  "result": {
+    "imported": 0,
+    "updated": 1,
+    "seriesOutstanding": 0,
+    "skipped": [
+      {
+        "id": "fixture-3601",
+        "reason": "SportOutOfScope"
+      }
+    ],
+    "removed": [
+      {
+        "id": "fixture-3601",
+        "reason": "DeletedAtSource"
+      }
+    ],
+    "discarded": [],
+    "outcome": "Completed",
+    "retryAfter": null
+  },
+  "message": "Already up to date.",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1788411600&page=1&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1788411600&page=2&per_page=200"
+    }
+  ]
+}

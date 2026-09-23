@@ -376,6 +376,14 @@ makes the constructor throw `ArgumentException`. The mapper catches that and ski
 ±14 h, and skips the activity as `UnusableByDomain`. It keeps the reference's handling of a
 fractional-but-whole value (`10800.0`, from `fix/strava-utc-offset-decimal`), which is accepted.
 
+**Correction (found by the `utc-offset-not-whole-minute` golden, T018).** The finding above was
+wrong about a *fractional* offset. The reference's `UtcOffsetConverter` reads a non-integer JSON
+number with `(int)reader.GetDouble()`, which truncates toward zero before any offset is built, so
+`19800.5` becomes `19800` and the activity is stored at +05:30. Only an integer that is not a
+whole number of minutes (`19830`), or one beyond ±14 h (`50401`), reaches the constructor and is
+skipped as `UnusableByDomain`. 005 is silent on fractional offsets, so the reference decides: the
+Python mapper truncates a fractional offset toward zero, then applies the two refusals above.
+
 ---
 
 ## Amendment 1 — approved 2026-09-23

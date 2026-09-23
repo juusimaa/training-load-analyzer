@@ -1,0 +1,21 @@
+{
+  "loading": {
+    "rail": "Training Load As of {asOf} ISO week {isoWeek} Window 30 days 90 days 180 days Strava Sync Activities Max heart rate 0 bpm from configuration",
+    "content": "Reading your training history…"
+  },
+  "syncPanel": {
+    "running": "Syncing…Syncing activities…",
+    "notConnected": "Sync ActivitiesStrava connection required.Connect StravaLast checked 2026-09-18 07:07",
+    "never": "Sync Activities",
+    "completedImported": "Sync Activities3 activities imported.Last checked 2026-09-18 07:07",
+    "completedNothingNew": "Sync ActivitiesAlready up to date.Last checked 2026-09-18 07:07",
+    "rateLimitedKnown": "Sync ActivitiesRate limited by Strava. Available again at 07:15.Last checked 2026-09-18 07:07",
+    "rateLimitedUnknown": "Sync ActivitiesRate limited by Strava. Try again shortly.Last checked 2026-09-18 07:07",
+    "interrupted": "Sync ActivitiesSync interrupted. Your stored history is unchanged — try again.Last checked 2026-09-18 07:07",
+    "reconnectionRequired": "Sync ActivitiesStrava connection required.Connect StravaLast checked 2026-09-18 07:07",
+    "refused": "Sync ActivitiesA sync is already running.Last checked 2026-09-18 07:07",
+    "unrecognised": "Sync ActivitiesSync finished with an outcome this page does not recognise.Last checked 2026-09-18 07:07"
+  },
+  "notFound": "Not Found Sorry, the content you are looking for does not exist.",
+  "error": "Error. An error occurred while processing your request."
+}

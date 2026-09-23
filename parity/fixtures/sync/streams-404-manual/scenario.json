@@ -1,0 +1,104 @@
+{
+  "name": "streams-404-manual",
+  "description": "A manual activity makes no stream request; a 404 and a persistent 500 on streams leave the series owed.",
+  "clock": {
+    "utc": "2026-09-17T10:07:33Z",
+    "localOffset": "+03:00"
+  },
+  "connection": {
+    "athleteId": 900001,
+    "accessToken": "test-access-streams-404-manual",
+    "refreshToken": "test-refresh-streams-404-manual",
+    "expiresAt": "2026-09-17T16:07:33Z",
+    "grantedScopes": "read,activity:read_all",
+    "connectedAt": "2026-09-01T08:00:00Z"
+  },
+  "activities": [],
+  "syncState": null,
+  "exchanges": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "1,41",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/page1.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=2&per_page=200",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "2,42",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/page2.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3702/streams?keys=time,heartrate&key_by_type=true",
+      "response": {
+        "status": 404,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "3,43",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/streams-3702-missing.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3703/streams?keys=time,heartrate&key_by_type=true",
+      "response": {
+        "status": 500,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "4,44",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/streams-3703-error-1.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3703/streams?keys=time,heartrate&key_by_type=true",
+      "response": {
+        "status": 500,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "5,45",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/streams-3703-error-2.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3703/streams?keys=time,heartrate&key_by_type=true",
+      "response": {
+        "status": 500,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "6,46",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/streams-3703-error-3.json"
+      }
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "name": "streams-404-manual",
+  "activities": [
+    {
+      "id": "fixture-3701",
+      "start": "2026-09-10T07:30:00+03:00",
+      "movingSeconds": 1800,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    },
+    {
+      "id": "fixture-3702",
+      "start": "2026-09-11T07:30:00+03:00",
+      "movingSeconds": 5400,
+      "type": "Cycling",
+      "heartRate": null,
+      "heartRateOutstanding": true
+    },
+    {
+      "id": "fixture-3703",
+      "start": "2026-09-12T07:30:00+03:00",
+      "movingSeconds": 3000,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": true
+    }
+  ],
+  "syncState": {
+    "resumePoint": "2026-09-04T04:30:00Z",
+    "lastSyncStartedAt": "2026-09-17T10:07:33Z",
+    "lastOutcome": "Completed"
+  },
+  "result": {
+    "imported": 3,
+    "updated": 0,
+    "seriesOutstanding": 2,
+    "skipped": [],
+    "removed": [],
+    "discarded": [],
+    "outcome": "Completed",
+    "retryAfter": null
+  },
+  "message": "3 activities imported.",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=2&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3702/streams?keys=time,heartrate&key_by_type=true"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3703/streams?keys=time,heartrate&key_by_type=true"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3703/streams?keys=time,heartrate&key_by_type=true"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3703/streams?keys=time,heartrate&key_by_type=true"
+    }
+  ]
+}

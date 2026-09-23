@@ -1,0 +1,72 @@
+[
+ {
+  "id": "fixture-4001",
+  "name": "Fixture activity",
+  "sport_type": "Run",
+  "type": "Workout",
+  "start_date": "2026-09-10T04:30:00Z",
+  "start_date_local": "2026-09-10T04:30:00Z",
+  "utc_offset": 19800.5,
+  "moving_time": 3000,
+  "elapsed_time": 3060,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ },
+ {
+  "id": "fixture-4002",
+  "name": "Fixture activity",
+  "sport_type": "Run",
+  "type": "Workout",
+  "start_date": "2026-09-10T05:30:00Z",
+  "start_date_local": "2026-09-10T05:30:00Z",
+  "utc_offset": 19830,
+  "moving_time": 3000,
+  "elapsed_time": 3060,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ },
+ {
+  "id": "fixture-4003",
+  "name": "Fixture activity",
+  "sport_type": "Ride",
+  "type": "Workout",
+  "start_date": "2026-09-10T06:30:00Z",
+  "start_date_local": "2026-09-10T06:30:00Z",
+  "utc_offset": 50401,
+  "moving_time": 3000,
+  "elapsed_time": 3060,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ },
+ {
+  "id": "fixture-4004",
+  "name": "Fixture activity",
+  "sport_type": "Ride",
+  "type": "Workout",
+  "start_date": "2026-09-10T07:30:00Z",
+  "start_date_local": "2026-09-10T07:30:00Z",
+  "utc_offset": -43200,
+  "moving_time": 3000,
+  "elapsed_time": 3060,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ },
+ {
+  "id": "fixture-4005",
+  "name": "Fixture activity",
+  "sport_type": "Run",
+  "type": "Workout",
+  "start_date": "2026-09-10T08:30:00Z",
+  "start_date_local": "2026-09-10T08:30:00Z",
+  "utc_offset": 50400,
+  "moving_time": 3000,
+  "elapsed_time": 3060,
+  "has_heartrate": false,
+  "manual": false,
+  "private": false
+ }
+]

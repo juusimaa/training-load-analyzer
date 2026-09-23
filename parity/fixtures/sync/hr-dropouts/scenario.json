@@ -1,0 +1,76 @@
+{
+  "name": "hr-dropouts",
+  "description": "Implausible and repeated-time samples are discarded and counted; a series with fewer than two survivors falls back to estimated load.",
+  "clock": {
+    "utc": "2026-09-17T10:07:33Z",
+    "localOffset": "+03:00"
+  },
+  "connection": {
+    "athleteId": 900001,
+    "accessToken": "test-access-hr-dropouts",
+    "refreshToken": "test-refresh-hr-dropouts",
+    "expiresAt": "2026-09-17T16:07:33Z",
+    "grantedScopes": "read,activity:read_all",
+    "connectedAt": "2026-09-01T08:00:00Z"
+  },
+  "activities": [],
+  "syncState": null,
+  "exchanges": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "1,41",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/page1.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=2&per_page=200",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "2,42",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/page2.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3801/streams?keys=time,heartrate&key_by_type=true",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "3,43",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/streams-3801.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3802/streams?keys=time,heartrate&key_by_type=true",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "4,44",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/streams-3802.json"
+      }
+    }
+  ]
+}

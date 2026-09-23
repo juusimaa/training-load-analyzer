@@ -64,13 +64,15 @@ reference's `decimal.ToString(InvariantCulture)`. Doubles are written as **round
 
 ```jsonc
 {
+  "range":   { "start": "…", "end": "…" },   // the view's 180 days, widened to every activity
   "loads":   [{ "id": "…", "points": "90", "provenance": "Measured" }],
   "daily":   [{ "day": "…", "points": "…", "count": 1, "basis": "Estimated" }],
   "weekly":  [{ "year": 2026, "week": 38, "monday": "…", "points": "…", "count": 4, "basis": "…" }],
   "metrics": [{ "day": "…", "fitness": "…", "fatigue": "…", "isReliable": false,
                 "fitnessBasis": "…", "fatigueBasis": "…" }],
-  "trend":   { "points": "…", "previous": "…", "absoluteChange": "…", "relativeChange": "…|null",
-               "isComplete": false, "basis": "…", "classification": "Indeterminate" } | null,
+  "trends":  [{ "year": 2026, "week": 38, "monday": "…", "points": "…", "previous": "…",
+                "absoluteChange": "…", "relativeChange": "…|null", "isComplete": false,
+                "basis": "…", "classification": "Indeterminate" }],   // every week with a predecessor
   "view":    { /* exactly the shape of http-api.md §2, built from the reference's Display */ },
   "renderedText": {                     // HtmlRenderer output, whitespace-normalised text
     "metricRow": "…", "recent": "…", "chart180": "…", "chart90": "…", "chart30": "…",
@@ -81,7 +83,8 @@ reference's `decimal.ToString(InvariantCulture)`. Doubles are written as **round
     "180": { "plot": { "Fitness": "x,y x,y …", "Fatigue": "…", "Form": "…" },
              "bars": [["x","y","w","h"]], "zeroRule": "…|null", "ticks": ["…"],
              "slots": [{ "left": "…", "width": "…", "barTop": "…|null", "barHeight": "…|null",
-                         "load": "…|null", "points": [["Fitness","40.1","12.34"]] }] },
+                         "load": "…|null", "opensLeft": false,
+                         "points": [["Fitness","40.1","12.34"]] }] },
     "90": { … }, "30": { … }
   }
 }

@@ -1,0 +1,69 @@
+{
+  "name": "sport-type-changed-to-ebike",
+  "description": "A stored ride whose sport type changed to EBikeRide is skipped and reconciled away.",
+  "clock": {
+    "utc": "2026-09-17T10:07:33Z",
+    "localOffset": "+03:00"
+  },
+  "connection": {
+    "athleteId": 900001,
+    "accessToken": "test-access-sport-type-changed-to-ebike",
+    "refreshToken": "test-refresh-sport-type-changed-to-ebike",
+    "expiresAt": "2026-09-17T16:07:33Z",
+    "grantedScopes": "read,activity:read_all",
+    "connectedAt": "2026-09-01T08:00:00Z"
+  },
+  "activities": [
+    {
+      "id": "fixture-3601",
+      "start": "2026-09-10T08:00:00+03:00",
+      "movingSeconds": 5400,
+      "type": "Cycling",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    },
+    {
+      "id": "fixture-3602",
+      "start": "2026-09-11T08:00:00+03:00",
+      "movingSeconds": 3000,
+      "type": "Running",
+      "heartRate": null,
+      "heartRateOutstanding": false
+    }
+  ],
+  "syncState": {
+    "resumePoint": "2026-09-03T05:00:00Z",
+    "lastSyncStartedAt": "2026-09-11T20:00:00Z",
+    "lastOutcome": "Completed"
+  },
+  "exchanges": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1788411600&page=1&per_page=200",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "1,41",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/page1.json"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=1788411600&page=2&per_page=200",
+      "response": {
+        "status": 200,
+        "headers": {
+          "X-ReadRateLimit-Limit": "100,1000",
+          "X-ReadRateLimit-Usage": "2,42",
+          "X-RateLimit-Limit": "200,2000",
+          "X-RateLimit-Usage": "1,1"
+        },
+        "body": "responses/page2.json"
+      }
+    }
+  ]
+}
