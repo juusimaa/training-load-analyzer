@@ -313,7 +313,10 @@ FR-001 and FR-002 are narrowed for these surfaces only:
   the same wording.**
 - **`/Error` page**: "Error.", "An error occurred while processing your request." and "Request ID"
   are **ported with the same wording**. The "Development Mode" paragraph, which names
-  `ASPNETCORE_ENVIRONMENT`, is **not ported**, and no replacement text is added.
+  `ASPNETCORE_ENVIRONMENT`, is **not ported**, and no replacement text is added. The page is a
+  client route at `/Error`. Its "Request ID" line is never shown: the existing page omits it when
+  there is no request identifier, and the new client has none, because it has no server-side
+  render to fail. No request-ID mechanism is added (clarified 2026-09-23).
 - **Rail maximum heart rate while the history loads**: shows **`—`** instead of `0 bpm`, as feature
   008's edge cases ask ("a placeholder rather than an empty line or a zero"). A client that fetches
   its data shows the loading state long enough for the `0` to be seen.

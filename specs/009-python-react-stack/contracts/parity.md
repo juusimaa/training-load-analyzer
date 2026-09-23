@@ -73,7 +73,9 @@ reference's `decimal.ToString(InvariantCulture)`. Doubles are written as **round
                "isComplete": false, "basis": "…", "classification": "Indeterminate" } | null,
   "view":    { /* exactly the shape of http-api.md §2, built from the reference's Display */ },
   "renderedText": {                     // HtmlRenderer output, whitespace-normalised text
-    "metricRow": "…", "recent": "…", "chart180": "…", "chart90": "…", "chart30": "…"
+    "metricRow": "…", "recent": "…", "chart180": "…", "chart90": "…", "chart30": "…",
+    "rail": "…",                        // Pages/Dashboard.razor <aside class="rail">, view loaded
+    "content": "…"                      // Pages/Dashboard.razor main column: populated, empty or unavailable
   },
   "geometry": {                         // MetricsChart, per window
     "180": { "plot": { "Fitness": "x,y x,y …", "Fatigue": "…", "Form": "…" },
@@ -85,11 +87,26 @@ reference's `decimal.ToString(InvariantCulture)`. Doubles are written as **round
 }
 ```
 
+### Surfaces golden (`golden/probes/surfaces.json`)
+
+This covers the surfaces that don't depend on a history, so that 009 SC-002 reaches every surface
+008 SC-003 lists. It holds whitespace-normalised text:
+
+- `loading`: `Pages/Dashboard.razor` with a reader that never completes. The rail is compared with
+  one substitution, `—` for `0 bpm` (Amendment 1(c)).
+- `syncPanel.<row>`: `SyncPanel` for each row of the
+  [http-api.md §3](./http-api.md#3-get-apisyncstatus-and-post-apisync) message table.
+- `notFound`: `Pages/NotFound.razor`.
+- `error`: `Pages/Error.razor` with no request ID. The "Development Mode" block is stripped
+  before writing, because it is not ported (Amendment 1(c)).
+
 ## 4. Sync fixture and golden
 
 `scenario.json` fixes:
 - the clock, in UTC and in the athlete's zone;
-- the connection row (fake tokens, with an expiry chosen to exercise renewal where relevant);
+- the connection row, with fake tokens. Its `expires_at` is at least the scenario clock + 1 h in
+  every scenario except `expired-token`, so the new implementation's renewal (research R10) adds
+  no request to the compared sequence;
 - the initial activity rows and sync state;
 - an ordered list of expected requests (method and URL pattern), each with its canned response:
   status, headers including `X-ReadRateLimit-*`, and a body file.

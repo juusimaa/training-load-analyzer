@@ -137,7 +137,7 @@ already exist. (3) would need new content, which Principle VII sends back to a s
 | --- | --- | --- |
 | `ReconnectModal` ("Rejoining the server…", "Rejoin failed… trying again in N seconds.", "Failed to rejoin…", "The session has been paused by the server.", Retry/Resume) | A Blazor Server circuit dropped its connection | **Not ported.** There is no circuit. A failed request to the application is covered by 009 FR-016's unavailable notice. |
 | `#blazor-error-ui` ("An unhandled error has occurred." · "Reload" · "🗙") | An unhandled exception on the circuit | **Ported with the same wording** as the React error boundary's fallback. |
-| `/Error` page: "Error." / "An error occurred while processing your request." / "Request ID: …" | ASP.NET exception-handler page | **Ported with the same wording.** The request ID is the backend's request identifier. |
+| `/Error` page: "Error." / "An error occurred while processing your request." / "Request ID: …" | ASP.NET exception-handler page | **Ported with the same wording**, as a client route at `/Error`. The Request ID line is never rendered. The reference omits it when there is no identifier, and the SPA has no server-side render to fail, so it never has one. No request-ID mechanism is added (decided 2026-09-23, Option A of the `/speckit-analyze` finding U1). |
 | `/Error` page "Development Mode" paragraph, naming the `ASPNETCORE_ENVIRONMENT` variable | ASP.NET's template text | **Not ported.** It names another stack's configuration, and copying it would be false. No replacement text is added. |
 | Rail max heart rate showing **`0 bpm`** while the history loads | `Dashboard.razor` falls back to `0` when `view` is null | **Render `—` instead.** 008's edge-case list asks for "a placeholder rather than an empty line or a zero". A client that fetches its data shows the loading state for longer than a prerendered circuit does, so the `0` would become visible. |
 
@@ -287,8 +287,11 @@ and exact geometry.
   `vi.fn`/`vi.mock` (same rule). The theme tests port `PaletteContrastTests`,
   `ColourDisciplineTests`, `ResponsiveRulesTests` and `InteractiveControlTests`, parsing the copied
   stylesheet as the reference's tests do.
-- **Locale (SC-007):** both suites run a second time under `LANG=fi_FI.UTF-8`, `LC_ALL=fi_FI.UTF-8`
-  (and the Node `--icu-data-dir` default). Nothing may format with the ambient locale.
+- **Locale (SC-007):** both suites run a second time under `LANG=fi_FI.UTF-8`, `LC_ALL=fi_FI.UTF-8`.
+  Nothing may format with the ambient locale. Node reads the locale from the environment at
+  process start, and a guard test asserts `Intl.NumberFormat().format(1.5) === "1,5"`, so a run
+  where it did not take effect fails. Python ignores the environment until `locale.setlocale` is
+  called, so the backend test sets the locale explicitly in a fixture and restores it afterwards.
 - **Browser automation (Playwright):** not introduced. The reference verifies layout and contrast
   by parsing CSS plus human review, and SC-004/SC-006 are checked the same way plus the quickstart's
   manual pass.

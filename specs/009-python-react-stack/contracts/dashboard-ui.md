@@ -19,8 +19,17 @@ have one list to check.
 | Answer, populated | Metric row, chart, recent activities | Values from the response |
 | Request failed (network or 5xx) | "Data unavailable" + the reference paragraph (009 FR-016). It never shows zeros or stale figures. | Values from the last good response if any, otherwise the loading-state rail |
 
-The page title (`document.title`) is **Training Load** on `/`, **Not found** on any other path, and
-**Error** in the error-page state.
+The page title (`document.title`) is **Training Load** on `/`, **Error** on `/Error`, and **Not
+found** on any other path.
+
+**The `/Error` page** (Amendment 1(c), decided 2026-09-23) is a client route, reached only by
+navigating to `/Error`, as the reference's `@page "/Error"` can be. Nothing redirects there:
+- a failed data request shows the "Data unavailable" notice (009 FR-016);
+- a render failure shows the error boundary's notice.
+
+The page renders no Request ID line. The reference omits that line whenever it has no request
+identifier (`ShowRequestId`), and the SPA never has one, because there is no server-side render
+to fail. No request-ID mechanism is added to the backend.
 
 ## 2. Sync interaction
 
@@ -96,7 +105,8 @@ parity golden (see [parity.md](./parity.md)) is authoritative. This list is for 
   - "measured", "estimated".
 - **Not found:** "Not Found", "Sorry, the content you are looking for does not exist."
 - **Error:**
-  - page: "Error.", "An error occurred while processing your request.", "Request ID:";
+  - page (`/Error`): "Error.", "An error occurred while processing your request." ("Request ID:"
+    is never rendered; see §1);
   - boundary: "An unhandled error has occurred.", "Reload", "🗙".
 - **Not ported** (research R4, Amendment 1(c)):
   - the circuit-reconnect modal's strings;
