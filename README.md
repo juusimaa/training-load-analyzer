@@ -167,6 +167,11 @@ dotnet test                # the whole suite
 DOTNET_SYSTEM_GLOBALIZATION_PREDEFINED_CULTURES_ONLY=false LANG=fi_FI.UTF-8 dotnet test
 ```
 
+## Feature 009: alternative stack
+
+The same application rebuilt as Python/FastAPI and React/TypeScript for a like-for-like comparison,
+next to this one and sharing nothing with it: see [alt-stack/README.md](alt-stack/README.md).
+
 ## Development process
 
 This project follows Spec Kit's spec → plan → tasks → implement workflow, with tests written

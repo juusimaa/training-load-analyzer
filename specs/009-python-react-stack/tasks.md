@@ -389,7 +389,7 @@ These apply to every task below. They are listed once rather than repeated.
 
 ### View builder and reader (`tla/dashboard/`)
 
-- [ ] T068 [P] [US3] RED: port `DashboardViewBuilderTests.cs`, `WeeklyLoadAndTrendTests.cs`, `RecentActivitiesTests.cs` and `EmptyAndPartialHistoryTests.cs` into `alt-stack/backend/tests/dashboard/test_view_builder.py`:
+- [X] T068 [P] [US3] RED: port `DashboardViewBuilderTests.cs`, `WeeklyLoadAndTrendTests.cs`, `RecentActivitiesTests.cs` and `EmptyAndPartialHistoryTests.cs` into `alt-stack/backend/tests/dashboard/test_view_builder.py`:
   - given H1 and today 2026-09-18, when `build_dashboard_view(activities, today, max_hr, connected)` runs, then the metrics span the 180 days ending today, gap-free and ascending, and `current` holds the last day;
   - given a future-dated session, then the range extends to include it, as the reference does;
   - `recent` holds at most 7, newest first;
@@ -397,42 +397,42 @@ These apply to every task below. They are listed once rather than repeated.
   - given no activities, then `has_activities` is false and `current` is `None`;
   - the trend precondition matches the reference (no trend when the previous week is missing);
   - the qualifier rule: when not reliable → `"still settling"`, then Mixed → `"partly estimated"`, Estimated → `"estimated"`, in that order.
-- [ ] T069 [P] [US3] RED: port `DashboardReaderTests.cs` into `alt-stack/backend/tests/dashboard/test_reader.py`:
+- [X] T069 [P] [US3] RED: port `DashboardReaderTests.cs` into `alt-stack/backend/tests/dashboard/test_reader.py`:
   - given a temp database with stored activities, when `read_dashboard(db_path, clock, settings)` runs, then the view equals `build_dashboard_view` on the same activities;
   - given a row whose series is corrupt (300 bpm), malformed JSON, or a value that overflows, then `is_unavailable` is true and nothing else is populated, and one `WARNING` log record names the failure class and no token (`ValueError`, `json.JSONDecodeError`, `OverflowError`, data-model.md §5);
   - given a held connection, then `is_strava_connected` is true.
-- [ ] T070 [US3] GREEN: implement `alt-stack/backend/src/tla/dashboard/view_builder.py` (`DashboardView`, `RecentActivity`, `build_dashboard_view`, porting `DashboardViewBuilder.cs`, `DashboardView.cs`, `RecentActivity.cs` and `MetricRow.Qualifiers`) and `alt-stack/backend/src/tla/dashboard/reader.py` (`read_dashboard`, porting `DashboardReader.cs`)
-- [ ] T071 [US3] RED: write `alt-stack/backend/tests/dashboard/test_view_json.py` and `alt-stack/backend/tests/parity/test_view_parity.py`:
+- [X] T070 [US3] GREEN: implement `alt-stack/backend/src/tla/dashboard/view_builder.py` (`DashboardView`, `RecentActivity`, `build_dashboard_view`, porting `DashboardViewBuilder.cs`, `DashboardView.cs`, `RecentActivity.cs` and `MetricRow.Qualifiers`) and `alt-stack/backend/src/tla/dashboard/reader.py` (`read_dashboard`, porting `DashboardReader.cs`)
+- [X] T071 [US3] RED: write `alt-stack/backend/tests/dashboard/test_view_json.py` and `alt-stack/backend/tests/parity/test_view_parity.py`:
   - given a view, when `to_json(view)` runs, then the dict has exactly the keys and nesting of [http-api.md §2](./contracts/http-api.md#2-get-apidashboard), camelCase;
   - every displayed value is a `str` produced by `display.py`, and `days[*].fitness/fatigue/form/load` are the only numbers;
   - `maximumHeartRate` is a string (e.g. `"190"`);
   - `week.trend` is `None` → `null`;
   - parametrized over every history golden, the JSON equals the golden's `view` **exactly** for every string and boolean, with the raw numbers within tolerance (SC-002);
   - in `alt-stack/backend/tests/dashboard/test_display_locale.py` (from T040), under the Finnish locale, `to_json(view)` for H3f equals the default-locale output (SC-007).
-- [ ] T072 [US3] GREEN: implement `to_json(view)` in `alt-stack/backend/src/tla/dashboard/view_builder.py` (or `alt-stack/backend/src/tla/dashboard/view_json.py` if the builder grows past one screen), and fix the parity failures in the owning module
-- [ ] T073 [US3] REFACTOR `alt-stack/backend/src/tla/dashboard/`, and run `uv run pytest tests/dashboard tests/parity`
+- [X] T072 [US3] GREEN: implement `to_json(view)` in `alt-stack/backend/src/tla/dashboard/view_builder.py` (or `alt-stack/backend/src/tla/dashboard/view_json.py` if the builder grows past one screen), and fix the parity failures in the owning module
+- [X] T073 [US3] REFACTOR `alt-stack/backend/src/tla/dashboard/`, and run `uv run pytest tests/dashboard tests/parity`
 
 ### Settings, clock, app factory and routes (`tla/api/`, `tla/main.py`)
 
-- [ ] T074 [P] [US3] RED: port `StartupTests.cs` into `alt-stack/backend/tests/api/test_settings.py`:
+- [X] T074 [P] [US3] RED: port `StartupTests.cs` into `alt-stack/backend/tests/api/test_settings.py`:
   - given `TLA_ATHLETE_MAXIMUM_HEART_RATE` unset or blank, when `Settings.from_env(env)` runs, then it raises with exactly the "is not configured" message from [http-api.md §5](./contracts/http-api.md#5-startup-refusal);
   - given `abc`, `0`, `-5` or `180.5`, then it raises the "is '{value}', which is not a positive whole number…" message;
   - given `190`, then `maximum_heart_rate == 190`;
   - `TLA_DATABASE_PATH` defaults to `training-load.db` in the backend directory, and a missing client id or secret does not refuse start-up;
   - a subprocess test runs `uv run uvicorn tla.main:app --factory --workers 1` with the variable unset, and asserts a non-zero exit, the message on stderr, and no port bound (quickstart §3, 009 FR-018).
-- [ ] T075 [US3] GREEN: implement `alt-stack/backend/src/tla/settings.py` (`Settings.from_env(env: Mapping[str, str])`, no settings library, 009 FR-019), `alt-stack/backend/src/tla/clock.py` (`SystemClock` with `now_local()`/`now_utc()`, using the server's local zone, research R16), and the skeleton of `alt-stack/backend/src/tla/main.py` (`create_app(settings, clock, transport=None)`, and `app()` as the `--factory` entry that reads `os.environ` and refuses before binding)
-- [ ] T076 [P] [US3] RED: write `alt-stack/backend/tests/api/test_dashboard_route.py` with `TestClient(create_app(settings, FixedClock(), transport))` and a temp database:
+- [X] T075 [US3] GREEN: implement `alt-stack/backend/src/tla/settings.py` (`Settings.from_env(env: Mapping[str, str])`, no settings library, 009 FR-019), `alt-stack/backend/src/tla/clock.py` (`SystemClock` with `now_local()`/`now_utc()`, using the server's local zone, research R16), and the skeleton of `alt-stack/backend/src/tla/main.py` (`create_app(settings, clock, transport=None)`, and `app()` as the `--factory` entry that reads `os.environ` and refuses before binding)
+- [X] T076 [P] [US3] RED: write `alt-stack/backend/tests/api/test_dashboard_route.py` with `TestClient(create_app(settings, FixedClock(), transport))` and a temp database:
   - given a seeded H3f store, when `GET /api/dashboard` runs, then 200 and a body equal to `to_json(read_dashboard(…))`;
   - given a corrupt row, then 200 with `isUnavailable: true` (never a 5xx for a read failure);
   - the response body, as text, contains no stored token (009 FR-010);
   - it makes no request to the transport (009 FR-013).
-- [ ] T077 [P] [US3] RED: write `alt-stack/backend/tests/api/test_sync_routes.py`:
+- [X] T077 [P] [US3] RED: write `alt-stack/backend/tests/api/test_sync_routes.py`:
   - given no sync ever, then `GET /api/sync/status` → `{"isRunning": false, "message": "", "needsConnection": false, "lastChecked": null}`, or `needsConnection` true when there is no connection;
   - given a `first-import` scenario transport, then `POST /api/sync` blocks until done and returns `message` `"{n} activities imported."` and `lastChecked` `"2026-09-18 HH:mm"`;
   - given a sync held open by an `Event`-gated transport, when a second `POST /api/sync` arrives from another thread, then it returns 200 immediately with `isRunning: true` and `"Syncing activities…"`, and exactly one walk ran;
   - given `unauthorized-401`, then `needsConnection` is true;
   - no response contains a token.
-- [ ] T078 [P] [US3] RED: port `ConnectEndpointTests.cs` into `alt-stack/backend/tests/api/test_connect_routes.py`, following the order in [http-api.md §4](./contracts/http-api.md#4-get-connect-and-get-stravacallback):
+- [X] T078 [P] [US3] RED: port `ConnectEndpointTests.cs` into `alt-stack/backend/tests/api/test_connect_routes.py`, following the order in [http-api.md §4](./contracts/http-api.md#4-get-connect-and-get-stravacallback):
   - `GET /connect` → 302 to Strava authorize, with `redirect_uri` built from the request's scheme and `Host`, and the cookie `tla.oauth.state` = 32 lowercase hex characters, `HttpOnly`, `SameSite=Lax`, `Max-Age=600`, with no `Secure` over http;
   - the callback with `error` → the cookie is deleted, then 302 `/?connect=declined`;
   - a missing or mismatched state → 400 `This sign-in could not be verified. Start again from the dashboard.`, and the transport receives **no** token request;
@@ -440,18 +440,18 @@ These apply to every task below. They are listed once rather than repeated.
   - a successful exchange → 302 `/`, and the connection is stored;
   - insufficient scope → 302 `/?connect=scope`;
   - a different athlete → 302 `/?connect=mismatch`.
-- [ ] T079 [US3] GREEN: implement:
+- [X] T079 [US3] GREEN: implement:
   - `alt-stack/backend/src/tla/api/dashboard.py` (`GET /api/dashboard`);
   - `alt-stack/backend/src/tla/api/sync.py` (`GET /api/sync/status`, `POST /api/sync`, both sync `def` endpoints; `SyncStatusView` per [http-api.md §3](./contracts/http-api.md#3-get-apisyncstatus-and-post-apisync), with `needsConnection = failure is not None or outcome == ReconnectionRequired` and `lastChecked` formatted `yyyy-MM-dd HH:mm` by hand);
   - `alt-stack/backend/src/tla/api/connect.py` (`/connect`, `/strava/callback`, with the state compared by `hmac.compare_digest`).
 
   Wire them in `create_app`, with one `SyncCoordinator` on `app.state`, and `httpx.Client(transport=transport)` built per sync.
-- [ ] T080 [P] [US3] RED→GREEN: write `alt-stack/backend/tests/api/test_spa_fallback.py`:
+- [X] T080 [P] [US3] RED→GREEN: write `alt-stack/backend/tests/api/test_spa_fallback.py`:
   - given a `frontend_dist` directory containing `index.html` and `assets/x.js` passed to `create_app`, then `GET /` and `GET /nowhere` return `index.html`, `GET /assets/x.js` returns the file, and `GET /api/unknown` returns 404 JSON, not the SPA;
   - given no `dist` directory, then the API routes still work.
 
   Implement this in `alt-stack/backend/src/tla/api/static.py` (research R15, run mode).
-- [ ] T081 [US3] REFACTOR `alt-stack/backend/src/tla/api/` and `alt-stack/backend/src/tla/main.py`, and run `uv run pytest`
+- [X] T081 [US3] REFACTOR `alt-stack/backend/src/tla/api/` and `alt-stack/backend/src/tla/main.py`, and run `uv run pytest`
 
 ### Frontend contract types, API client, windowing and geometry
 
