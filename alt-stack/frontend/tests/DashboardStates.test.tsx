@@ -86,6 +86,17 @@ describe("Dashboard states", () => {
     expect(railValues(c.container)).toEqual(["2026-09-18", "ISO week 2026-W38", "190 bpm", "from configuration"]);
   });
 
+  it("a sync request that fails (backend stopped) shows the notice, not the stale figures (009 FR-016, journey 10)", async () => {
+    const c = await loaded(h3f.view);
+    fireEvent.click(c.container.querySelector("button.sync")!);
+    await act(async () => c.sync[0]!.reject(new Unavailable("POST /api/sync failed")));
+
+    expect(normalisedText(content(c.container))).toBe(unavailableText);
+    expect(normalisedText(content(c.container))).not.toMatch(/\d/);
+    expect(railValues(c.container)).toEqual(["2026-09-18", "ISO week 2026-W38", "190 bpm", "from configuration"]);
+    expect(c.container.querySelector("button.sync")?.hasAttribute("disabled")).toBe(false);
+  });
+
   it("connected with nothing imported: the column explains itself, with no redundant Connect", async () => {
     const empty = loadHistory("empty");
     const { container } = await loaded(empty.view);
