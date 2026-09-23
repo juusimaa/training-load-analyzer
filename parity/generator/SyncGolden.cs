@@ -18,7 +18,8 @@ internal static class SyncGolden
         var clock = new FixtureClock(scenario.UtcNow, scenario.LocalOffset);
         var replay = new ReplayHandler(scenario);
 
-        SyncResult result;
+        SyncResult? result = null;
+        Exception? escaped = null;
 
         // Wired as Program.cs wires it: the typed StravaApiClient over an HttpClient, and the sync
         // over its own context and store.
@@ -30,7 +31,16 @@ internal static class SyncGolden
                 db,
                 clock);
 
-            result = await sync.SyncAsync(CancellationToken.None);
+            try
+            {
+                result = await sync.SyncAsync(CancellationToken.None);
+            }
+            catch (Exception failure) when (failure is StravaRateLimitedException or StravaRequestFailedException)
+            {
+                // The reference lets these escape the sync in one place (a limit reached on a stream
+                // request). Recorded as what happened, never turned into an outcome here.
+                escaped = failure;
+            }
         }
 
         if (replay.Remaining != 0)
@@ -40,7 +50,7 @@ internal static class SyncGolden
         }
 
         // As SyncCoordinator.RunAsync records it.
-        var status = new SyncStatus
+        var status = result is null ? null : new SyncStatus
         {
             Result = result,
             FinishedAt = clock.GetLocalNow(),
@@ -87,7 +97,12 @@ internal static class SyncGolden
                     : null,
                 ["lastOutcome"] = state.LastOutcome,
             },
-            ["result"] = new JsonObject
+            ["escaped"] = escaped is null ? null : new JsonObject
+            {
+                ["type"] = escaped.GetType().Name,
+                ["message"] = escaped.Message,
+            },
+            ["result"] = result is null ? null : new JsonObject
             {
                 ["imported"] = result.Imported,
                 ["updated"] = result.Updated,
@@ -101,7 +116,7 @@ internal static class SyncGolden
                 ["outcome"] = result.Outcome.ToString(),
                 ["retryAfter"] = result.RetryAfter is { } after ? GoldenJson.Utc(after) : null,
             },
-            ["message"] = SyncMessage.For(status),
+            ["message"] = status is null ? null : SyncMessage.For(status),
             ["requests"] = new JsonArray([.. replay.Requests.Select(r =>
                 (JsonNode)new JsonObject { ["method"] = r.Method, ["url"] = r.Url })]),
         };

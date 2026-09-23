@@ -50,7 +50,9 @@ fixture.
     in-memory SQLite store through the real `DashboardReader`.
 - **Sync.** Each scenario seeds an in-memory SQLite store migrated with the reference's own
   migrations, and runs `StravaActivitySync.SyncAsync` over a handler that replays the recorded
-  exchanges strictly in order.
+  exchanges strictly in order. Where the reference lets a Strava failure escape the sync (a limit
+  reached on a stream request, `rate-limited-on-streams`), the golden records it under `escaped`,
+  with no `result` or `message`, rather than inventing an outcome for it.
 - **Probes.** Every `Display` helper on the probe values, `SyncMessage.For` on every row of the
   message table, and the surfaces that depend on no history (loading, the sync panel per row,
   not-found, error).
@@ -65,4 +67,4 @@ date from has not arrived. The generator replaces that date and its ISO week wit
 
 ## Count
 
-31 goldens: 16 histories, 13 sync scenarios, 2 probe files.
+32 goldens: 16 histories, 14 sync scenarios, 2 probe files.

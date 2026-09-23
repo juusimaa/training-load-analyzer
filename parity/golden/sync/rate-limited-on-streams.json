@@ -1,0 +1,55 @@
+{
+  "name": "rate-limited-on-streams",
+  "activities": [
+    {
+      "id": "fixture-3951",
+      "start": "2026-09-10T07:30:00+03:00",
+      "movingSeconds": 3000,
+      "type": "Running",
+      "heartRate": [
+        [
+          0,
+          140
+        ],
+        [
+          300,
+          150
+        ],
+        [
+          600,
+          160
+        ],
+        [
+          900,
+          165
+        ]
+      ],
+      "heartRateOutstanding": false
+    }
+  ],
+  "syncState": null,
+  "escaped": {
+    "type": "StravaRateLimitedException",
+    "message": "Strava's read limit has been reached; the sync stopped rather than exceeding it."
+  },
+  "result": null,
+  "message": null,
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=1&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/athlete/activities?after=0&page=2&per_page=200"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3951/streams?keys=time,heartrate&key_by_type=true"
+    },
+    {
+      "method": "GET",
+      "url": "https://www.strava.com/api/v3/activities/fixture-3952/streams?keys=time,heartrate&key_by_type=true"
+    }
+  ]
+}

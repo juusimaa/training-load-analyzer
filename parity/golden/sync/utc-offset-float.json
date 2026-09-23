@@ -23,6 +23,7 @@
     "lastSyncStartedAt": "2026-09-17T10:07:33Z",
     "lastOutcome": "Completed"
   },
+  "escaped": null,
   "result": {
     "imported": 2,
     "updated": 0,

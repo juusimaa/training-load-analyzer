@@ -1,0 +1,24 @@
+{
+ "time": {
+  "data": [
+   0,
+   300,
+   600,
+   900
+  ],
+  "series_type": "distance",
+  "original_size": 4,
+  "resolution": "high"
+ },
+ "heartrate": {
+  "data": [
+   140,
+   150,
+   160,
+   165
+  ],
+  "series_type": "distance",
+  "original_size": 4,
+  "resolution": "high"
+ }
+}
