@@ -10,6 +10,7 @@ import httpx
 from tests.fakes import FixedClock
 from tests.sync.harness import EXHAUSTED, ROOM, SyncHarness, activity
 from tla.persistence.activity_store import ConnectionStore
+from tla.persistence.schema import open_database
 from tla.strava.client import StravaApiClient
 from tla.strava.oauth import StravaOAuthClient
 from tla.sync.activity_sync import ActivitySync
@@ -23,9 +24,11 @@ PAGE = [activity("1", "2026-09-10T04:30:00Z"), activity("2", "2026-09-12T05:00:0
 
 def factory(h: SyncHarness, handler):
     def make_sync() -> ActivitySync:
+        # One connection per unit of work, opened on the thread that runs the sync, as in production.
+        conn = open_database(h.path)
         http = httpx.Client(transport=httpx.MockTransport(handler))
-        auth = StravaAuthorization(ConnectionStore(h.conn), StravaOAuthClient(http, "12345", "s"), h.clock)
-        return ActivitySync(h.conn, StravaApiClient(http, sleep=lambda _: None), auth, h.clock)
+        auth = StravaAuthorization(ConnectionStore(conn), StravaOAuthClient(http, "12345", "s"), h.clock)
+        return ActivitySync(conn, StravaApiClient(http, sleep=lambda _: None), auth, h.clock)
     return make_sync
 
 
