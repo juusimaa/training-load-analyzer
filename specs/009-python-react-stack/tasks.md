@@ -527,7 +527,7 @@ These apply to every task below. They are listed once rather than repeated.
   - `document.title` is "Training Load".
 - [X] T095 [US3] GREEN: implement `alt-stack/frontend/src/components/Dashboard.tsx` (it owns the fetch lifecycle, the chosen window and the sync-in-flight flag; data-model.md §6), `alt-stack/frontend/src/App.tsx` (routing by `location.pathname`: `/` → `Dashboard`, anything else → the not-found placeholder filled in US4) and `alt-stack/frontend/src/main.tsx` (mounts `<App api={createApi()} />` and imports `theme/broadsheet.css` and `theme/app.css`)
 - [X] T096 [US3] REFACTOR `alt-stack/frontend/src/components/`, and run `npm test` and `npm run build`
-- [ ] T097 [US3] VERIFY:
+- [X] T097 [US3] VERIFY (signed off 2026-09-24 with the live-Strava and second-tab checks not walked; see [parity-report.md §Sign-off](./parity-report.md#sign-off)):
   - `uv run pytest` and `npm test` are green;
   - run mode (`npm run build`, then Uvicorn serving `dist`) and development mode (quickstart §4) both load;
   - walk quickstart §5 journeys 4, 5, 6, 8 and 9 against a live or seeded store, checking in the devtools Network tab that switching windows and hovering issue no request;
@@ -584,7 +584,7 @@ These apply to every task below. They are listed once rather than repeated.
   - light/dark is a `prefers-color-scheme` media query with no script (008 FR-021);
   - `index.html` has no inline theme script, so the correct appearance applies from the first paint (009 US4 scenario 3).
 - [X] T106 [US4] GREEN: fix any failure from T103–T105 **by re-copying from the reference** or correcting a component's markup or class. Never edit the copied tokens, which would break 009 FR-004's provenance. If the reference itself fails a ported rule, record it in `specs/009-python-react-stack/parity-report.md` and raise it with the developer instead of diverging
-- [ ] T107 [US4] VERIFY (SC-006, SC-007):
+- [X] T107 [US4] VERIFY (SC-006, SC-007) (signed off 2026-09-24 with the real-browser, touch and zoom checks not walked; see [parity-report.md §Sign-off](./parity-report.md#sign-off)):
   - add an npm script `test:fi` = `LANG=fi_FI.UTF-8 LC_ALL=fi_FI.UTF-8 vitest run` to `alt-stack/frontend/package.json`. Node reads the locale from the environment at process start, so it cannot be switched from inside a test;
   - add `alt-stack/frontend/tests/locale.test.ts`, which records `new Intl.NumberFormat().format(1.5)`. Under `test:fi` it asserts `"1,5"`, so a run where the locale did not take effect fails loudly (select the branch with `process.env.LC_ALL`). In both runs it asserts that the `geometry` output for H3f equals the golden;
   - `LANG=fi_FI.UTF-8 LC_ALL=fi_FI.UTF-8 uv run pytest` (including `test_display_locale.py`, not skipped), `npm test` and `npm run test:fi` are all green, with pass counts identical to the default-locale runs;

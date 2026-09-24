@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-23
 
-**Status**: Draft (Amendment 1 applied 2026-09-23; see [Amendments](#amendments))
+**Status**: Complete — implemented and signed off 2026-09-24 (Amendment 1 applied 2026-09-23; see [Amendments](#amendments), and the [parity report](./parity-report.md), whose [sign-off](./parity-report.md#sign-off) lists what was accepted as it stands)
 
 ## Clarifications
 

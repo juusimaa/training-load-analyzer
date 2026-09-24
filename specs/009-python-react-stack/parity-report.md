@@ -535,7 +535,7 @@ and `domain/trends.py` (004 research R12). Nothing was removed.
 
   Screenshots of the populated page at 320 and 1280 px, light and dark, were reviewed for clipping
   and overflow (none found). They are in the session scratchpad, not the repository.
-- **Still needs the developer.** These keep T097 and T107 open:
+- **Not walked at sign-off.** The developer closed T097 and T107 on 2026-09-24 without these:
   - the live Strava journeys 2, 3, 4, 6 and 7 (consent, a withheld scope, a first import to the
     rate limit, the up-to-date sync, renewal after six hours);
   - journey 5 and the second tab mid-sync, which need a slow live sync;
@@ -566,3 +566,16 @@ and `domain/trends.py` (004 research R12). Nothing was removed.
 - the in-flight sync state that never reaches the clicking tab (R3(2), D3);
 - a read limit on a stream request escaping the sync (R3(4), D2);
 - disconnect and full resync, tested but unreachable (requirement-map GAPs).
+
+## Sign-off
+
+The developer signed the feature off on 2026-09-24. These items were accepted as they stand,
+not resolved:
+- the manual checks listed under [Locale runs and manual checks](#locale-runs-and-manual-checks-t107-t097),
+  which were not walked;
+- the SC-004 FAIL: first content in 354 ms against the reference's 16 ms, inside the 2 s bound. None
+  of the options listed under Measurements was taken;
+- the three requirement-map GAPs: 005 FR-007, FR-031b and FR-032;
+- the follow-ups against `main` listed above, which remain to be assessed.
+
+Nothing is merged into `main`. The work stays on branch `009-python-react-stack`.
